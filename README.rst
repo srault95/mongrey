@@ -1,14 +1,14 @@
-Mongo Greylist Server
-=====================
+Greylist Server for Postfix
+===========================
 
-**Greylist Server for Postfix with MongoDB storage** 
+**Greylist Server for Postfix with MongoDB or SQL storage** 
 
-|Build Status| |pypi downloads| |pypi version| |pypi licence| |requires status|
+|Build Status| |Coverage Status| |pypi downloads| |pypi version| |pypi licence| |requires status|
 
 **Features:**
 
 - Greylist Server high performance
-- MongoDB_ storage
+- Backends: MongoDB, PostgreSQL, MySQL, Sqlite
 - WebUI (optional)
 
 Installation
@@ -16,11 +16,11 @@ Installation
 
 ::
 
-    pip install mongo-greylist
+    pip install mongrey
     
-    docker run -e MONGO_GREYLIST_WEB_PORT=8082 -e MONGODB_URI=mongodb://172.17.0.2/greylist -it --rm srault95/mongo-greylist
+    docker run -e MONGREY_WEB_PORT=8082 -e MONGREY_DB=mongodb://172.17.0.2/greylist -it --rm srault95/mongrey
     ou    
-    docker run --link mongodb1:mongodb -e MONGO_GREYLIST_WEB_PORT=8082 -e MONGODB_URI=mongodb://mongodb/greylist -it --rm srault95/mongo-greylist
+    docker run --link mongodb1:mongodb -e MONGREY_WEB_PORT=8082 -e MONGREY_DB=mongodb://mongodb/greylist -it --rm srault95/mongrey
 
 Postfix Configuration
 ---------------------
@@ -52,22 +52,25 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
 .. _Postfix_Policy: http://www.postfix.org/SMTPD_POLICY_README.html
 .. _Coroutine: http://en.wikipedia.org/wiki/Coroutine
  
-.. |Build Status| image:: https://travis-ci.org/srault95/mongo-greylist.svg?branch=master
-   :target: https://travis-ci.org/srault95/mongo-greylist
+.. |Build Status| image:: https://travis-ci.org/srault95/mongrey.svg?branch=master
+   :target: https://travis-ci.org/srault95/mongrey
    :alt: Travis Build Status
+   
+.. |Coverage Status| image:: https://coveralls.io/repos/srault95/mongrey/badge.svg 
+   :target: https://coveralls.io/r/srault95/mongrey   
 
-.. |pypi downloads| image:: https://img.shields.io/pypi/dm/mongo-greylist.svg
-    :target: https://pypi.python.org/pypi/mongo-greylist
+.. |pypi downloads| image:: https://img.shields.io/pypi/dm/mongrey.svg
+    :target: https://pypi.python.org/pypi/mongrey
     :alt: Number of PyPI downloads
     
-.. |pypi version| image:: https://img.shields.io/pypi/v/mongo-greylist.svg
-    :target: https://pypi.python.org/pypi/mongo-greylist
+.. |pypi version| image:: https://img.shields.io/pypi/v/mongrey.svg
+    :target: https://pypi.python.org/pypi/mongrey
     :alt: Latest Version
 
-.. |pypi licence| image:: https://img.shields.io/pypi/l/mongo-greylist.svg
-    :target: https://pypi.python.org/pypi/mongo-greylist
+.. |pypi licence| image:: https://img.shields.io/pypi/l/mongrey.svg
+    :target: https://pypi.python.org/pypi/mongrey
     :alt: License
 
-.. |requires status| image:: https://requires.io/github/radical-software/mongo-greylist/requirements.svg?branch=master
-     :target: https://requires.io/github/radical-software/mongo-greylist/requirements/?branch=master
-     :alt: Requirements Status                 
+.. |requires status| image:: https://requires.io/github/srault95/mongrey/requirements.svg?branch=master
+     :target: https://requires.io/github/srault95/mongrey/requirements/?branch=master
+     :alt: Requirements Status

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import base64
 from functools import wraps
 
 from flask import current_app, request, Response, session, abort
@@ -16,6 +15,7 @@ class BasicAuth(object):
         application is provided on creation, then it can be provided later on
         via :meth:`init_app`.
     """
+    
     def __init__(self, app=None):
         if app is not None:
             self.app = app

@@ -10,6 +10,7 @@ from mongoengine import Document, Q, fields
 from mongoengine import OperationError, ValidationError, NotUniqueError
 
 from ... import utils
+from ... import validators
 from ... import constants
 from ...policy import generic_search
 
@@ -29,9 +30,31 @@ class BaseSearchField(Document):
                               objects=cls.objects.order_by('field_name'), 
                               valid_fields=cls._valid_fields, 
                               cache_key=cls._cache_key, cache_enable=cache_enable, 
-                              return_instance=return_instance)        
+                              return_instance=return_instance)
 
-    
+    def _clean(self):
+        
+        #TODO: helo_name and country validators
+
+        if self.field_name == "client_address":
+            validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
+
+        elif self.field_name == "client_name" and not "*" in self.value:
+            validators.clean_hostname(self.value, field_name="value", error_class=ValidationError)
+        
+        elif self.field_name in ["sender", "recipient"]:
+            if not "*" in self.value:
+                validators.clean_email_or_domain(self.value, field_name="value", error_class=ValidationError)
+            pass
+
+        """
+        TODO: .*@        
+        """
+
+    def clean(self):
+        Document.clean(self)
+        self._clean()
+
     meta = {
         'abstract': True,
     }
@@ -52,89 +75,56 @@ class GreylistPolicy(BaseSearchField):
     greylist_expire = fields.IntField(default=35*86400, min_value=1)
     
     comments = fields.StringField(max_length=100)
-    
+
     @classmethod
     def search(cls, protocol, cache_enable=True):
         return super(GreylistPolicy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
-    
-    def _clean(self):
-        return
 
-        if self.value_type == constants.POLICY_TYPE_IP:
-            clean_ip_address(self.value, field_name="value")
-
-        elif self.value_type == constants.POLICY_TYPE_HOSTNAME:
-            clean_hostname(self.value, field_name="value")
-        
-        elif self.value_type in [constants.POLICY_TYPE_DOMAIN_SENDER, constants.POLICY_TYPE_DOMAIN_RECIPIENT]:
-            clean_domain(self.value, field_name="value")
-
-        elif self.value_type in [constants.POLICY_TYPE_EMAIL_SENDER, constants.POLICY_TYPE_EMAIL_RECIPIENT]:
-            clean_email(self.value, field_name="value")
-
-    def clean(self):
-        BaseSearchField.clean(self)
-        self._clean()
-        
     def __unicode__(self):
         return u"%s - %s (%s)" % (self.name, self.value, self.get_field_name_display())    
-        
+
     meta = {
         'collection': 'greylist_policy',
         'ordering': ['name'],        
         'indexes': ['name', 'value', 'field_name'],
     }
-    
-    
+
+
 class GreylistEntry(Document):
-    
+
     key = fields.StringField(required=True)
-    
+
     timestamp = fields.DateTimeField(default=utils.utcnow)
-    
+
     expire_time = fields.DateTimeField()
-    
+
     rejects = fields.IntField(default=0)
-    
+
     accepts = fields.IntField(default=0)
-    
+
     last_state = fields.DateTimeField()
-    
+
     delay = fields.FloatField(default=0.0)
-    
+
     protocol = fields.DictField()
-    
+
     policy = fields.StringField()
-    
+
     def __unicode__(self):
         return self.key
-    
-    def delay_first_accept(self):
-        if not self.first_accept:
-            return 0
-        value = self.first_accept - self.timestamp 
-        return round(value.total_seconds(), 2)
 
-    """
-    def update_expire(self, expire=35*86400, now=None):
-        now = now or utils.utcnow()
-        self.expire_time = now + datetime.timedelta(seconds=expire)
-        self.last_state = now
-        self.save()
-    """
-    
-    def accept(self, now=None, expire=35*86400):
+    def accept(self, now=None, expire=35 * 86400):
         now = now or utils.utcnow()
         self.accepts += 1
         self.last_state = now
-        
+
         if self.accepts == 1:
             value = now - self.timestamp 
             self.delay = round(value.total_seconds(), 2)
-            
+
         if not self.expire_time:
             self.expire_time = now + datetime.timedelta(seconds=expire)
-            
+
         self.save()
 
     def reject(self, now=None):
@@ -146,10 +136,9 @@ class GreylistEntry(Document):
     def expire(self, delta=60, now=None):
         now = now or utils.utcnow()
         expire_date = self.timestamp + datetime.timedelta(seconds=delta)
-        value =  expire_date - now 
+        value =  expire_date-now
         return round(value.total_seconds(), 2)
 
-    
     @classmethod
     def create_entry(cls, key=None, protocol=None, policy=None, timestamp=None, last_state=None, now=None, **kwargs):
         now = now or utils.utcnow()
@@ -217,11 +206,11 @@ class GreylistMetric(Document):
     abandoned = fields.IntField(default=0)
 
     delay = fields.FloatField(default=0.0)
-    
+
     meta = {
         'collection': 'greylist_metric',
         'ordering': ['-timestamp'],
-        'indexes': [ '-timestamp'],
+        'indexes': ['-timestamp']
     }
 
 
@@ -237,29 +226,6 @@ class WhiteList(BaseSearchField):
     def __unicode__(self):
         return u"%s (%s)" % (self.value, self.get_field_name_display())
 
-    def _clean(self):
-        return
-
-        if self.field_name == 'client_address':
-            """
-            doit être un format valid IP() et IP().len() >= 1
-            Si > 1, doit contenir un /nn
-            """
-            clean_ip_reg_address(self.value, field_name="value")
-        
-        elif self.field_name in ['sender', 'recipient']:
-            """
-            doit débuter par .*@ ou email complet ou local ?
-            """
-            clean_reg_email(self.value, field_name="value")
-            
-        elif self.field_name == 'client_name':
-            clean_reg_hostname(self.value, field_name="value")            
-
-    def clean(self):
-        BaseSearchField.clean(self)
-        self._clean()
-        
     meta = {
         'collection': 'whitelist',
         'indexes': ['value', 'field_name'],

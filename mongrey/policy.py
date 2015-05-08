@@ -113,8 +113,9 @@ def generic_search(protocol=None, objects=[], valid_fields=[],
 
     return return_value
 
+
 class Policy(object):
-    
+
     def __init__(self, 
                  greylist_key=constants.GREY_KEY_MED, 
                  greylist_remaining=20,        # 20 seconds
@@ -124,17 +125,16 @@ class Policy(object):
                  blacklist_enable=True,
                  purge_interval=60,
                  metrics_interval=60*5):
-        
-        self.greylist_key=greylist_key 
-        self.greylist_remaining=greylist_remaining
-        self.greylist_expire=greylist_expire
-        self.greylist_private_bypass=greylist_private_bypass
-        self.greylist_excludes=greylist_excludes
-        self.blacklist_enable=blacklist_enable
-        
+
+        self.greylist_key = greylist_key 
+        self.greylist_remaining = greylist_remaining
+        self.greylist_expire = greylist_expire
+        self.greylist_private_bypass = greylist_private_bypass
+        self.greylist_excludes = greylist_excludes
+        self.blacklist_enable = blacklist_enable
         self.purge_interval = purge_interval
         self.metrics_interval = metrics_interval
-                          
+
     def check_actions(self, protocol):
 
         policy_name = "default"

@@ -108,7 +108,7 @@ def do_filesizeformat(value, binary=False):
     Giga, etc.), if the second parameter is set to `True` the binary
     prefixes are used (Mebi, Gibi).
     """
-    bytes = float(value)
+    _bytes = float(value)
     base = binary and 1024 or 1000
     prefixes = [
         (binary and "KiB" or "kB"),
@@ -120,16 +120,23 @@ def do_filesizeformat(value, binary=False):
         (binary and "ZiB" or "ZB"),
         (binary and "YiB" or "YB")
     ]
-    if bytes == 1:
+    if _bytes == 1:
         return "1 Byte"
-    elif bytes < base:
-        return "%d Bytes" % bytes
+    elif _bytes < base:
+        return "%d Bytes" % _bytes
     else:
         for i, prefix in enumerate(prefixes):
             unit = base * base ** (i + 1)
-            if bytes < unit:
-                return "%.1f %s" % ((bytes / unit), prefix)
-        return "%.1f %s" % ((bytes / unit), prefix)
+            if _bytes < unit:
+                return "%.1f %s" % ((_bytes / unit), prefix)
+        return "%.1f %s" % ((_bytes / unit), prefix)
+
+
+def check_is_network(value):
+    try:
+        return IP(value).len() > 1
+    except:
+        return False
 
 def check_ipv4(value):
     try:
@@ -216,9 +223,8 @@ def read_whitelist(whitelist_filename):
                 whitelist.append(re.compile(line[1:-1]))
                 continue
             try:
-                line_ipaddr = ipaddr.IPNetwork(line)
-                # line is IP address
-                whitelist_ip.append(line_ipaddr)
+                IP(line)
+                whitelist_ip.append(line)
             except (ValueError):
                 # Ordinary string (domain name or username)
                 whitelist.append(line)
@@ -309,9 +315,9 @@ def parse_postfix_protocol(fileobj, debug=False):
                 raise InvalidProtocolError("Invalid Protocol")
 
             if key in protocol:
-               logger.warn("key is already in protocol : %s" % key)
-            else: 
-                protocol[key] = value.lower()                                
+                logger.warn("key is already in protocol : %s" % key)
+            else:
+                protocol[key] = value.lower()
     
     request = protocol.get('request', None)
     if not request:

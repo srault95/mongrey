@@ -87,7 +87,7 @@ def protocol_yaml_TO_dict(**kwargs):
 
 def get_free_port():
     u"""Récupère un port libre pour les tests et ferme la socket std"""
-    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tempsock = socket.socket()
     tempsock.bind(('localhost', 0))
     host, unused_port = tempsock.getsockname()
     tempsock.close()

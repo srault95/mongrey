@@ -7,11 +7,19 @@ __all__ = [
     'BypassProtocolError'
 ]
 
-class TimeoutError(BaseException):pass
 
-class PolicyError(Exception): pass
+class TimeoutError(BaseException):
+    pass
 
-class InvalidProtocolError(PolicyError): pass
 
-class BypassProtocolError(PolicyError): pass
+class PolicyError(Exception):
+    pass
+
+
+class InvalidProtocolError(PolicyError):
+    pass
+
+
+class BypassProtocolError(PolicyError):
+    pass
 

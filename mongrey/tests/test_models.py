@@ -23,7 +23,6 @@ class TestModelsMixin:
         expire = search.expire(delta=60, now=now.datetime)
         self.assertTrue(expire < 0)
         
-        #doc.update_expire(expire=86400, now=doc.timestamp)
         doc.accept(expire=86400, now=doc.timestamp)
         value = doc.expire_time - doc.timestamp
         self.assertEquals(value.total_seconds(), 86400)
@@ -38,7 +37,9 @@ class TestModelsMixin:
             'country': 'fr'
         }
         
-        models.GreylistPolicy(name="policytest", field_name='client_address', value='1.1.1.1').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='client_address', 
+                              value='1.1.1.1').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))
@@ -46,7 +47,9 @@ class TestModelsMixin:
 
         self._drop_model(models.GreylistPolicy)
 
-        models.GreylistPolicy(name="policytest", field_name='client_address', value='1.1.1.0/24').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='client_address', 
+                              value='1.1.1.0/24').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))
@@ -54,7 +57,8 @@ class TestModelsMixin:
 
         self._drop_model(models.GreylistPolicy)
         
-        models.GreylistPolicy(name="policytest", field_name='country', value='fr').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='country', value='fr').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))
@@ -62,7 +66,9 @@ class TestModelsMixin:
 
         self._drop_model(models.GreylistPolicy)
 
-        models.GreylistPolicy(name="policytest", field_name='client_name', value='.*\.example.net').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='client_name', 
+                              value='.*\.example.net').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))
@@ -70,7 +76,9 @@ class TestModelsMixin:
 
         self._drop_model(models.GreylistPolicy)
 
-        models.GreylistPolicy(name="policytest", field_name='sender', value='.*@example.net').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='sender', 
+                              value='.*@example.net').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))
@@ -78,7 +86,9 @@ class TestModelsMixin:
 
         self._drop_model(models.GreylistPolicy)
 
-        models.GreylistPolicy(name="policytest", field_name='sender', value='sender@example.net').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='sender', 
+                              value='sender@example.net').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))
@@ -86,7 +96,9 @@ class TestModelsMixin:
 
         self._drop_model(models.GreylistPolicy)
 
-        models.GreylistPolicy(name="policytest", field_name='recipient', value='.*@example.org').save()
+        models.GreylistPolicy(name="policytest", 
+                              field_name='recipient', 
+                              value='.*@example.org').save()
         policy = models.GreylistPolicy.search(protocol)
         self.assertIsNotNone(policy)
         self.assertTrue(isinstance(policy, models.GreylistPolicy))

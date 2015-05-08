@@ -30,11 +30,12 @@ from ...policy import generic_search
 
 database_proxy = Proxy()
 
+
 class DateTimeFieldExtend(DateTimeField):
-    
+
     def python_value(self, value):
         return arrow.get(value).datetime
-        #return DateTimeField.python_value(self, value)
+
 
 class BaseSearchField(Model):
     
@@ -45,14 +46,17 @@ class BaseSearchField(Model):
 
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=False):
+        
         return generic_search(protocol=protocol, 
                               objects=cls.select().order_by('field_name'), 
                               valid_fields=cls._valid_fields, 
-                              cache_key=cls._cache_key, cache_enable=cache_enable, 
-                              return_instance=return_instance)        
+                              cache_key=cls._cache_key, 
+                              cache_enable=cache_enable, 
+                              return_instance=return_instance)
 
     class Meta:
         database = database_proxy
+
 
 class GreylistPolicy(BaseSearchField):
 
@@ -129,7 +133,7 @@ class GreylistEntry(Model):
     def expire(self, delta=60, now=None):
         now = now or utils.utcnow()
         expire_date = self.timestamp + datetime.timedelta(seconds=delta)
-        value =  expire_date - now 
+        value = expire_date - now 
         return round(value.total_seconds(), 2)
 
     @classmethod
@@ -317,14 +321,13 @@ def connect(url, **options):
     return database_class(**options)
 
 def configure_peewee(db_name='sqlite:///:memory:', db_options={}, drop_before=False):
+    from peewee import create_model_tables, drop_model_tables
 
     database = connect(db_name, **db_options)
     database_proxy.initialize(database)
-    
-    from peewee import create_model_tables, drop_model_tables
+
     tables = [GreylistPolicy, GreylistEntry, GreylistMetric, WhiteList, BlackList]
     if drop_before:
         drop_model_tables(tables, fail_silently=True)
-        
+
     create_model_tables(tables, fail_silently=True)
-    

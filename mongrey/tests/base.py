@@ -43,16 +43,16 @@ class BaseFlaskTestCase(BaseTestCase):
 
     def tearDown(self):
         BaseTestCase.tearDown(self)
-        ctx = getattr(self, '_ctx')
+        _ctx = getattr(self, '_ctx', None)
         if self._ctx:
             self._ctx.pop()
 
     def login_basic_headers(self, username=None, password=None):
-        headers={}
+        headers = {}
         #'Authorization': 'Basic ' + b64encode("{0}:{1}".format(username, password))
         headers['Authorization'] = 'Basic ' + base64.b64encode(('%s:%s' % (username, password)).encode('latin1')).strip().decode('latin1')
         return headers
-        
+
     def logout(self, url=None):
         url = '/logout'
         return self.client.get(url)

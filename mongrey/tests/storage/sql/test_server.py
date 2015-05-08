@@ -32,9 +32,6 @@ class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
     def test_purge_expire(self):
         self._test_purge_expire(models)
         
-    def test_purge_expire(self):
-        self._test_purge_expire(models)
-    
     def test_action_excludes(self):
         self._test_action_excludes()
         

@@ -76,7 +76,7 @@ ACCEPT_ACTIONS = ["DUNNO", "421", "521", "REJECT", "WARN", "INFO"]
 #request=smtpd_access_policy
 POSTFIX_PROTOCOL = {
 
-    "valid_fields" : [
+    "valid_fields": [
         "request",                      #Postfix version 2.1 and later
         "protocol_state",
         "protocol_name",

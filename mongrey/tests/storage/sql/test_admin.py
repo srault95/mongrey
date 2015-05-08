@@ -35,7 +35,8 @@ class AdminTestCase(BaseFlaskTestCase):
             self.assertOk(response)
             self.assertEquals(auth.current_user(), "radicalspamtest")
 
-            response = c.get(url_for('admin.logout'), headers=headers_login, follow_redirects=False)
+            response = c.get(url_for('admin.logout'), 
+                             headers=headers_login, follow_redirects=False)
             self.assertRedirects(response, url_for('admin.index'))
         
             self.assertIsNone(auth.current_user())

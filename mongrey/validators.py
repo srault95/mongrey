@@ -27,14 +27,39 @@ def clean_email(value, field_name=None, error_class=None):
     if not EMAIL_REGEX.match(value):
         message = _(u"Invalid Email: %s") % value
         raise error_class(message, field_name=field_name)
-
+    
+def clean_email_or_domain(value, field_name=None, error_class=None):
+    
+    valid_email = False
+    valid_domain = False
+    try:
+        clean_email(value, field_name, error_class)
+        valid_email = True
+    except:
+        pass
+    
+    if not valid_email:
+        try:
+            clean_domain(value, field_name, error_class)
+            valid_domain = True
+        except:
+            pass
+    
+    if not valid_email and not valid_domain:
+        message = _(u"Invalid Email or Domain: %s") % value
+        raise error_class(message, field_name=field_name)
 
 def clean_ip_address(value, field_name=None, error_class=None):
+
+    valid = utils.check_ipv4(value) or utils.check_ipv6(value)
+
+    if not valid:
+        message = _(u"Invalid IP Address: %s") % value
+        raise error_class(message, field_name=field_name)
+
+def clean_ip_address_or_network(value, field_name=None, error_class=None):
     
-    valid = False
-    
-    if value:
-        valid = utils.check_ipv4(value) or utils.check_ipv6(value)
+    valid = utils.check_ipv4(value) or utils.check_ipv6(value) or utils.check_is_network(value)
 
     if not valid:
         message = _(u"Invalid IP Address: %s") % value

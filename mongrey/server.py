@@ -78,7 +78,7 @@ DEFAULT_CONFIG = {
 
     'metrics_enable': env_config('MONGREY_METRICS_ENABLE', True, cast=bool),
     
-    'metrics_interval': env_config('MONGREY_METRICS_INTERVAL', 60.0*5, cast=float),
+    'metrics_interval': env_config('MONGREY_METRICS_INTERVAL', 60.0 * 5, cast=float),
     
     'debug': env_config('MONGREY_DEBUG', False, cast=bool),
     

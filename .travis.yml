@@ -9,10 +9,11 @@ python:
   - "2.7"
 
 env:
-  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=simple REDIS=0
+  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey_test MONGREY_CACHE=simple REDIS=0
+  - MONGREY_STORAGE=sql MONGREY_DB=sqlite:////tmp/mongrey_test.db MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1  MONGREY_CACHE=simple REDIS=0
-  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=redis://localhost REDIS=1
+  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey_test MONGREY_CACHE=redis://localhost REDIS=1
   
 before_install:
  - "sudo apt-get update -qq"
@@ -32,12 +33,10 @@ install:
 before_script:
   - sleep 5
   - "if [[ $POSTGRESQL == '1' ]]; then sh -c \"psql -c 'create database mongrey_test;' -U postgres\"; fi"
-  - "if [[ $MYSQL == '1' ]]; then mysql -e 'create database myapp_test;'; fi"
-  #- mongo mydb_test --eval 'db.addUser("travis", "test");'
+  - "if [[ $MYSQL == '1' ]]; then mysql -e 'create database mongrey_test;'; fi"
   
 script:
   - nosetests -s -v mongrey
-  #- python runtests.py -a
 
 branches:
   only:
