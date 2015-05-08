@@ -12,7 +12,7 @@ env:
   - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=redis://localhost REDIS=1
-  #- MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1  MONGREY_CACHE=simple REDIS=0
+  - MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1  MONGREY_CACHE=simple REDIS=0
   
 before_install:
  - "sudo apt-get update -qq"
@@ -20,8 +20,11 @@ before_install:
  
 install:
   - pip install nose coverage coveralls
-  - "if [[ $MONGREY_STORAGE == 'mongo' ]]; then pip install -r requirements/mongo.txt; fi"
-  - "if [[ $POSTGRESQL == '1' ]]; then pip install -r requirements/sql-pgsql.txt; fi"
+  - pip install -r requirements/mongo.txt
+  - pip install -r requirements/sql-pgsql.txt
+  - pip install -r requirements/sql-mysql.txt
+  #- "if [[ $MONGREY_STORAGE == 'mongo' ]]; then pip install -r requirements/mongo.txt; fi"
+  #- "if [[ $POSTGRESQL == '1' ]]; then pip install -r requirements/sql-pgsql.txt; fi"
   #- "if [[ $MYSQL == '1' ]]; then pip install -r requirements/sql-mysql.txt; fi"
   - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
   - pip install --no-deps .
@@ -40,4 +43,8 @@ branches:
   only:
     - master
     
-after_script: coveralls --verbose
+#after_script: coveralls --verbose
+#TRAVIS_TEST_RESULT
+after_success: coveralls --verbose
+
+#after_failure
