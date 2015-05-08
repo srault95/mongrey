@@ -1,4 +1,3 @@
 -r sql.txt
-#https://pypi.python.org/pypi/mysqlclient
-#https://github.com/PyMySQL/mysqlclient-python
-mysqlclient-python
+https://pypi.python.org/pypi/MySQL-python
+MySQL-python
