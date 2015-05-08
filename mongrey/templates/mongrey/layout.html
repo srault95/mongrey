@@ -1,0 +1,96 @@
+{% extends 'admin/base.html' %}
+{% import 'admin/static.html' as admin_static with context %}
+
+{% block title %}{{ admin_view.admin.name }} - {{ admin_view.name }}{% endblock %}
+
+{% block head_meta %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WEB UI for Mongo Greylist">
+    <meta name="author" content="Stéphane RAULT">
+{% endblock %}
+
+{% block head_css %}
+    <link href="{{ url_for('static', filename='themes/bootswatch/'+ current_theme +'/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='flags/flags.css')}}" rel="stylesheet">
+    <link href="{{ admin_static.url(filename='admin/css/bootstrap3/admin.css') }}" rel="stylesheet">
+
+    <style>
+    body {
+        padding-top: 4px;
+    }
+    </style>
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.5/css/bootstrap-modal-bs3patch.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.5/css/bootstrap-modal.css" rel="stylesheet">
+    
+{% endblock %}
+
+{% block access_control %}
+    <ul class="nav navbar-nav navbar-right">
+		<div class="btn-group navbar-btn">
+		  <a class="btn btn-default" href="#"><i class="fa fa-user fa-fw"></i> {{ current_user }}</a>
+		  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+		    <span class="fa fa-caret-down"></span>
+		  </a>
+		  <ul class="dropdown-menu">
+		    <li><a href="{{ url_for('admin.logout') }}"><i class="fa fa-pencil fa-fw"></i> {{_('Logout')}}</a></li>
+		    <li class="divider"></li>
+		    {% for lang in langs %}
+		        {% if lang.0 != current_lang %}
+		        <li class="f16"><a href="{{ url_for('admin.change_lang') }}?locale={{lang.0}}"><i class="flag {{lang.0}}"></i> {{lang.1}}</a></li>
+		        {% endif %}
+		    {% endfor %}
+		  </ul>
+		</div>
+    </ul>
+{% endblock %}
+    
+{% block tail_js %}
+   <!--[if lt IE 9]>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js" type="text/javascript"></script>
+   <![endif]-->
+
+    {{ super() }}
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js" type="text/javascript"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.5/js/bootstrap-modalmanager.min.js" type="text/javascript" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.5/js/bootstrap-modal.min.js" type="text/javascript" ></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment-with-locales.min.js" type="text/javascript" ></script>
+
+    {#{ moment.include_moment(version=None) }#}
+    {#{ moment.lang(current_lang) }#}
+    
+
+{% endblock tail_js %}
+
+{% block tail %}
+    {{ super() }}
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	
+    	moment.locale( "{{ current_lang|default('en') }}" );
+        
+        //change contenair to contenair-fluid on flask-admin/base.html
+        var ct = $('div.container:first');
+        ct.removeClass("container");
+        ct.addClass("container-fluid");
+        
+        $('span.moment').each(function(item){
+        	var value = $(this).attr('data-value');
+            var format = $(this).attr('data-format');        	
+        	$(this).text(moment(value).utc().format(format));
+        });
+        
+    });
+    </script>
+{% endblock tail %}
+
+    

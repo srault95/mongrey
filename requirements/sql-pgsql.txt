@@ -1,0 +1,2 @@
+-r sql.txt
+psycopg2

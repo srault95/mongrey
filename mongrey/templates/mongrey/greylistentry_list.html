@@ -1,0 +1,45 @@
+{% extends 'admin/model/list.html' %}
+
+{% block body %}
+    <div id="ajax-modal" class="modal fade" data-width="760" tabindex="-1" style="display: none;"></div>
+    {{ super() }}
+{% endblock body %}
+
+{% block tail %}
+    {{ super() }}
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	
+    	$.fn.modalmanager.defaults.resize = true;
+
+    	$.fn.modal.defaults.maxHeight = function(){
+    	    return $(window).height() - 165; 
+    	}
+    	
+        $('.show').on('click', function(e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            
+            var $modal = $('#ajax-modal');
+            $('body').modalmanager('loading');
+            $modal.load(href, '', function(){
+                $modal.modal();
+                
+                $('#ajax-modal span.moment').each(function(item){
+                    var value = $(this).attr('data-value');
+                    var format = $(this).attr('data-format');
+                    $(this).text(moment(value).utc().format(format));
+                });
+                
+            });
+            
+        });    
+        
+        
+        
+    });
+    </script>
+{% endblock tail %}
+
+    

@@ -1,0 +1,3 @@
+-r sql.txt
+#https://pypi.python.org/pypi/MySQL-python
+MySQLdb
