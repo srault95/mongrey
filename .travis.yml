@@ -19,7 +19,7 @@ before_install:
  - "sudo apt-get install -y build-essential ca-certificates language-pack-en language-pack-fr python-dev"
  
 install:
-  - pip install nose coverage
+  - pip install nose coverage coveralls
   - "if [[ $MONGREY_STORAGE == 'mongo' ]]; then pip install -r requirements/mongo.txt; fi"
   - "if [[ $POSTGRESQL == '1' ]]; then pip install -r requirements/sql-pgsql.txt; fi"
   - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
@@ -37,4 +37,4 @@ branches:
   only:
     - master
     
-#after_script: coveralls --verbose    
+after_script: coveralls --verbose
