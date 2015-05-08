@@ -100,7 +100,7 @@ DEFAULT_CONFIG = {
     },        
 
     'cache_settings': {
-        'cache_type': env_config('MONGREY_CACHE_TYPE', 'simple'),
+        'cache_type': env_config('MONGREY_CACHE', 'simple'),
         'cache_timeout': env_config('MONGREY_CACHE_TIMEOUT', 300, cast=int),    
     },
                                        

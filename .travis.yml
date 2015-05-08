@@ -9,18 +9,20 @@ python:
   - "2.7"
 
 env:
-  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey
-  - MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1
-  - MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1
+  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=simple REDIS=0
+  - MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
+  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=redis://localhost REDIS=1
+  #- MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1
   
 before_install:
  - "sudo apt-get update -qq"
  - "sudo apt-get install -y build-essential ca-certificates language-pack-en language-pack-fr python-dev"
  
 install:
-  - pip install nose coverage pep8
+  - pip install nose coverage
   - "if [[ $MONGREY_STORAGE == 'mongo' ]]; then pip install -r requirements/mongo.txt; fi"
   - "if [[ $POSTGRESQL == '1' ]]; then pip install -r requirements/sql-pgsql.txt; fi"
+  - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
   - pip install --no-deps .
 
 before_script:
