@@ -7,13 +7,13 @@ import arrow
 
 from peewee import Proxy, Model, CharField, DateTimeField, IntegerField, FloatField, TextField, fn
 
-try:    
+try:
     from peewee import PostgresqlDatabase
     import psycopg2
-    HAVE_PSYCOPG2 = True    
+    HAVE_PSYCOPG2 = True
 except ImportError:
     HAVE_PSYCOPG2 = False
-    
+
 try:
     from peewee import MySQLDatabase
     import MySQLdb as mysql  # prefer the C module.
@@ -23,30 +23,12 @@ except ImportError:
         import pymysql as mysql
     except ImportError:
         HAVE_MYSQL = False
-        
-
 
 from ... import utils
 from ... import constants
 from ...policy import generic_search
 
 database_proxy = Proxy()
-
-"""
-null=False, index=False, unique=False,
-verbose_name=None, help_text=None, db_column=None,
-default=None, choices=None, primary_key=False, sequence=None,
-constraints=None, schema=None
-
-constraints = [Check('price > 0')]
-"""
-
-"""
-    def _create_tables(self):
-        from peewee import create_model_tables
-        create_model_tables(self.models.values(), fail_silently=True)
-
-"""
 
 class DateTimeFieldExtend(DateTimeField):
     
@@ -300,7 +282,7 @@ def connect(url, **options):
         schemes['postgres'] = PostgresqlDatabase
         schemes['postgresql'] = PostgresqlDatabase
 
-    if not HAVE_MYSQL:
+    if HAVE_MYSQL:
         schemes['mysql'] = MySQLDatabase
     
     from urlparse import urlparse
