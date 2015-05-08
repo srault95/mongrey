@@ -9,9 +9,9 @@ python:
   - "2.7"
 
 env:
-  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=simple REDIS=0
-  - MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
-  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=redis://localhost REDIS=1
+  #- MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=simple REDIS=0
+  #- MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
+  #- MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey MONGREY_CACHE=redis://localhost REDIS=1
   - MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1  MONGREY_CACHE=simple REDIS=0
   
 before_install:
