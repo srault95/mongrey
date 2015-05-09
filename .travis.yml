@@ -45,8 +45,6 @@ branches:
   only:
     - master
     
-#after_script: coveralls --verbose
-#TRAVIS_TEST_RESULT
 after_success: coveralls --verbose
 
 #after_failure

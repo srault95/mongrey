@@ -39,10 +39,11 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+coverage/
 
 # Translations
-*.mo
-*.pot
+#*.mo
+#*.pot
 
 # Django stuff:
 *.log
@@ -58,5 +59,4 @@ site/
 
 archives/
 *.db
-*.bat
 TODO*.rst

@@ -1,0 +1,123 @@
+# Translations template for Greylist-Server.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the Greylist-Server
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Greylist-Server VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-05-08 10:49+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.3\n"
+
+#: mongrey/constants.py:15 mongrey/constants.py:30 mongrey/constants.py:38
+msgid "IP Address"
+msgstr ""
+
+#: mongrey/constants.py:16
+msgid "IP Address + Domain Recipient"
+msgstr ""
+
+#: mongrey/constants.py:17
+msgid "IP Address + Email Recipient"
+msgstr ""
+
+#: mongrey/constants.py:18
+msgid "IP Address + Email Sender + Email Recipient"
+msgstr ""
+
+#: mongrey/constants.py:19
+msgid "Email Sender + Email Recipient"
+msgstr ""
+
+#: mongrey/constants.py:32
+msgid "Internet Domain"
+msgstr ""
+
+#: mongrey/constants.py:33
+msgid "Email Address"
+msgstr ""
+
+#: mongrey/constants.py:34 mongrey/constants.py:39
+msgid "Hostname"
+msgstr ""
+
+#: mongrey/constants.py:40
+msgid "Email Sender"
+msgstr ""
+
+#: mongrey/constants.py:41
+msgid "Email Recipient"
+msgstr ""
+
+#: mongrey/constants.py:42
+msgid "Country Code"
+msgstr ""
+
+#: mongrey/constants.py:43
+msgid "Helo Name"
+msgstr ""
+
+#: mongrey/settings.py:18
+msgid "English"
+msgstr ""
+
+#: mongrey/settings.py:19
+msgid "French"
+msgstr ""
+
+#: mongrey/validators.py:22
+#, python-format
+msgid "Invalid Domain: %s"
+msgstr ""
+
+#: mongrey/validators.py:28
+#, python-format
+msgid "Invalid Email: %s"
+msgstr ""
+
+#: mongrey/validators.py:40
+#, python-format
+msgid "Invalid IP Address: %s"
+msgstr ""
+
+#: mongrey/validators.py:64
+#, python-format
+msgid "Invalid Hostname: %s"
+msgstr ""
+
+#: mongrey/storage/mongo/admin.py:185 mongrey/storage/sql/admin.py:202
+msgid "Policies"
+msgstr ""
+
+#: mongrey/storage/mongo/admin.py:187 mongrey/storage/sql/admin.py:204
+msgid "Greylists"
+msgstr ""
+
+#: mongrey/storage/mongo/admin.py:189 mongrey/storage/sql/admin.py:206
+msgid "Whitelists"
+msgstr ""
+
+#: mongrey/storage/mongo/admin.py:191 mongrey/storage/sql/admin.py:208
+msgid "Metrics"
+msgstr ""
+
+#: mongrey/templates/mongrey/greylistentry_show.html:4
+msgid "Greylist Entry"
+msgstr ""
+
+#: mongrey/templates/mongrey/greylistentry_show.html:53
+msgid "Close"
+msgstr ""
+
+#: mongrey/templates/mongrey/layout.html:41
+msgid "Logout"
+msgstr ""
+
