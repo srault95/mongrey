@@ -5,7 +5,8 @@ from mongrey.storage.mongo.policy import MongoPolicy as Policy
 from mongrey.cache import remove_cache
 
 from .base import MongoGreylistBaseTestCase
-from ...test_server import NoRunServerMixin, BaseRunServerMixin, ServerRequestMixin
+from ...server.test_server import NoRunServerMixin, BaseRunServerMixin, ServerRequestMixin
+
 
 class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
     
@@ -39,22 +40,23 @@ class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
         
     def test_action_policy(self):
         self._test_action_policy(models)
-        
+
 
 class BaseRunServerTestCase(BaseRunServerMixin, MongoGreylistBaseTestCase):
 
     def _get_policy(self, **kwargs):
         return Policy(**kwargs)
-    
+
     def setUp(self):
         MongoGreylistBaseTestCase.setUp(self)
         self._get_server()
         self.server.start()
-        
+
     def tearDown(self):
         MongoGreylistBaseTestCase.tearDown(self)
         self.server.stop()
-        
+
+
 class RequestsTestCase(ServerRequestMixin, BaseRunServerTestCase):
 
 

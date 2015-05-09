@@ -4,15 +4,14 @@ import logging
 
 import gevent
 
-from ... import constants
-from ... import utils
 from ...policy import Policy
 from . import models
 
 logger = logging.getLogger(__name__)
 
+
 class MongoPolicy(Policy):
-    
+
     def search_blacklist(self, protocol):
         return models.BlackList.search(protocol)
         

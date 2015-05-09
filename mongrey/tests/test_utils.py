@@ -2,7 +2,7 @@
 
 from mongrey import utils
 from mongrey import constants
-from mongrey.exceptions import *
+from mongrey.exceptions import InvalidProtocolError
 
 from .base import BaseTestCase
 from .utils import protocol_yaml_TO_dict

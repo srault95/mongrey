@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import time
 import datetime
 
 import arrow
 
 from mongoengine import Document, Q, fields
-from mongoengine import OperationError, ValidationError, NotUniqueError
+from mongoengine import ValidationError
 
 from ... import utils
 from ... import validators
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class BaseSearchField(Document):
-    
+
     _valid_fields = []
     _cache_key = None
 
@@ -33,7 +32,7 @@ class BaseSearchField(Document):
                               return_instance=return_instance)
 
     def _clean(self):
-        
+
         #TODO: helo_name and country validators
 
         if self.field_name == "client_address":

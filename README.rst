@@ -11,6 +11,8 @@ Greylist Server for Postfix
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
 - WebUI (optional)
 
+Documentation en Version Française : https://github.com/srault95/mongrey/blob/master/README_fr.rst 
+
 Installation
 ------------
 

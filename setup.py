@@ -97,12 +97,13 @@ setup(
     tests_require=[
         'nose>=1.0'
         'coverage',
+        'flake8'
     ],
     test_suite='nose.collector',      
     entry_points={
         'console_scripts': [
             'mongrey-server = mongrey.server:main',
-            'mongrey-app = mongrey.manager:main',
+            'mongrey-app = mongrey.web:main',
         ],
     },    
       

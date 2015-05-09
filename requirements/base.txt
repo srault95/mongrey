@@ -6,7 +6,7 @@ python-decouple
 #geoip-data
 https://github.com/srault95/geoip-data/tarball/master
 pygeoip
-regex    
+regex
 Flask-BabelEx
 Flask-Script
 flask-admin

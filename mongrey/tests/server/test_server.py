@@ -10,12 +10,13 @@ import arrow
 from mongrey import constants
 from mongrey.server import PolicyServer, logger as server_logger
 from mongrey.utils import build_key
-from .utils import protocol_yaml_TO_dict, send_policy, get_free_port
 
-from .base import BaseTestCase
+from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port
+from ..base import BaseTestCase
+
 
 class NoRunServerTestCase(BaseTestCase):
-        
+
     def test_security_disable(self):
         u"""Disable security by ip"""
         

@@ -5,9 +5,9 @@ import arrow
 from .base import MongoGreylistBaseTestCase
 from ...test_models import TestModelsMixin
 
-from mongrey.storage.sql import models
 from mongrey import constants
 from mongrey import utils
+from mongrey.storage.sql import models
 
 class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
     

@@ -15,10 +15,10 @@ SORTABLE_FIELDS.add(mongoengine_fields.LongField)
 
 import arrow
 
-from ...extensions import auth
-from ...extensions import gettext
 from ... import constants
-from ...admin_common import (moment_format,
+from ...web.extensions import auth
+from ...web.extensions import gettext
+from ...web.admin import (moment_format,
                              key_format,
                              SecureView)
 from . import models

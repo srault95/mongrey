@@ -2,7 +2,7 @@
 
 
 def create_mongo_connection(conn_settings):
-    
+
     from pymongo import uri_parser
     import mongoengine
 

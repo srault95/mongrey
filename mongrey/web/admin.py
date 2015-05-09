@@ -6,7 +6,7 @@ from flask import abort, redirect, url_for, request, session, current_app
 
 from .extensions import auth
 from .extensions import gettext
-from . import constants
+from .. import constants
 
 def moment_format(value):
     """

@@ -1,0 +1,3485 @@
+mongrey\__init__.py:5:9: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:4:1: F401 'urlparse' imported but unused
+mongrey\cache.py:27:23: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:28:37: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:29:36: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:33:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\cache.py:33:44: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:35:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:42:41: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:50:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\cache.py:51:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\cache.py:57:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\cache.py:63:45: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:64:68: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\cache.py:69:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\cache.py:69:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\cache.py:106:1: E303 too many blank lines (4)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\cache.py:113:17: W292 no newline at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\constants.py:3:13: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\constants.py:31:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:35:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:47:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:76:1: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:80:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:86:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:87:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:92:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:99:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:103:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:103:71: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:104:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:105:41: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\constants.py:108:27: E203 whitespace before ':'
+    Avoid extraneous whitespace.
+
+    Avoid extraneous whitespace in these situations:
+    - Immediately inside parentheses, brackets or braces.
+    - Immediately before a comma, semicolon, or colon.
+
+    Okay: spam(ham[1], {eggs: 2})
+    E201: spam( ham[1], {eggs: 2})
+    E201: spam(ham[ 1], {eggs: 2})
+    E201: spam(ham[1], { eggs: 2})
+    E202: spam(ham[1], {eggs: 2} )
+    E202: spam(ham[1 ], {eggs: 2})
+    E202: spam(ham[1], {eggs: 2 })
+
+    E203: if x == 4: print x, y; x, y = y , x
+    E203: if x == 4: print x, y ; x, y = y, x
+    E203: if x == 4 : print x, y; x, y = y, x
+mongrey\constants.py:109:13: E126 continuation line over-indented for hanging indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\constants.py:109:23: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:110:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:111:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:112:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:113:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:114:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:115:30: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:116:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\constants.py:120:26: E203 whitespace before ':'
+    Avoid extraneous whitespace.
+
+    Avoid extraneous whitespace in these situations:
+    - Immediately inside parentheses, brackets or braces.
+    - Immediately before a comma, semicolon, or colon.
+
+    Okay: spam(ham[1], {eggs: 2})
+    E201: spam( ham[1], {eggs: 2})
+    E201: spam(ham[ 1], {eggs: 2})
+    E201: spam(ham[1], { eggs: 2})
+    E202: spam(ham[1], {eggs: 2} )
+    E202: spam(ham[1 ], {eggs: 2})
+    E202: spam(ham[1], {eggs: 2 })
+
+    E203: if x == 4: print x, y; x, y = y , x
+    E203: if x == 4: print x, y ; x, y = y, x
+    E203: if x == 4 : print x, y; x, y = y, x
+mongrey\exceptions.py:25:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\policy.py:14:1: C901 'generic_search' is too complex (32)
+    McCabe cyclomatic complexity checker.
+mongrey\policy.py:14:63: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:15:54: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:23:22: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\policy.py:26:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\policy.py:26:40: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:119:23: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:120:54: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:129:41: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:143:161: E501 line too long (166 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:146:79: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:149:161: E501 line too long (166 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:152:77: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:154:12: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\policy.py:160:161: E501 line too long (192 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:162:17: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\policy.py:163:59: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:167:161: E501 line too long (186 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:169:51: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\policy.py:188:161: E501 line too long (172 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:194:161: E501 line too long (168 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:202:161: E501 line too long (166 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\policy.py:208:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\policy.py:228:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\utils.py:18:1: F403 'from exceptions import *' used; unable to detect undefined names
+mongrey\utils.py:18:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:58:85: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:87:21: E701 multiple statements on one line (colon)
+    Compound statements (on the same line) are generally discouraged.
+
+    While sometimes it's okay to put an if/for/while with a small body
+    on the same line, never do this for multi-clause statements.
+    Also avoid folding such long lines!
+
+    Okay: if foo == 'blah':\n    do_blah_thing()
+    Okay: do_one()
+    Okay: do_two()
+    Okay: do_three()
+
+    E701: if foo == 'blah': do_blah_thing()
+    E701: for x in lst: total += x
+    E701: while t < 10: t = delay()
+    E701: if foo == 'blah': do_blah_thing()
+    E701: else: do_non_blah_thing()
+    E701: try: something()
+    E701: finally: cleanup()
+    E701: if foo == 'blah': one(); two(); three()
+
+    E702: do_one(); do_two(); do_three()
+    E703: do_four();  # useless semicolon
+mongrey\utils.py:89:27: E701 multiple statements on one line (colon)
+    Compound statements (on the same line) are generally discouraged.
+
+    While sometimes it's okay to put an if/for/while with a small body
+    on the same line, never do this for multi-clause statements.
+    Also avoid folding such long lines!
+
+    Okay: if foo == 'blah':\n    do_blah_thing()
+    Okay: do_one()
+    Okay: do_two()
+    Okay: do_three()
+
+    E701: if foo == 'blah': do_blah_thing()
+    E701: for x in lst: total += x
+    E701: while t < 10: t = delay()
+    E701: if foo == 'blah': do_blah_thing()
+    E701: else: do_non_blah_thing()
+    E701: try: something()
+    E701: finally: cleanup()
+    E701: if foo == 'blah': one(); two(); three()
+
+    E702: do_one(); do_two(); do_three()
+    E703: do_four();  # useless semicolon
+mongrey\utils.py:102:23: F841 local variable 'err' is assigned to but never used
+    Indicates that a variable has been explicity assigned to but not actually
+    used.
+mongrey\utils.py:143:40: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:149:40: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:173:161: E501 line too long (161 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\utils.py:179:161: E501 line too long (204 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\utils.py:195:161: E501 line too long (221 > 160 characters)
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+mongrey\utils.py:274:8: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\utils.py:285:1: C901 'parse_postfix_protocol' is too complex (13)
+    McCabe cyclomatic complexity checker.
+mongrey\utils.py:304:29: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:332:35: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:333:42: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:359:11: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:362:24: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:363:24: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:365:22: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:366:24: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:367:24: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:369:15: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:389:17: E126 continuation line over-indented for hanging indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\utils.py:389:24: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:390:24: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\utils.py:391:26: E203 whitespace before ':'
+    Avoid extraneous whitespace.
+
+    Avoid extraneous whitespace in these situations:
+    - Immediately inside parentheses, brackets or braces.
+    - Immediately before a comma, semicolon, or colon.
+
+    Okay: spam(ham[1], {eggs: 2})
+    E201: spam( ham[1], {eggs: 2})
+    E201: spam(ham[ 1], {eggs: 2})
+    E201: spam(ham[1], { eggs: 2})
+    E202: spam(ham[1], {eggs: 2} )
+    E202: spam(ham[1 ], {eggs: 2})
+    E202: spam(ham[1], {eggs: 2 })
+
+    E203: if x == 4: print x, y; x, y = y , x
+    E203: if x == 4: print x, y ; x, y = y, x
+    E203: if x == 4 : print x, y; x, y = y, x
+mongrey\utils.py:393:38: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:394:10: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:406:12: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\utils.py:418:60: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\utils.py:425:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\validators.py:90:58: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\validators.py:91:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\version.py:3:22: W292 no newline at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\storage\sql\admin.py:12:63: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:22:30: E127 continuation line over-indented for visual indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\storage\sql\admin.py:23:30: E127 continuation line over-indented for visual indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\storage\sql\admin.py:61:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\admin.py:71:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\admin.py:122:70: E261 at least two spaces before inline comment
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\admin.py:122:70: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\admin.py:159:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:160:31: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:168:71: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:175:54: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:176:60: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:180:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\sql\admin.py:180:61: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:183:59: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:186:51: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\admin.py:189:61: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:12:5: F401 'psycopg2' imported but unused
+mongrey\storage\sql\models.py:23:9: F401 'mysql' imported but unused
+mongrey\storage\sql\models.py:50:49: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:51:75: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:52:62: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:53:56: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:54:57: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:68:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:71:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:75:50: E261 at least two spaces before inline comment
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:75:50: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:77:53: E261 at least two spaces before inline comment
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:77:53: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:86:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:90:25: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:108:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:119:41: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:136:34: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:140:123: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:145:39: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\sql\models.py:162:21: E126 continuation line over-indented for hanging indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\storage\sql\models.py:162:38: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:162:38: E711 comparison to None should be 'if cond is None:'
+    Comparison to singletons should use "is" or "is not".
+
+    Comparisons to singletons like None should always be done
+    with "is" or "is not", never the equality operators.
+
+    Okay: if arg is not None:
+    E711: if arg != None:
+    E712: if arg == True:
+
+    Also, beware of writing if x when you really mean if x is not None --
+    e.g. when testing whether a variable or argument that defaults to None was
+    set to some other value.  The other value might have a type (such as a
+    container) that could be false in a boolean context!
+mongrey\storage\sql\models.py:162:64: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:162:81: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:178:101: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:178:115: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:179:52: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:179:70: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:180:13: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:189:5: E303 too many blank lines (3)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\sql\models.py:221:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:254:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:255:31: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:255:31: E711 comparison to None should be 'if cond is not None:'
+    Comparison to singletons should use "is" or "is not".
+
+    Comparisons to singletons like None should always be done
+    with "is" or "is not", never the equality operators.
+
+    Okay: if arg is not None:
+    E711: if arg != None:
+    E712: if arg == True:
+
+    Also, beware of writing if x when you really mean if x is not None --
+    e.g. when testing whether a variable or argument that defaults to None was
+    set to some other value.  The other value might have a type (such as a
+    container) that could be false in a boolean context!
+mongrey\storage\sql\models.py:255:57: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:255:94: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:255:118: E225 missing whitespace around operator
+    Surround operators with a single space on either side.
+
+    - Always surround these binary operators with a single space on
+      either side: assignment (=), augmented assignment (+=, -= etc.),
+      comparisons (==, <, >, !=, <=, >=, in, not in, is, is not),
+      Booleans (and, or, not).
+
+    - If operators with different priorities are used, consider adding
+      whitespace around the operators with the lowest priorities.
+
+    Okay: i = i + 1
+    Okay: submitted += 1
+    Okay: x = x * 2 - 1
+    Okay: hypot2 = x * x + y * y
+    Okay: c = (a + b) * (a - b)
+    Okay: foo(bar, key='word', *args, **kwargs)
+    Okay: alpha[:-i]
+
+    E225: i=i+1
+    E225: submitted +=1
+    E225: x = x /2 - 1
+    E225: z = x **y
+    E226: c = (a+b) * (a-b)
+    E226: hypot2 = x*x + y*y
+    E227: c = a|b
+    E228: msg = fmt%(errno, errmsg)
+mongrey\storage\sql\models.py:261:1: C901 'connect' is too complex (12)
+    McCabe cyclomatic complexity checker.
+mongrey\storage\sql\models.py:261:1: E303 too many blank lines (3)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\sql\models.py:275:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:276:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:277:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:278:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:279:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:280:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:281:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:283:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\sql\models.py:315:5: E112 expected an indented block
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+mongrey\storage\sql\policy.py:8:1: F401 'constants' imported but unused
+mongrey\storage\sql\policy.py:9:1: F401 'utils' imported but unused
+mongrey\storage\mongo\admin.py:6:1: F401 'Markup' imported but unused
+mongrey\storage\mongo\admin.py:22:30: E127 continuation line over-indented for visual indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\storage\mongo\admin.py:23:30: E127 continuation line over-indented for visual indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\storage\mongo\admin.py:46:1: E303 too many blank lines (3)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\mongo\admin.py:108:37: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:148:20: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:149:31: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:158:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\mongo\admin.py:158:71: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:165:54: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:166:60: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:170:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\mongo\admin.py:170:61: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:173:59: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:176:51: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\admin.py:179:61: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:28:49: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:29:74: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:30:62: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:31:83: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:36:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\mongo\models.py:41:51: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\storage\mongo\models.py:45:16: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\storage\mongo\models.py:50:18: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:83:88: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:87:30: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:121:41: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:138:16: E222 multiple spaces after operator
+    Avoid extraneous whitespace around an operator.
+
+    Okay: a = 12 + 3
+    E221: a = 4  + 5
+    E222: a = 4 +  5
+    E223: a = 4\t+ 5
+    E224: a = 4 +\t5
+mongrey\storage\mongo\models.py:144:28: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:162:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\mongo\models.py:178:13: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\mongo\models.py:186:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\storage\mongo\models.py:186:13: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:188:36: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:256:29: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\storage\mongo\models.py:260:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\storage\mongo\models.py:264:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\storage\mongo\policy.py:38:17: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\__init__.py:3:1: F401 'PolicyServer' imported but unused
+mongrey\server\__init__.py:3:1: F401 'logger' imported but unused
+mongrey\server\__init__.py:3:1: F401 'main' imported but unused
+mongrey\server\__init__.py:3:45: W292 no newline at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\server\core.py:6:1: F401 'time' imported but unused
+mongrey\server\core.py:7:1: F401 'platform' imported but unused
+mongrey\server\core.py:8:1: F401 're' imported but unused
+mongrey\server\core.py:10:1: F401 'urlparse' imported but unused
+mongrey\server\core.py:11:1: F401 'itertools' imported but unused
+mongrey\server\core.py:12:1: F401 'uuid' imported but unused
+mongrey\server\core.py:13:1: F401 'types' imported but unused
+mongrey\server\core.py:14:1: F401 'hashlib' imported but unused
+mongrey\server\core.py:21:1: F401 'six' imported but unused
+mongrey\server\core.py:26:1: F401 'socket' imported but unused
+mongrey\server\core.py:33:1: F403 'from exceptions import *' used; unable to detect undefined names
+mongrey\server\core.py:46:55: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:62:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:91:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:97:37: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:99:7: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:103:77: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:111:88: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:113:77: E261 at least two spaces before inline comment
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:139:17: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:154:50: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:155:30: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:214:16: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\server\core.py:225:1: C901 'PolicyServer.handler' is too complex (19)
+    McCabe cyclomatic complexity checker.
+mongrey\server\core.py:229:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:232:73: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:239:9: F841 local variable 'instance_id' is assigned to but never used
+    Indicates that a variable has been explicity assigned to but not actually
+    used.
+mongrey\server\core.py:242:41: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:244:29: E126 continuation line over-indented for hanging indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\server\core.py:245:29: E123 closing bracket does not match indentation of opening bracket's line
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\server\core.py:314:97: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:318:5: E303 too many blank lines (2)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\server\core.py:329:1: E303 too many blank lines (3)
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+mongrey\server\core.py:337:90: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:342:37: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:346:36: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:351:43: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:354:33: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:358:42: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:359:34: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:359:42: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:360:34: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:361:34: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\server\core.py:406:28: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:439:41: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:440:63: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:441:62: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\server\core.py:442:49: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\__init__.py:3:1: F401 'create_app' imported but unused
+mongrey\web\__init__.py:4:1: F401 'main' imported but unused
+mongrey\web\__init__.py:4:26: W292 no newline at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\web\admin.py:5:1: F401 'current_app' imported but unused
+mongrey\web\admin.py:5:1: F401 'redirect' imported but unused
+mongrey\web\admin.py:5:1: F401 'request' imported but unused
+mongrey\web\admin.py:5:1: F401 'session' imported but unused
+mongrey\web\admin.py:8:1: F401 'gettext' imported but unused
+mongrey\web\admin.py:9:1: F401 'constants' imported but unused
+mongrey\web\admin.py:19:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\auth.py:105:16: E713 test for membership should be 'not in'
+    Negative comparison should be done using "not in" and "is not".
+
+    Okay: if x not in y:\n    pass
+    Okay: assert (X in Y or X is Z)
+    Okay: if not (X in Y):\n    pass
+    Okay: zz = x is not y
+    E713: Z = not X in Y
+    E713: if not X.B in Y:\n    pass
+    E714: if not X is Y:\n    pass
+    E714: Z = not X.B is Y
+mongrey\web\extensions.py:4:1: F401 '_' imported but unused
+mongrey\web\extensions.py:4:1: F401 'gettext' imported but unused
+mongrey\web\extensions.py:4:1: F401 'lazy_gettext' imported but unused
+mongrey\web\extensions.py:9:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\web\manager.py:3:1: F401 'time' imported but unused
+mongrey\web\manager.py:10:1: F401 'prompt_bool' imported but unused
+mongrey\web\manager.py:40:89: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\manager.py:46:62: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\manager.py:66:9: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\manager.py:100:23: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\manager.py:112:20: E128 continuation line under-indented for visual indent
+    Continuation lines indentation.
+
+    Continuation lines should align wrapped elements either vertically
+    using Python's implicit line joining inside parentheses, brackets
+    and braces, or using a hanging indent.
+
+    When using a hanging indent these considerations should be applied:
+    - there should be no arguments on the first line, and
+    - further indentation should be used to clearly distinguish itself as a
+      continuation line.
+
+    Okay: a = (\n)
+    E123: a = (\n    )
+
+    Okay: a = (\n    42)
+    E121: a = (\n   42)
+    E122: a = (\n42)
+    E123: a = (\n    42\n    )
+    E124: a = (24,\n     42\n)
+    E125: if (\n    b):\n    pass
+    E126: a = (\n        42)
+    E127: a = (24,\n      42)
+    E128: a = (24,\n    42)
+    E129: if (a or\n    b):\n    pass
+    E131: a = (\n    42\n 24)
+mongrey\web\manager.py:155:1: W391 blank line at end of file
+    Trailing blank lines are superfluous.
+
+    Okay: spam(1)
+    W391: spam(1)\n
+
+    However the last line should end with a new line (warning W292).
+mongrey\web\settings.py:5:19: E231 missing whitespace after ':'
+    Each comma, semicolon or colon should be followed by whitespace.
+
+    Okay: [a, b]
+    Okay: (3,)
+    Okay: a[1:4]
+    Okay: a[:4]
+    Okay: a[1:]
+    Okay: a[1:4:2]
+    E231: ['a','b']
+    E231: foo(bar,baz)
+    E231: [{'a':'b'}]
+mongrey\web\settings.py:22:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\settings.py:26:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\settings.py:36:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\settings.py:37:6: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\settings.py:42:37: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\settings.py:44:6: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\settings.py:80:26: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\settings.py:81:6: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\settings.py:86:37: E262 inline comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\settings.py:88:6: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\wsgi.py:17:21: E221 multiple spaces before operator
+    Avoid extraneous whitespace around an operator.
+
+    Okay: a = 12 + 3
+    E221: a = 4  + 5
+    E222: a = 4 +  5
+    E223: a = 4\t+ 5
+    E224: a = 4 +\t5
+mongrey\web\wsgi.py:21:19: E221 multiple spaces before operator
+    Avoid extraneous whitespace around an operator.
+
+    Okay: a = 12 + 3
+    E221: a = 4  + 5
+    E222: a = 4 +  5
+    E223: a = 4\t+ 5
+    E224: a = 4 +\t5
+mongrey\web\wsgi.py:28:25: E221 multiple spaces before operator
+    Avoid extraneous whitespace around an operator.
+
+    Okay: a = 12 + 3
+    E221: a = 4  + 5
+    E222: a = 4 +  5
+    E223: a = 4\t+ 5
+    E224: a = 4 +\t5
+mongrey\web\wsgi.py:39:5: F841 local variable 'db' is assigned to but never used
+    Indicates that a variable has been explicity assigned to but not actually
+    used.
+mongrey\web\wsgi.py:40:5: E265 block comment should start with '# '
+    Separate inline comments by at least two spaces.
+
+    An inline comment is a comment on the same line as a statement.  Inline
+    comments should be separated by at least two spaces from the statement.
+    They should start with a # and a single space.
+
+    Each line of a block comment starts with a # and a single space
+    (unless it is indented text inside the comment).
+
+    Okay: x = x + 1  # Increment x
+    Okay: x = x + 1    # Increment x
+    Okay: # Block comment
+    E261: x = x + 1 # Increment x
+    E262: x = x + 1  #Increment x
+    E262: x = x + 1  #  Increment x
+    E265: #Block comment
+mongrey\web\wsgi.py:56:42: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\wsgi.py:67:63: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12
+mongrey\web\wsgi.py:68:67: W291 trailing whitespace
+    Trailing whitespace is superfluous.
+
+    The warning returned varies on whether the line itself is blank, for easier
+    filtering for those who want to indent their blank lines.
+
+    Okay: spam(1)\n#
+    W291: spam(1) \n#
+    W293: class Foo(object):\n    \n    bang = 12

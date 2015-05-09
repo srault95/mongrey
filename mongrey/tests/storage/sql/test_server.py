@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import os
-import logging
-
-import arrow
-import gevent
-
 from mongrey.storage.sql import models
 from mongrey.storage.sql.policy import SqlPolicy as Policy
 from mongrey.cache import remove_cache
 
 from .base import MongoGreylistBaseTestCase
-from ...test_server import NoRunServerMixin, BaseRunServerMixin, ServerRequestMixin
+from ...server.test_server import NoRunServerMixin, BaseRunServerMixin, ServerRequestMixin
+
 
 class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
 

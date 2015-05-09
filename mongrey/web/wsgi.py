@@ -4,9 +4,9 @@ from flask import Flask, session
 from werkzeug.contrib.fixers import ProxyFix
 from decouple import config as config_from_env
 
+from .. import constants
+from .. import utils
 from .extensions import auth, babel
-from . import constants
-from . import utils
 
 def _configure_i18n(app):
 
@@ -55,7 +55,7 @@ def _configure_storage_sql(app):
         if not models.database_proxy.is_closed():
             models.database_proxy.close()            
 
-def create_app(config='mongrey.settings.Prod', force_storage=None):
+def create_app(config='mongrey.web.settings.Prod', force_storage=None):
 
     env_config = config_from_env('MONGREY_SETTINGS', config)
     

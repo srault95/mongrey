@@ -27,11 +27,10 @@ from gevent import socket
 
 from decouple import config as env_config
 
-from . import version
-from . import constants
-from . import utils
-
-from .exceptions import *
+from .. import version
+from .. import constants
+from .. import utils
+from ..exceptions import *
 
 try:
     import psutil
@@ -100,7 +99,7 @@ DEFAULT_CONFIG = {
     },        
 
     'cache_settings': {
-        'cache_type': env_config('MONGREY_CACHE', 'simple'),
+        'cache_url': env_config('MONGREY_CACHE', 'simple'),
         'cache_timeout': env_config('MONGREY_CACHE_TIMEOUT', 300, cast=int),    
     },
                                        
@@ -368,7 +367,7 @@ def options():
     args = parser.parse_args()
     return dict(args._get_kwargs())
 
-def _command_start(pid_file=None, **config):
+def start_command(pid_file=None, **config):
 
     storage = config.pop('storage')
     
@@ -384,7 +383,7 @@ def _command_start(pid_file=None, **config):
     cache_settings = config.pop('cache_settings')
     greylist_settings = config.pop('greylist_settings')
     
-    from . import cache
+    from .. import cache
     cache.cache = cache.Cache(**cache_settings)
 
     policy_klass = None
@@ -452,7 +451,7 @@ def main():
             from mongrey.storage.sql.models import configure_peewee
             configure_peewee(**config['peewee_settings'])
             
-        _command_start(pid_file=pid_file, **config)
+        start_command(pid_file=pid_file, **config)
         sys.exit(0)
     elif command == 'showconfig':
         pp(config)

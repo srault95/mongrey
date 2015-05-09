@@ -27,7 +27,7 @@ class BaseTestCase(unittest.TestCase):
 
 class BaseFlaskTestCase(BaseTestCase):
     
-    CONFIG = "mongrey.settings.Test"
+    CONFIG = "mongrey.web.settings.Test"
     
     def _create_app(self):
         raise NotImplementedError

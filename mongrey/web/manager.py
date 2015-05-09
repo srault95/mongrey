@@ -44,7 +44,7 @@ def _show_config(app=None):
         import peewee
         print "---------------------------------"
         print "peewee                 : ", peewee.__version__        
-        
+
     print "-------------------------------------------------------"
     print "app.root_path          : ", app.root_path
     print "app.config.root_path   : ", app.config.root_path
@@ -57,7 +57,6 @@ def _show_config(app=None):
     for e in extensions:
         print e
     print "-------------------------------------------------------"
-    
 
 def _show_urls():
     order = 'rule'
@@ -66,7 +65,7 @@ def _show_urls():
         methods = ",".join(list(rule.methods))
         #rule.rule = str passé au début de route()
         print "%-30s" % rule.rule, rule.endpoint, methods
-    
+
 
 class ImportWhiteList(Command):
     u"""Import whitelist file"""
@@ -124,7 +123,7 @@ def main(create_app_func=None):
             except KeyboardInterrupt:
                 pass
     
-    env_config = config_from_env('MONGREY_SETTINGS', 'mongrey.settings.Prod')
+    env_config = config_from_env('MONGREY_SETTINGS', 'mongrey.web.settings.Prod')
     
     manager = Manager(create_app_func, with_default_commands=False)
     manager.add_option('-c', '--config',
@@ -145,11 +144,11 @@ def main(create_app_func=None):
 
 if __name__ == "__main__":
     """
-    python -m mongrey.manager run -p 8081 -d -R
+    python -m mongrey.web.manager run -p 8081 -d -R
     
-    python -m mongrey.manager -c mongrey.settings.Dev server -p 8081 -d
+    python -m mongrey.web.manager -c mongrey.web.settings.Dev server -p 8081 -d
     
-    python -m mongrey.manager urls
+    python -m mongrey.web.manager urls
     
     """
     main()
