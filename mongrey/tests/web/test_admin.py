@@ -1,26 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import unittest
-import os
+from flask import url_for
 
-from ...base import BaseFlaskTestCase
-from ...web.test_admin import AdminTestCaseMixin
+from mongrey import constants
+from mongrey import utils
+from mongrey.web.extensions import auth
 
-from mongrey.storage.sql import models
+class AdminTestCaseMixin:
+    pass
 
-@unittest.skipIf(os.environ.get('MONGREY_STORAGE', 'sql') != "sql", "Skip no sql tests")
-class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
-
-    def _create_app(self):
-        from mongrey.web import create_app
-        app = create_app(config=self.CONFIG, force_storage="sql")
-        return app
-
-    def test_security(self):
-        self._test_security(models)
-
-    """    
-    def test_security(self):
+    def _test_security(self, models):
         
         url = url_for('greylistentry.index_view')
         #url = url_for('admin.index')
@@ -40,4 +29,4 @@ class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
             self.assertRedirects(response, url_for('admin.index'))
         
             self.assertIsNone(auth.current_user())
-    """
+    

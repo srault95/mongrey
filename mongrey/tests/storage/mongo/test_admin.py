@@ -3,17 +3,35 @@
 import unittest
 import os
 
-from flask import url_for
-
 from ...base import BaseFlaskTestCase
+from ...web.test_admin import AdminTestCaseMixin
 
-from mongrey import constants
-from mongrey import utils
-from mongrey.web.extensions import auth
 from mongrey.storage.mongo import models
 
+"""
+/change-lang                   admin.change_lang HEAD,OPTIONS,GET
+/greylistentry/                greylistentry.index_view HEAD,OPTIONS,GET
+/greylistentry/delete/         greylistentry.delete_view POST,OPTIONS
+/greylistentry/edit/           greylistentry.edit_view HEAD,POST,OPTIONS,GET
+/greylistentry/new/            greylistentry.create_view HEAD,POST,OPTIONS,GET
+/greylistentry/show            greylistentry.show HEAD,OPTIONS,GET
+/greylistmetric/               greylistmetric.index_view HEAD,OPTIONS,GET
+/greylistmetric/delete/        greylistmetric.delete_view POST,OPTIONS
+/greylistmetric/edit/          greylistmetric.edit_view HEAD,POST,OPTIONS,GET
+/greylistmetric/new/           greylistmetric.create_view HEAD,POST,OPTIONS,GET
+/greylistpolicy/               greylistpolicy.index_view HEAD,OPTIONS,GET
+/greylistpolicy/delete/        greylistpolicy.delete_view POST,OPTIONS
+/greylistpolicy/edit/          greylistpolicy.edit_view HEAD,POST,OPTIONS,GET
+/greylistpolicy/new/           greylistpolicy.create_view HEAD,POST,OPTIONS,GET
+/whitelist/                    whitelist.index_view HEAD,OPTIONS,GET
+/whitelist/delete/             whitelist.delete_view POST,OPTIONS
+/whitelist/edit/               whitelist.edit_view HEAD,POST,OPTIONS,GET
+/whitelist/new/                whitelist.create_view HEAD,POST,OPTIONS,GET
+
+"""
+
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', "mongo") != "mongo", "Skip no mongodb tests")
-class AdminTestCase(BaseFlaskTestCase):
+class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
 
     def _create_app(self):
         from mongrey.web import create_app
@@ -21,23 +39,4 @@ class AdminTestCase(BaseFlaskTestCase):
         return app
     
     def test_security(self):
-        
-        url = url_for('greylistentry.index_view')
-        #url = url_for('admin.index')
-        self.assertIsNone(auth.current_user())
-        
-        response = self.client.get(url, follow_redirects=False)
-        self.assert_401(response)
-        
-        headers_login = self.login_basic_headers("radicalspamtest", "radicalspamtest")
-        with self.client as c:
-            response = c.get(url, headers=headers_login, follow_redirects=True)
-            self.assertOk(response)
-            self.assertEquals(auth.current_user(), "radicalspamtest")
-
-            response = c.get(url_for('admin.logout'), 
-                             headers=headers_login, follow_redirects=False)
-            self.assertRedirects(response, url_for('admin.index'))
-        
-            self.assertIsNone(auth.current_user())
-    
+        self._test_security(models)

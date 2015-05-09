@@ -6,6 +6,8 @@ import unittest
 import os
 from StringIO import StringIO
 
+import yaml
+
 import gevent
 import arrow
 
@@ -90,18 +92,16 @@ class NoRunServerTestCase(BaseTestCase):
         self.assertEquals(config['mongodb_settings']['host'], 'mongodb://host/db')
         self.assertEquals(config['port'], 9999)
         
-        """
-        import yaml
-        print ""
-        yaml.dump(SERVER_CONFIG, stream=sys.stdout, explicit_start=False, default_flow_style=False)
-        config = utils.load_yaml_config(yaml_settings_path=yaml_settings_path, config)        
-        """
-
     def test_configuration(self):
 
-        server_config = json.dumps(SERVER_CONFIG, sort_keys=True)
-        default_config = json.dumps(_DEFAULT_CONFIG, sort_keys=True)
-        self.assertEquals(server_config, default_config)        
+        #server_config = json.dumps(SERVER_CONFIG, sort_keys=True)
+        #default_config = json.dumps(_DEFAULT_CONFIG, sort_keys=True)
+        server_config = StringIO()
+        default_config = StringIO()
+        yaml.dump(SERVER_CONFIG, stream=server_config, explicit_start=False, default_flow_style=False)
+        yaml.dump(_DEFAULT_CONFIG, stream=default_config, explicit_start=False, default_flow_style=False)
+        self.assertEquals(server_config.getvalue(), default_config.getvalue())
+        
         
     def test_security_disable(self):
         u"""Disable security by ip"""

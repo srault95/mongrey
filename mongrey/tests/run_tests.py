@@ -12,15 +12,18 @@ def main():
      '--verbose',
      '--logging-level=INFO'
     ]
+    env = {
+        'MONGREY_STORAGE': 'mongo'
+    }
     
     #run(module="mongrey", argv=argv)
-    nose.runmodule(name='mongrey', 
-                   argv=[
-                     '',
-                     '-s',
-                     '--verbose',
-                     '--logging-level=INFO',
-                    ])
+    #mongrey/tests/server/test_server.py
+    run(defaultTest="mongrey.tests.storage.mongo.test_server", argv=argv, env=env)
+
 
 if __name__ == "__main__":
+    """
+    > nok avec python -m
+    python mongrey\tests\run_tests.py
+    """
     main()    

@@ -55,20 +55,30 @@ class ModelView(SecureView, BaseModelView):
 
 class WhiteListView(ModelView):
     
-    column_list = ('value', 'value_type', 'comments')
+    column_list = ('value', 'field_name', 'comments')
 
     column_formatters = {
-        #"value_type": lambda v, c, m, n: m.get_value_type_display(),
+        #"field_name": lambda v, c, m, n: m.get_field_name_display(),
+    }
+
+    column_searchable_list = ('value', 'comments')
+
+class BlackListView(ModelView):
+    
+    column_list = ('value', 'field_name', 'comments')
+
+    column_formatters = {
+        #"field_name": lambda v, c, m, n: m.get_field_name_display(),
     }
 
     column_searchable_list = ('value', 'comments')
 
 class GreylistPolicyView(ModelView):
     
-    column_list = ('name', 'value', 'value_type', 'greylist_key', 'greylist_remaining', 'greylist_expire', 'comments')
+    column_list = ('name', 'value', 'field_name', 'greylist_key', 'greylist_remaining', 'greylist_expire', 'comments')
     
     column_formatters = {
-        #"value_type": lambda v, c, m, n: m.get_value_type_display(),
+        #"field_name": lambda v, c, m, n: m.get_field_name_display(),
     }
     
     
@@ -186,5 +196,8 @@ def init_admin(app,
     admin.add_view(WhiteListView(models.WhiteList, 
                                  name=gettext(u"Whitelists")))
     
+    admin.add_view(BlackListView(models.BlackList, 
+                                 name=gettext(u"Blacklists")))
+        
     admin.add_view(GreylistMetricView(models.GreylistMetric, 
                                       name=gettext(u"Metrics")))

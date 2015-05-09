@@ -6,7 +6,7 @@ gettext = lambda s:s
 
 class Config(object):
     
-    STORAGE = config('MONGREY_STORAGE', 'sql')
+    STORAGE = config('MONGREY_STORAGE', 'mongo')
 
     SECRET_KEY = config('MONGREY_SECRET_KEY', 'qwerty12345678')
 
