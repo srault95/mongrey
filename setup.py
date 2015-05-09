@@ -42,8 +42,10 @@ setup(
     zip_safe=False,
     packages=find_packages(),
     install_requires=[
-        'psutil',
+        'six',
+        'cython',
         'gevent>=1.0',
+        'psutil',
         'arrow',
         'IPy',
         'python-decouple',
