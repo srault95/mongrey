@@ -386,7 +386,8 @@ def daemonize(pid_file, callback=None, **config):
             signal_map=None,
     
     """
-    context = GeventDaemonContext(signal_map={signal.SIGTERM: stop,
+    context = GeventDaemonContext(pidfile=pid_file,
+                                  signal_map={signal.SIGTERM: stop,
                                               signal.SIGINT: stop})
     
     with context:

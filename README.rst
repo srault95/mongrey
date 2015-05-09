@@ -37,6 +37,40 @@ Postfix Configuration
              ... 
              reject_unauth_destination 
              check_policy_service inet:127.0.0.1:9999
+
+Déploiement - PostgreSQL
+------------------------
+
+::
+
+    docker pull postgres
+
+    # Lancement du server
+    docker run --name pgsql1 -e POSTGRES_PASSWORD=secret -d postgres
+    
+    # Création de la DB
+    docker exec -it pgsql1 sh -c 'exec psql -c "create database mongrey_test2;" -U postgres'    
+    
+    # Lancement de mongrey
+    docker run -it --rm --link pgsql1:pgsql -e MONGREY_STORAGE=sql -e MONGREY_DB=postgresql://postgres:secret@pgsql/mongrey_test -e MONGREY_HOST=0.0.0.0 -e MONGREY_PORT=9999 -p 127.0.0.1:9997:9999 -v `pwd`/dist:/dist ubuntu:14.04 /dist/mongrey-server-postgresql-Linux-x86_64 start
+    
+Déploiement - MySQL
+-------------------
+
+::
+
+    docker pull mysql
+
+    # Lancement du server
+    docker run --name mysql1 -e MYSQL_ROOT_PASSWORD=secret -d mysql
+    
+    # Création de la DB
+    docker exec -it mysql1 sh -c 'exec mysql -e "create database mongrey_test;" -uroot -p"secret"'    
+    
+    # Lancement de mongrey
+    docker run -it --rm --link mysql1:mysql -e MONGREY_STORAGE=sql -e MONGREY_DB=mysql://root:secret@mysql/mongrey_test -e MONGREY_HOST=0.0.0.0 -e MONGREY_PORT=9999 -p 127.0.0.1:9997:9999 -v `pwd`/dist:/dist ubuntu:14.04 /dist/mongrey-server-mysql-Linux-x86_64 start
+
+    
              
              
 Contributing
