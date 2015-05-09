@@ -1,22 +1,108 @@
 # -*- coding: utf-8 -*-
 
+import json
 import logging
 import unittest
 import os
+from StringIO import StringIO
 
 import gevent
 import arrow
 
 from mongrey import constants
 from mongrey.server import PolicyServer, logger as server_logger
-from mongrey.utils import build_key
+from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
+from mongrey.server.core import start_command, options, main
+from mongrey.utils import build_key, load_yaml_config
 
 from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port
 from ..base import BaseTestCase
 
+_DEFAULT_CONFIG = {
+    'storage': 'mongo',             
+    'host': '127.0.0.1',
+    'port': 9999,
+    'allow_hosts': [],
+    'security_by_host': False,
+    'spawn': 50,
+    'backlog': 256,
+    'connection_timeout': 10.0,
+    'error_action': 'DUNNO',
+    'close_socket': False,    
+    'no_stress': False,
+    'stats_enable': True,    
+    'stats_interval': 30.0,
+    'purge_enable': True,
+    'purge_interval': 60.0,
+    'metrics_enable': True,
+    'metrics_interval': 60.0 * 5,
+    'debug': False,
+    'verbose': 1,
+    'no_verify_protocol': False,
+    
+    'mongodb_settings': {
+        'host': 'mongodb://localhost/mongrey',
+        'use_greenlets': True,
+        'tz_aware': True,    
+    },
+                  
+    'peewee_settings': {
+        'db_name': 'sqlite:///mongrey.db',
+        'db_options': {
+            'threadlocals': True
+        }
+    },        
+
+    'cache_settings': {
+        'cache_url': 'simple',
+        'cache_timeout': 300,    
+    },
+                                       
+    'country_ipv4': None,
+    'country_ipv6': None,
+
+    'greylist_settings': {
+        'greylist_key': constants.GREY_KEY_MED,
+        'greylist_remaining': 20,
+        'greylist_expire': 35*86400,
+        'greylist_excludes': [],
+        'greylist_private_bypass': True
+    }
+                  
+}
+
 
 class NoRunServerTestCase(BaseTestCase):
 
+    def test_configuration_from_yaml(self):
+        
+        change_config = """
+        allow_hosts: ['1.1.1.1']
+        mongodb_settings:
+          host: mongodb://host/db
+          tz_aware: true
+          use_greenlets: true        
+        """
+        
+        config = load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG)
+        
+        self.assertEquals(config['allow_hosts'], ['1.1.1.1'])
+        self.assertEquals(config['mongodb_settings']['host'], 'mongodb://host/db')
+        self.assertEquals(config['port'], 9999)
+        
+        """
+        import yaml
+        print ""
+        yaml.dump(SERVER_CONFIG, stream=sys.stdout, explicit_start=False, default_flow_style=False)
+        config = utils.load_yaml_config(yaml_settings_path=yaml_settings_path, config)        
+        """
+
+    def test_configuration(self):
+
+        server_config = json.dumps(SERVER_CONFIG, sort_keys=True)
+        default_config = json.dumps(_DEFAULT_CONFIG, sort_keys=True)
+        self.assertEquals(server_config, default_config)        
+        
     def test_security_disable(self):
         u"""Disable security by ip"""
         

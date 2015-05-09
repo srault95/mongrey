@@ -4,22 +4,22 @@ __all__ = [
     'TimeoutError',
     'PolicyError',
     'InvalidProtocolError',
-    'BypassProtocolError'
+    'BypassProtocolError',
+    'ConfigurationError'
 ]
 
 
-class TimeoutError(BaseException):
-    pass
+class TimeoutError(BaseException): pass
 
 
-class PolicyError(Exception):
-    pass
+class ConfigurationError(Exception): pass
 
 
-class InvalidProtocolError(PolicyError):
-    pass
+class PolicyError(Exception): pass
 
 
-class BypassProtocolError(PolicyError):
-    pass
+class InvalidProtocolError(PolicyError): pass
+
+
+class BypassProtocolError(PolicyError): pass
 

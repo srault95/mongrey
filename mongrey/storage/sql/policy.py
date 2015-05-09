@@ -12,6 +12,8 @@ from ...policy import Policy
 logger = logging.getLogger(__name__)
 
 class SqlPolicy(Policy):
+
+    _name = "sql"
     
     def search_blacklist(self, protocol):
         return models.BlackList.search(protocol)

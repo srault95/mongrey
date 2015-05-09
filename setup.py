@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 
 from setuptools import setup, find_packages
 
@@ -15,6 +16,25 @@ def get_readme():
             return fp.read()
     return ""
 
+install_requires=[
+    'six',
+    'cython',
+    'gevent>=1.0',
+    'psutil',
+    'PyYAML',
+    'arrow',
+    'IPy',
+    'python-decouple',
+    'geoip-data',
+    'pygeoip',
+    'regex',
+    'werkzeug',   
+    'pymongo>=2.8,<3.0',
+    'Mongoengine>=0.9',
+]
+if not sys.platform.startswith("win32"):
+    install_requires.append('python-daemon')
+    
 setup(
     name='mongrey',
     version=__VERSION__,
@@ -24,38 +44,10 @@ setup(
     author_email='stephane.rault@radicalspam.org',
     url='https://github.com/srault95/mongrey', 
     license='BSD',
-    keywords=['postfix','policy','filter', 'smtp', 'greylist'],
-    classifiers=[
-        'Topic :: Communications :: Email',
-        'Topic :: Communications :: Email :: Filters',
-        'Topic :: Communications :: Email :: Mail Transport Agents',
-        'Development Status :: 4 - Beta',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'License :: OSI Approved :: BSD License',
-        'Intended Audience :: Developers',
-        'Intended Audience :: System Administrators'
-    ],
     include_package_data=True,
     zip_safe=False,
     packages=find_packages(),
-    install_requires=[
-        'six',
-        'cython',
-        'gevent>=1.0',
-        'psutil',
-        'arrow',
-        'IPy',
-        'python-decouple',
-        'geoip-data',
-        'pygeoip',
-        'regex',
-        'werkzeug',   
-        'pymongo>=2.8,<3.0',
-        'Mongoengine>=0.9',
-    ],
+    install_requires=install_requires,
     extras_require = {
         'web': [
             'Flask-BabelEx',
@@ -108,5 +100,18 @@ setup(
             'mongrey-app = mongrey.web:main',
         ],
     },    
-      
+    keywords=['postfix','policy','filter', 'smtp', 'greylist'],
+    classifiers=[
+        'Topic :: Communications :: Email',
+        'Topic :: Communications :: Email :: Filters',
+        'Topic :: Communications :: Email :: Mail Transport Agents',
+        'Development Status :: 4 - Beta',
+        'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'License :: OSI Approved :: BSD License',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators'
+    ],
 )

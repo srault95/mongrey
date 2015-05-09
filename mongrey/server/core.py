@@ -73,7 +73,7 @@ DEFAULT_CONFIG = {
 
     'purge_enable': env_config('MONGREY_PURGE_ENABLE', True, cast=bool),
     
-    'purge_interval': env_config('MONGREY_PURGE_INTERVAL', 60, cast=float),
+    'purge_interval': env_config('MONGREY_PURGE_INTERVAL', 60.0, cast=float),
 
     'metrics_enable': env_config('MONGREY_METRICS_ENABLE', True, cast=bool),
     
@@ -116,7 +116,6 @@ DEFAULT_CONFIG = {
     }
                   
 }
-
 
 def stats(interval=60):
     
@@ -163,8 +162,7 @@ class PolicyServer(StreamServer):
                  close_socket=False,
                  policy=None,
                  debug=False,
-                 verbose=1,
-                 **kwargs
+                 verbose=1
                  ):
         
         StreamServer.__init__(self, (host, port), handle=self.handler, backlog=backlog, spawn=spawn)
@@ -294,7 +292,8 @@ class PolicyServer(StreamServer):
                 msg = 'close socket error: %s' % str(err)
                 logger.error(msg, exc_info=False)
 
-    def _start_msg(self):
+    def start(self):
+
         logger.info("Start Policy Server on %s:%s" % (self._host, self._port))
         
         logger.info("OPTION error_action[%s]" % self._action_error)
@@ -314,9 +313,6 @@ class PolicyServer(StreamServer):
                                                                                self._concurency, 
                                                                                self._max_clients))
 
-                    
-    def start(self):
-        self._start_msg()
         StreamServer.start(self)
         
     def stop(self, timeout=None):
@@ -325,17 +321,16 @@ class PolicyServer(StreamServer):
         StreamServer.stop(self, timeout=timeout)
 
 
-
-def write_pid(pid_file):
-    with open(pid_file, 'w') as fp:
-        fp.write(str(os.getpid()))
-
 def options():
 
     parser = argparse.ArgumentParser(description='Postfix Greylist Server',
                                      prog=os.path.basename(sys.argv[0]),
                                      version="mongo-greylist-%s" % (version.__VERSION__), 
                                      add_help=True)
+
+    parser.add_argument('--settings',
+                        dest="yaml_settings_path", 
+                        help='load settings from YAML file')
     
     parser.add_argument('-D', '--debug', action="store_true")
     
@@ -351,14 +346,15 @@ def options():
                         dest="log_config", 
                         help='Log config from file')
 
+    parser.add_argument('--daemon', 
+                        action="store_true",
+                        help="Daemonize")
+
     parser.add_argument('--pid', 
                         dest='pid_file',
                         help='Enable write pid file')
     
     parser.add_argument(choices=['start',                                  
-                                 #'stop', 
-                                 #'reload',
-                                 #'status',
                                  'showconfig',
                                  ],
                         dest='command',
@@ -367,10 +363,48 @@ def options():
     args = parser.parse_args()
     return dict(args._get_kwargs())
 
-def start_command(pid_file=None, **config):
-
-    storage = config.pop('storage')
+def daemonize(pid_file, callback=None, **config):
     
+    def stop(signal, frame):
+        raise SystemExit('terminated by signal %d' % int(signal))    
+
+    from .geventdaemon import GeventDaemonContext
+    import signal
+    """
+            chroot_directory=None,
+            working_directory="/",
+            umask=0,
+            uid=None,
+            gid=None,
+            prevent_core=True,
+            detach_process=None,
+            files_preserve=None,
+            pidfile=None,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            signal_map=None,
+    
+    """
+    context = GeventDaemonContext(signal_map={signal.SIGTERM: stop,
+                                              signal.SIGINT: stop})
+    
+    with context:
+        callback(**config)
+
+def start_command(**config):
+    
+    storage = config.pop('storage')
+
+    if not storage in ["mongo", "sql"]:
+        raise ConfigurationError("storage not available: %s\n" % storage)
+    
+    if storage == "sql" and not "peewee_settings" in config:
+        raise ConfigurationError("peewee_settings not found in configuration")
+
+    if storage == "mongo" and not "mongodb_settings" in config:
+        raise ConfigurationError("mongodb_settings not found in configuration")
+
     stats_enable = config.pop('stats_enable')
     stats_interval = config.pop('stats_interval')
     
@@ -392,20 +426,30 @@ def start_command(pid_file=None, **config):
     kwargs['purge_interval'] = purge_interval
     kwargs['metrics_interval'] = metrics_interval
 
+    db = None
+
     if storage == "mongo":
+        from mongrey.storage.mongo.utils import create_mongo_connection
         from mongrey.storage.mongo.policy import MongoPolicy
+        mongodb_settings = config.pop('mongodb_settings')
+        create_mongo_connection(mongodb_settings)
+        db = mongodb_settings['host']
         policy_klass = MongoPolicy
+        config.pop('peewee_settings')
 
     elif storage == "sql":
+        from mongrey.storage.sql.models import configure_peewee
         from mongrey.storage.sql.policy import SqlPolicy
+        peewee_settings = config.pop('peewee_settings')
+        configure_peewee(**peewee_settings)
+        db = peewee_settings['db_name']
         policy_klass = SqlPolicy
+        config.pop('mongodb_settings')
     
     policy = policy_klass(**kwargs)
     
-    if pid_file:
-        write_pid(pid_file)     
-
     server = PolicyServer(policy=policy, **config)
+    
     try:
         if purge_enable and purge_interval > 0:
             green_purge = gevent.spawn(policy.task_purge_expire)
@@ -418,8 +462,14 @@ def start_command(pid_file=None, **config):
         if stats_enable and stats_interval > 0:
             green_stats = gevent.spawn(stats, interval=stats_interval)
             atexit.register(gevent.kill, green_stats)
+
+        logger.info("STORAGE[%s] - DB[%s]" % (storage, db))
             
         server.serve_forever()
+        
+    except Exception, err:
+        sys.stderr.write("%s\n" % str(err))
+        sys.exit(1)
     except KeyboardInterrupt:
         sys.exit(0)
 
@@ -427,14 +477,21 @@ def main():
     opts = options()
 
     config = DEFAULT_CONFIG.copy()
+    
+    yaml_settings_path = opts.get('yaml_settings_path')
+    if yaml_settings_path:
+        try:
+            config = utils.load_yaml_config(settings=yaml_settings_path, default_config=config)
+        except Exception, err:
+            sys.stderr.write("%s\n" % str(err))
+            sys.exit(1)
         
     debug = opts.get('debug')
     command = opts.get('command')
     pid_file = opts.get('pid_file')
+    daemon = opts.get('daemon')
     
     config['debug'] = debug
-    
-    storage = config.get('storage', 'mongo')
     
     utils.configure_logging(debug=debug, 
                             stdout_enable=opts.get('console'), 
@@ -443,16 +500,18 @@ def main():
                             config_file=opts.get('log_config'))
     
     if command == 'start':
-        utils.configure_geoip(country_ipv4=config['country_ipv4'], country_ipv6=config['country_ipv6'])
-        if storage == 'mongo':
-            from mongrey.storage.mongo.utils import create_mongo_connection
-            create_mongo_connection(config['mongodb_settings'])
-        elif storage == "sql":
-            from mongrey.storage.sql.models import configure_peewee
-            configure_peewee(**config['peewee_settings'])
-            
-        start_command(pid_file=pid_file, **config)
-        sys.exit(0)
+        utils.configure_geoip(country_ipv4=config.pop('country_ipv4'), country_ipv6=config.pop('country_ipv6'))
+        try:
+            if not sys.platform.startswith("win32") and daemon:
+                daemonize(pid_file, callback=start_command, **config)
+            else: 
+                start_command(**config)
+                
+            sys.exit(0)
+        except Exception, err:
+            sys.stderr.write("%s\n" % str(err))
+            sys.exit(1)
+        
     elif command == 'showconfig':
         pp(config)
         sys.exit(0)

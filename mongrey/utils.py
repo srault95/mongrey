@@ -5,6 +5,8 @@ import sys
 import logging
 import re
 
+from six import string_types
+
 import arrow
 from IPy import IP
 
@@ -412,14 +414,43 @@ def configure_logging(debug=False,
         
     if debug:
         LOGGING['loggers']['']['level'] = 'DEBUG'
-        LOGGING['loggers'][prog_name]['level'] = 'DEBUG'
+        #LOGGING['loggers'][prog_name]['level'] = 'DEBUG'
         for handler in LOGGING['handlers'].keys():
             LOGGING['handlers'][handler]['formatter'] = 'debug'
             LOGGING['handlers'][handler]['level'] = 'DEBUG' 
 
     logging.config.dictConfig(LOGGING)
-    logger = logging.getLogger(prog_name)
+    #logger = logging.getLogger(prog_name)
+    logger = logging.getLogger()
     
     return logger
+
+    
+def load_yaml_config(settings=None, default_config={}):
+    
+    try:    
+        from yaml import load as yaml_load
+        HAVE_YAML = True
+    except ImportError, err:
+        HAVE_YAML = False
+
+    if not HAVE_YAML:
+        raise Exception("PyYAML is not installed\n")
+    
+    stream = settings
+    
+    if isinstance(settings, string_types):
+        if not os.path.exists(settings):
+            raise Exception("YAML settings not found : %s\n" % settings)
+    
+        with open(settings) as fp:
+            from StringIO import StringIO
+            stream = StringIO(fp.read())
+            
+    yaml_config = yaml_load(stream)
+    default_config.update(yaml_config)
+        
+    return default_config
+
 
     

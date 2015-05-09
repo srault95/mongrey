@@ -35,7 +35,7 @@ class CacheTestCase(unittest.TestCase):
         
         self.assertIsNone(cache.cache)
 
-    @unittest.skipIf(HAVE_REDIS, "Skip redis tests")    
+    @unittest.skipUnless(HAVE_REDIS, "Skip redis tests")    
     def test_redis_cache(self):
 
         self.assertIsNone(cache.cache)

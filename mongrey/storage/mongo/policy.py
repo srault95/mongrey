@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class MongoPolicy(Policy):
+    
+    _name = "mongo"
 
     def search_blacklist(self, protocol):
         return models.BlackList.search(protocol)

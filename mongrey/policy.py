@@ -115,6 +115,8 @@ def generic_search(protocol=None, objects=[], valid_fields=[],
 
 
 class Policy(object):
+    
+    _name = None
 
     def __init__(self, 
                  greylist_key=constants.GREY_KEY_MED, 

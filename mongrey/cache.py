@@ -30,7 +30,6 @@ class Cache(object):
                  ):
         
         self.cache_timeout = cache_timeout
-        #self.cache_options = cache_options 
 
         self.cache = None 
         
@@ -54,15 +53,14 @@ class Cache(object):
     def _configure_cache_redis(self, url):
         from werkzeug.contrib.cache import RedisCache
         from redis import from_url
-        #'CACHE_REDIS_URL': 'redis://localhost:6379',
+
+        #'cache_url': 'redis://localhost:6379',
         
         client = from_url(url)
         
-        key_prefix = self.cache_options.get('key_prefix', self.DEFAULT_KEY_PREFIX)
-        
         self.cache = RedisCache(host=client, 
                                 default_timeout=self.cache_timeout, 
-                                key_prefix=key_prefix
+                                key_prefix=self.DEFAULT_KEY_PREFIX
                                 )
     
     
