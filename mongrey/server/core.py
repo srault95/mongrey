@@ -151,7 +151,7 @@ def stats(interval=60):
             
 class PolicyServer(StreamServer):
     
-    def __init__(self, host='0.0.0.0', port=9998, 
+    def __init__(self, host='0.0.0.0', port=9999, 
                  backlog=256, 
                  spawn=50,
                  security_by_host=False,

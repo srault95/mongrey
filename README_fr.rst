@@ -6,10 +6,11 @@ Serveur de liste grise pour Postfix
 **Fonctionnalités:**
 
 - Serveur de liste grise haute performance
-- Configuration par ip/cidr/sender/recipient/hostname en fixe ou par expression régulières
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
+- Configuration par adresse ip & cidr, expéditeur, destinataire, ... (fixe ou par expression régulières)
 - Listes blanches & noires
-- Application Web (optionnel)
+- Application Web (facultative)
+- Api REST (en cours de développement)
 
 Contribution
 ============

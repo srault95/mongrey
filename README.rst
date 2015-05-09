@@ -3,7 +3,7 @@ Greylist Server for Postfix
 
 **Greylist Server for Postfix with MongoDB or SQL storage** 
 
-|Build Status| |Coverage Status| |pypi downloads| |pypi version| |pypi licence| |requires status|
+|Build Status| |Coverage Status| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
 **Features:**
 
@@ -11,7 +11,7 @@ Greylist Server for Postfix
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
 - WebUI (optional)
 
-Documentation en Version Française : https://github.com/srault95/mongrey/blob/master/README_fr.rst 
+`Version Française <https://github.com/srault95/mongrey/blob/master/README_fr.rst>`_ 
 
 Installation
 ------------
@@ -73,6 +73,12 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
     :target: https://pypi.python.org/pypi/mongrey
     :alt: License
 
+.. |pypi wheel| image:: https://pypip.in/wheel/mongrey/badge.png
+    :target: https://pypi.python.org/pypi/mongrey/
+    :alt: Python Wheel
+        
 .. |requires status| image:: https://requires.io/github/srault95/mongrey/requirements.svg?branch=master
      :target: https://requires.io/github/srault95/mongrey/requirements/?branch=master
      :alt: Requirements Status
+
+     
