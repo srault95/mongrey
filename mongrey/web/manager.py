@@ -102,7 +102,7 @@ class ShowConfigCommand(Command):
 def main(create_app_func=None):
     
     if not create_app_func:
-        from mongrey.wsgi import create_app
+        from mongrey.web.wsgi import create_app
         create_app_func = create_app
     
     class ServerWithGevent(Server):
