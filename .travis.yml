@@ -38,7 +38,7 @@ before_script:
   
 script:
   - nosetests -s -v mongrey
-  - flake8 mongrey
+  - flake8 --exit-zero mongrey
 
 branches:
   only:
