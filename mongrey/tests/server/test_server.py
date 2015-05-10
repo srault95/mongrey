@@ -92,17 +92,6 @@ class NoRunServerTestCase(BaseTestCase):
         self.assertEquals(config['mongodb_settings']['host'], 'mongodb://host/db')
         self.assertEquals(config['port'], 9999)
         
-    def test_configuration(self):
-
-        #server_config = json.dumps(SERVER_CONFIG, sort_keys=True)
-        #default_config = json.dumps(_DEFAULT_CONFIG, sort_keys=True)
-        server_config = StringIO()
-        default_config = StringIO()
-        yaml.dump(SERVER_CONFIG, stream=server_config, explicit_start=False, default_flow_style=False)
-        yaml.dump(_DEFAULT_CONFIG, stream=default_config, explicit_start=False, default_flow_style=False)
-        self.assertEquals(server_config.getvalue(), default_config.getvalue())
-        
-        
     def test_security_disable(self):
         u"""Disable security by ip"""
         
