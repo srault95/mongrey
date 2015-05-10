@@ -1,9 +1,11 @@
+***********************************
 Serveur de liste grise pour Postfix
-===================================
+***********************************
 
 |Build Status| |Coverage Status| |pypi downloads| |pypi version| |pypi licence| |requires status|
 
-**Fonctionnalités:**
+Fonctionnalités
+***************
 
 - Serveur de liste grise haute performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
@@ -13,7 +15,7 @@ Serveur de liste grise pour Postfix
 - Api REST (en cours de développement)
 
 Contribution
-============
+************
 
 Pour contribuer à ce projet, créer un fork et dans la mesure du possible, effectuer les modifications dans une nouvelle branche puis envoyez un "pull request". 
 

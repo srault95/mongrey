@@ -127,6 +127,14 @@ class Policy(object):
                  blacklist_enable=True,
                  purge_interval=60,
                  metrics_interval=60*5):
+        """
+            Constructor
+
+            :param greylist_key:
+                Numeric value (@see constants.GREY_KEY_MED)
+            :param greylist_remaining:
+                Delay for attempt after the first greylist request
+        """
 
         self.greylist_key = greylist_key 
         self.greylist_remaining = greylist_remaining

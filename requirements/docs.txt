@@ -1,0 +1,9 @@
+docutils
+Pygments
+Sphinx
+sphinx-autobuild
+sphinxcontrib-email
+sphinxcontrib-cheeseshop
+#sphinx-intl
+#transifex-client
+sphinx_rtd_theme

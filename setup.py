@@ -97,7 +97,7 @@ setup(
     entry_points={
         'console_scripts': [
             'mongrey-server = mongrey.server:main',
-            'mongrey-app = mongrey.web:main',
+            'mongrey-web = mongrey.web:main',
         ],
     },    
     keywords=['postfix','policy','filter', 'smtp', 'greylist'],
