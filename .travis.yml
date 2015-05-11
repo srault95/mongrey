@@ -24,11 +24,11 @@ install:
   - pip install -r requirements/tests.txt
   - pip install -r requirements/server-mongo.txt
   - pip install -r requirements/server-sqlite.txt
-  - pip install -r requirements/server-pgsql.txt
+  - pip install -r requirements/server-postgresql.txt
   - pip install -r requirements/server-mysql.txt
   - pip install -r requirements/web-mongo.txt
   - pip install -r requirements/web-sqlite.txt
-  - pip install -r requirements/web-pgsql.txt
+  - pip install -r requirements/web-postgresql.txt
   - pip install -r requirements/web-mysql.txt
   - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
   - pip install --no-deps .
