@@ -1,39 +1,64 @@
-allow_hosts: []
+# mongo|sql: default mongo
+storage: mongo
+
+mongodb_settings:
+  host: mongodb://localhost/mongrey
+  tz_aware: true
+  # remove in pymongo3
+  use_greenlets: true
+
+peewee_settings:
+  db_name: sqlite:///mongrey.db
+  db_options:
+    threadlocals: true
+
+# host/port bind - policy server
+host: 127.0.0.1
+port: 9999
+
+# policy server - perfs
 backlog: 256
+spawn: 50
+connection_timeout: 10.0
+close_socket: false
+
+# protocol options
+error_action: DUNNO
+no_stress: false
+no_verify_protocol: false
+
+# security access to policy server - default ALL
+# add ip address to allow_hosts
+security_by_host: false
+allow_hosts: []
+
 cache_settings:
   cache_timeout: 300
   cache_url: simple
-close_socket: false
-connection_timeout: 10.0
+
 country_ipv4: null
 country_ipv6: null
-debug: false
-error_action: DUNNO
-greylist_settings:
+
+policy_settings:
+  blacklist_enable: false
+  domain_vrfy: false
+  mynetwork_vrfy: false
+  spoofing_enable: false
+  greylist_enable: true
   greylist_excludes: []
   greylist_expire: 3024000
   greylist_key: 2
   greylist_private_bypass: true
   greylist_remaining: 20
-host: 127.0.0.1
+
 metrics_enable: true
 metrics_interval: 300.0
-mongodb_settings:
-  host: mongodb://localhost/mongrey
-  tz_aware: true
-  use_greenlets: true
-no_stress: false
-no_verify_protocol: false
-peewee_settings:
-  db_name: sqlite:///mongrey.db
-  db_options:
-    threadlocals: true
-port: 9999
+
 purge_enable: true
 purge_interval: 60.0
-security_by_host: false
-spawn: 50
+
 stats_enable: true
 stats_interval: 30.0
-storage: mongo
+
 verbose: 1
+debug: false
