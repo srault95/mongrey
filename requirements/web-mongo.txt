@@ -1,0 +1,5 @@
+-r base-web.txt
+pymongo>=2.8,<3.0
+Mongoengine>=0.9
+#flask-mongoengine
+https://github.com/MongoEngine/flask-mongoengine/tarball/master

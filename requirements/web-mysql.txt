@@ -1,0 +1,4 @@
+-r base-web.txt
+peewee
+wtf-peewee
+MySQL-python

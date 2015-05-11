@@ -9,7 +9,7 @@ python-decouple
 https://github.com/srault95/geoip-data/tarball/master
 pygeoip
 regex
+werkzeug
 PyYAML
-Flask-BabelEx
-Flask-Script
-flask-admin
+python-daemon
+redis
