@@ -29,6 +29,9 @@ MongoDB
 
 .. code:: bash
 
+    http://mongrey.radical-software.fr/download/mongrey/0.2.0/mongrey-server-mongo-Linux-x86_64
+    http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64
+
     $ curl -L http://mongrey.radical-software.fr/download/mongrey-server-mongo-`uname -s`-`uname -m`-latest > /usr/local/bin/mongrey-server-mongo
     
     $ chmod +x /usr/local/bin/mongrey-server-mongo

@@ -2,7 +2,7 @@
 Greylist Server for Postfix
 ***************************
 
-|Build Status| |Coverage Status| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+|Build Status| |Coverage Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
 Features
 ********
@@ -67,3 +67,7 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
 .. |docs| image:: https://readthedocs.org/projects/mongrey-en/badge/?version=latest
     :target: https://readthedocs.org/projects/mongrey-en/?badge=latest
     :alt: Documentation Status     
+    
+.. |health| image:: https://landscape.io/github/srault95/mongrey/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/srault95/mongrey/master
+   :alt: Code Health

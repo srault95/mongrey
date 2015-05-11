@@ -2,7 +2,7 @@
 Serveur de liste grise pour Postfix
 ***********************************
 
-|Build Status| |Coverage Status| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+|Build Status| |Coverage Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
 Fonctionnalités
 ***************
@@ -69,3 +69,8 @@ Toutes les contributions et suggestions sont les bienvenues.
 .. |docs| image:: https://readthedocs.org/projects/mongrey/badge/?version=latest
     :target: https://readthedocs.org/projects/mongrey/?badge=latest
     :alt: Documentation Status          
+    
+.. |health| image:: https://landscape.io/github/srault95/mongrey/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/srault95/mongrey/master
+   :alt: Code Health
+       
