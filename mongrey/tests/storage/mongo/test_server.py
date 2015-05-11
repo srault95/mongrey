@@ -5,8 +5,10 @@ from mongrey.storage.mongo.policy import MongoPolicy as Policy
 from mongrey.cache import remove_cache
 
 from .base import MongoGreylistBaseTestCase
-from ...server.test_server import NoRunServerMixin, BaseRunServerMixin, ServerRequestMixin
-
+from ...server.test_server import (NoRunServerMixin, 
+                                   NoRunServerWithCacheMixin, 
+                                   BaseRunServerMixin, 
+                                   ServerRequestMixin)
 
 class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
     
@@ -37,10 +39,45 @@ class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
 
     def test_action_blacklisted(self):
         self._test_action_blacklisted(models)
+
+    def test_action_relay_denied(self):
+        self._test_action_relay_denied(models)
+
+    def test_action_spoofing(self):
+        self._test_action_spoofing(models)
         
     def test_action_policy(self):
         self._test_action_policy(models)
 
+class NoRunServerWithCacheTestCase(NoRunServerWithCacheMixin, MongoGreylistBaseTestCase):
+    
+    def setUp(self):
+        MongoGreylistBaseTestCase.setUp(self)
+
+    def _drop_model(self, model):
+        model.drop_collection()
+        
+    def _model_count(self, model):
+        return model.objects.count()
+    
+    def _get_policy(self, **kwargs):
+        return Policy(**kwargs)
+
+    def test_cache_action_spoofing(self):
+        self._test_cache_action_spoofing(models)
+        
+    def test_cache_action_outgoing(self):
+        self._test_cache_action_outgoing(models)
+    
+    def test_cache_action_blacklisted(self):
+        self._test_cache_action_blacklisted(models)
+
+    def test_cache_action_whitelisted(self):
+        self._test_cache_action_whitelisted(models)
+        
+    def test_cache_action_relay_denied(self):
+        self._test_cache_action_relay_denied(models)
+        
 
 class BaseRunServerTestCase(BaseRunServerMixin, MongoGreylistBaseTestCase):
 

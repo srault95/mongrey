@@ -11,9 +11,67 @@ from mongoengine import ValidationError
 from ... import utils
 from ... import validators
 from ... import constants
-from ...policy import generic_search
+from ...policy import generic_search, search_mynetwork
 
 logger = logging.getLogger(__name__)
+
+class Domain(Document):
+    
+    name = fields.StringField(unique=True, required=True)
+
+    def clean(self):
+        Document.clean(self)
+        validators.clean_domain(self.name, field_name="name", error_class=ValidationError)
+
+    def __unicode__(self):
+        return self.name
+    
+    @classmethod
+    def search(cls, protocol):
+        
+        sender = protocol.get('sender', None)
+        sender_domain = utils.parse_domain(sender)
+        recipient = protocol.get('recipient')
+        recipient_domain = utils.parse_domain(recipient)
+
+        if sender_domain:
+            if cls.objects(name__iexact=sender_domain).first():
+                return constants.DOMAIN_SENDER_FOUND 
+
+        if recipient_domain:
+            if cls.objects(name__iexact=recipient_domain).first():
+                return constants.DOMAIN_RECIPIENT_FOUND 
+        
+        return constants.DOMAIN_NOT_FOUND
+        
+    meta = {
+        'collection': 'domain',
+        'ordering': ['name'],        
+        'indexes': ['name'],
+    }
+
+class Mynetwork(Document):
+    
+    value = fields.StringField(unique=True, required=True)
+
+    def clean(self):
+        Document.clean(self)
+        validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
+
+    @classmethod
+    def search(cls, protocol):
+        client_address = protocol['client_address']
+        return search_mynetwork(client_address=client_address, 
+                              objects=cls.objects)
+
+    def __unicode__(self):
+        return self.value    
+
+    meta = {
+        'collection': 'mynetwork',
+        'ordering': ['value'],        
+        'indexes': ['value'],
+    }
 
 
 class BaseSearchField(Document):
@@ -58,14 +116,22 @@ class BaseSearchField(Document):
         'abstract': True,
     }
 
-class GreylistPolicy(BaseSearchField):
+class Policy(BaseSearchField):
     
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
     _cache_key = 'greypolicy'
     
     name = fields.StringField(unique=True, required=True, max_length=20)
-
+    
     field_name = fields.StringField(required=True, choices=constants.POLICY_FIELDS, default='client_address')
+    
+    mynetwork_vrfy = fields.BooleanField(default=True)
+
+    domain_vrfy = fields.BooleanField(default=True)
+
+    spoofing_enable = fields.BooleanField(default=True)
+
+    greylist_enable = fields.BooleanField(default=True)
     
     greylist_key = fields.IntField(required=True, choices=constants.GREY_KEY, default=constants.GREY_KEY_MED)
     
@@ -77,13 +143,13 @@ class GreylistPolicy(BaseSearchField):
 
     @classmethod
     def search(cls, protocol, cache_enable=True):
-        return super(GreylistPolicy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
+        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
 
     def __unicode__(self):
         return u"%s - %s (%s)" % (self.name, self.value, self.get_field_name_display())    
 
     meta = {
-        'collection': 'greylist_policy',
+        'collection': 'policy',
         'ordering': ['name'],        
         'indexes': ['name', 'value', 'field_name'],
     }

@@ -4,6 +4,8 @@ import os
 import sys
 import logging
 import re
+import uuid
+import hashlib
 
 from six import string_types
 
@@ -25,6 +27,13 @@ geoip_country_v6 = None
 line_regex = re.compile(r'^\s*([^=\s]+)\s*=(.*)$')
 
 logger = logging.getLogger(__name__)
+
+def get_uid(protocol):    
+    u'''Return unique identity from client_address and instance field with hashlib.sha256 crypt'''
+    client_address = protocol.get('client_address')
+    instance = protocol.get('instance')    
+    key = "-".join([client_address, instance])
+    return hashlib.sha256(key).hexdigest()
 
 def get_country(client_address):
 
@@ -78,31 +87,32 @@ def to_list(value):
 
 def is_private_address(client_address):
     try:
-        return IP(client_address).iptype() == 'PRIVATE'
+        return IP(client_address).iptype() in ['PRIVATE', 'LOOPBACK']
     except:
         pass
     return False
 
 def parse_domain(email):
-    u"""Renvoi en minuscule, la partie domaine d'une adresse email"""
+    u"""Return domain name in lower case from email address"""
 
-    if email is None: return None
+    if email is None: 
+        return
 
-    if email.find('@') < 0: return None
+    if not "@" in email:
+        return
 
     _email = email.strip().lower()
 
     try:
-
         values = _email.split("@")
 
         if len(values) != 2:
-            return None
+            return
         else:
-            return values[1].lower().strip()
+            return values[-1].lower().strip()
 
     except Exception, err:
-        return None
+        return
 
 def do_filesizeformat(value, binary=False):
     """Format the value like a 'human-readable' file size (i.e. 13 kB,

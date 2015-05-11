@@ -25,9 +25,11 @@ class MongoGreylistBaseTestCase(BaseTestCase):
         self._cache = cache.configure_cache(cache_url='simple')
         models.GreylistMetric.drop_collection()
         models.GreylistEntry.drop_collection()
-        models.GreylistPolicy.drop_collection()
+        models.Policy.drop_collection()
         models.WhiteList.drop_collection()
         models.BlackList.drop_collection()
+        models.Domain.drop_collection()
+        models.Mynetwork.drop_collection()
     
     def tearDown(self):
         BaseTestCase.tearDown(self)

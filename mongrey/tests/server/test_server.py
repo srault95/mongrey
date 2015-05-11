@@ -15,7 +15,7 @@ from mongrey import constants
 from mongrey.server import PolicyServer, logger as server_logger
 from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
 from mongrey.server.core import start_command, options, main
-from mongrey.utils import build_key, load_yaml_config
+from mongrey import utils
 
 from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port
 from ..base import BaseTestCase
@@ -86,7 +86,7 @@ class NoRunServerTestCase(BaseTestCase):
           use_greenlets: true        
         """
         
-        config = load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG)
+        config = utils.load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG)
         
         self.assertEquals(config['allow_hosts'], ['1.1.1.1'])
         self.assertEquals(config['mongodb_settings']['host'], 'mongodb://host/db')
@@ -125,11 +125,10 @@ class NoRunServerMixin:
         raise NotImplementedError()
 
     def _test_purge_expire(self, models):
-        
+
         policy = self._get_policy(purge_interval=0.1)
         
         back_datetime = arrow.utcnow().replace(hours=-1).datetime
-        #models.GreylistEntry(key='1.1.1.1', expire_time=back_datetime, protocol="").save()
         models.GreylistEntry.create_entry(key='1.1.1.1', expire_time=back_datetime)
         
         green = gevent.spawn(policy.task_purge_expire, run_once=True)
@@ -138,7 +137,6 @@ class NoRunServerMixin:
         self.assertEquals(self._model_count(models.GreylistEntry), 0)
         
         back_datetime = arrow.utcnow().replace(hours=-25).datetime
-        #models.GreylistEntry(key='1.1.1.1', timestamp=back_datetime, protocol="").save()
         models.GreylistEntry.create_entry(key='1.1.1.1', timestamp=back_datetime)
         green = gevent.spawn(policy.task_purge_expire, run_once=True)
         gevent.joinall([green], timeout=1.1)
@@ -156,6 +154,7 @@ class NoRunServerMixin:
     def _test_action_excludes(self):
         
         protocol = {
+            'instance': '123',
             'client_address': '1.1.1.1',
             'client_name': 'unknow',
             'sender': 'sender@example.net',
@@ -171,6 +170,7 @@ class NoRunServerMixin:
     def _test_action_private_bypass(self):
 
         protocol = {
+            'instance': '123',
             'client_address': '192.168.1.1',
             'client_name': 'unknow',
             'sender': 'sender@example.net',
@@ -186,6 +186,7 @@ class NoRunServerMixin:
     def _test_action_whitelisted(self, models):
 
         protocol = {
+            'instance': '123',
             'client_address': '1.1.1.1',
             'client_name': 'unknow',
             'sender': 'sender@example.net',
@@ -243,6 +244,7 @@ class NoRunServerMixin:
         reject_message = "554 5.7.1 blacklisted"
 
         protocol = {
+            'instance': '123',
             'client_address': '1.1.1.1',
             'client_name': 'unknow',
             'sender': 'sender@example.net',
@@ -251,7 +253,7 @@ class NoRunServerMixin:
             'helo_name': "mx1.example.net",
         }
 
-        policy = self._get_policy()
+        policy = self._get_policy(blacklist_enable=True)
         
         models.BlackList(field_name='client_address', value='1.1.1.1').save()
         actions = policy.check_actions(protocol)
@@ -292,21 +294,88 @@ class NoRunServerMixin:
         models.BlackList(field_name='recipient', value='rcpt@example.org').save()
         actions = policy.check_actions(protocol)
         self.assertEquals(actions[0], "%s [rcpt@example.org]" % reject_message)
-    
+        
+        self._drop_model(models.BlackList)
+
+    def _test_action_relay_denied(self, models):
+
+        policy = self._get_policy(blacklist_enable=False,
+                                  domain_vrfy=True,
+                                  mynetwork_vrfy=True,
+                                  spoofing_enable=False,
+                                  greylist_enable=False)
+
+        protocol = {
+            'instance': '123',
+            'client_address': '1.1.1.1',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "554 5.7.1 relay denied")
+        
+        models.Mynetwork(value="1.1.1.1").save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "DUNNO outgoing bypass")
+        
+        self._drop_model(models.Mynetwork)
+        
+        models.Mynetwork(value="1.1.1.0/24").save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "DUNNO outgoing bypass")
+        
+        self._drop_model(models.Mynetwork)
+
+        models.Domain(name="example.org").save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "DUNNO")
+        
+        self._drop_model(models.Domain)
+
+    def _test_action_spoofing(self, models):
+
+        policy = self._get_policy(blacklist_enable=False,
+                                  domain_vrfy=True,
+                                  mynetwork_vrfy=True,
+                                  spoofing_enable=True,
+                                  greylist_enable=False)
+
+        protocol = {
+            'instance': '123',
+            'client_address': '2.2.2.2',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        
+        models.Domain(name="example.net").save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "554 5.7.1 spoofing [sender@example.net]")
+        
+        self._drop_model(models.Domain)
+
     def _test_action_policy(self, models):
 
         protocol = {
+            'instance': '123',
             'client_address': '1.1.1.1',
             'client_name': 'unknow',
+            'helo_name': "unknow",
             'country': 'fr',
             'sender': 'sender@example.net',
             'recipient': 'rcpt@example.org',
         }
         
-        models.GreylistPolicy(name="country-fr",
-                              greylist_key=constants.GREY_KEY_VERY_LOW,
-                              field_name='country', 
-                              value='FR').save()
+        models.Policy(name="country-fr",
+                      mynetwork_vrfy=False,
+                      domain_vrfy=False,
+                      spoofing_enable=False,
+                      greylist_enable=True,
+                      greylist_key=constants.GREY_KEY_VERY_LOW,
+                      field_name='country', 
+                      value='FR').save()
         
         policy = self._get_policy()
 
@@ -314,25 +383,181 @@ class NoRunServerMixin:
         self.assertTrue(actions[0].startswith('450 4.2.0 Greylisted for'))
         self.assertTrue(actions[0].endswith("policy[country-fr]"))
         
-        key = build_key(protocol, greylist_key=constants.GREY_KEY_VERY_LOW)
+        key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_VERY_LOW)
         greylist_entry = models.GreylistEntry.search_entry(key=key)
         self.assertIsNotNone(greylist_entry)
         
         self._drop_model(models.GreylistEntry)
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
         
-        models.GreylistPolicy(name="cloud-partner",
-                              greylist_key=constants.GREY_KEY_SPECIAL,
-                              field_name='recipient', 
-                              value='.*@example.org').save()
+        models.Policy(name="cloud-partner",
+                      mynetwork_vrfy=False,
+                      domain_vrfy=False,
+                      spoofing_enable=False,
+                      greylist_enable=True,
+                      greylist_key=constants.GREY_KEY_SPECIAL,
+                      field_name='recipient', 
+                      value='.*@example.org').save()
         
         actions = policy.check_actions(protocol)
         self.assertTrue(actions[0].startswith('450 4.2.0 Greylisted for'))
         self.assertTrue(actions[0].endswith("policy[cloud-partner]"))
         
-        key = build_key(protocol, greylist_key=constants.GREY_KEY_SPECIAL)
+        key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_SPECIAL)
         greylist_entry = models.GreylistEntry.search_entry(key=key)
         self.assertIsNotNone(greylist_entry)
+
+
+class NoRunServerWithCacheMixin:
+
+    def _test_cache_action_blacklisted(self, models):
+        
+        self.assertIsNotNone(self._cache)
+        self._cache.clear()
+        
+        protocol = {
+            'instance': '123',
+            'client_address': '1.1.1.1',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+            'country': 'fr',
+            'helo_name': "mx1.example.net",
+        }
+
+        policy = self._get_policy(blacklist_enable=True)
+        
+        models.BlackList(field_name='client_address', value='1.1.1.1').save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [1.1.1.1]")
+        
+        uid = utils.get_uid(protocol)
+        cache_value = self._cache.get(uid)
+        self.assertIsNotNone(cache_value)
+        self.assertTrue(cache_value['is_blacklist'])
+        self.assertEquals(cache_value['action'], "554 5.7.1 blacklisted [1.1.1.1]")
+
+    def _test_cache_action_whitelisted(self, models):
+        
+        self.assertIsNotNone(self._cache)
+        self._cache.clear()
+        
+        protocol = {
+            'instance': '123',
+            'client_address': '1.1.1.1',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+            'country': 'fr',
+            'helo_name': "mx1.example.net",
+        }
+
+        policy = self._get_policy()
+        
+        models.WhiteList(field_name='client_address', value='1.1.1.1').save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "DUNNO whitelisted [1.1.1.1]")
+
+        self._drop_model(models.WhiteList)
+        
+        uid = utils.get_uid(protocol)
+        cache_value = self._cache.get(uid)
+        self.assertIsNotNone(cache_value)
+        self.assertTrue(cache_value['is_whitelist'])
+        self.assertEquals(cache_value['action'], "DUNNO whitelisted [1.1.1.1]")
+        
+    def _test_cache_action_relay_denied(self, models):
+
+        self.assertIsNotNone(self._cache)
+        self._cache.clear()
+
+        policy = self._get_policy(blacklist_enable=False,
+                                  domain_vrfy=True,
+                                  mynetwork_vrfy=True,
+                                  spoofing_enable=False,
+                                  greylist_enable=False)
+
+        protocol = {
+            'instance': '123',
+            'client_address': '1.1.1.1',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "554 5.7.1 relay denied")
+        
+        uid = utils.get_uid(protocol)
+        cache_value = self._cache.get(uid)
+        self.assertIsNotNone(cache_value)
+        self.assertTrue(cache_value['is_relay_denied'])
+        self.assertEquals(cache_value['action'], "554 5.7.1 relay denied")
+
+    def _test_cache_action_outgoing(self, models):
+
+        self.assertIsNotNone(self._cache)
+        self._cache.clear()
+
+        policy = self._get_policy(blacklist_enable=False,
+                                  domain_vrfy=True,
+                                  mynetwork_vrfy=True,
+                                  spoofing_enable=False,
+                                  greylist_enable=False)
+
+        protocol = {
+            'instance': '123',
+            'client_address': '1.1.1.1',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        
+        models.Mynetwork(value="1.1.1.1").save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "DUNNO outgoing bypass")
+
+        self._drop_model(models.Mynetwork)
+        
+        uid = utils.get_uid(protocol)
+        cache_value = self._cache.get(uid)
+        self.assertIsNotNone(cache_value)
+        self.assertTrue(cache_value['is_outgoing'])
+        self.assertEquals(cache_value['action'], "DUNNO outgoing bypass")
+        
+    def _test_cache_action_spoofing(self, models):
+
+        self.assertIsNotNone(self._cache)
+        self._cache.clear()
+
+        policy = self._get_policy(blacklist_enable=False,
+                                  domain_vrfy=True,
+                                  mynetwork_vrfy=True,
+                                  spoofing_enable=True,
+                                  greylist_enable=False)
+
+        protocol = {
+            'instance': '123',
+            'client_address': '2.2.2.2',
+            'client_name': 'unknow',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        
+        models.Domain(name="example.net").save()
+        actions = policy.check_actions(protocol)
+        self.assertEquals(actions[0], "554 5.7.1 spoofing [sender@example.net]")
+        
+        self._drop_model(models.Domain)
+        
+        uid = utils.get_uid(protocol)
+        cache_value = self._cache.get(uid)
+        self.assertIsNotNone(cache_value)
+        self.assertTrue(cache_value['is_spoofing'])
+        self.assertEquals(cache_value['action'], "554 5.7.1 spoofing [sender@example.net]")
+
+
+
 
 class BaseRunServerMixin:
 
@@ -347,7 +572,7 @@ class BaseRunServerMixin:
             'greylist_excludes': [],
             'greylist_private_bypass': False,                         
         }
-        
+
         policy = self._get_policy(**greylist_settings)
         
         return dict(policy=policy, 
@@ -364,6 +589,7 @@ class ServerRequestMixin:
     def _test_sent_request(self, models):
         
         _protocol = {
+            'instance': '123',
             'client_address': '1.1.1.1',
             'client_name': 'unknow',
             'sender': 'test@example.net',
@@ -377,7 +603,7 @@ class ServerRequestMixin:
         self.assertTrue(actions[0].startswith('450 4.2.0 Greylisted for'))
         self.assertTrue(actions[0].endswith("policy[default]"))
 
-        key = build_key(protocol, greylist_key=constants.GREY_KEY_MED)        
+        key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_MED)        
         entry = models.GreylistEntry.search_entry(key=key)
         self.assertIsNotNone(entry)
         self.assertEquals(entry.rejects, 1)

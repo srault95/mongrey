@@ -5,7 +5,16 @@ import datetime
 
 import arrow
 
-from peewee import Proxy, Model, CharField, DateTimeField, IntegerField, FloatField, TextField, fn
+from peewee import (Proxy, 
+                    Model,
+                    DataError, 
+                    CharField, 
+                    DateTimeField, 
+                    IntegerField, 
+                    FloatField, 
+                    TextField, 
+                    BooleanField,
+                    fn)
 
 try:
     from peewee import PostgresqlDatabase
@@ -25,11 +34,23 @@ except ImportError:
         HAVE_MYSQL = False
 
 from ... import utils
+from ... import validators
 from ... import constants
-from ...policy import generic_search
+from ...policy import generic_search, search_mynetwork
 
 database_proxy = Proxy()
 
+class ValidationError(AssertionError):
+
+    def __init__(self, message="", **kwargs):
+        self.field_name = kwargs.get('field_name')
+        self.message = message
+        
+    def __str__(self):
+        return unicode(self.message)
+
+    def __unicode__(self):
+        return self.message
 
 class DateTimeFieldExtend(DateTimeField):
 
@@ -37,12 +58,76 @@ class DateTimeFieldExtend(DateTimeField):
         return arrow.get(value).datetime
 
 
+class Domain(Model):
+    
+    name = CharField(unique=True, index=True)
+
+    def _clean(self):
+        validators.clean_domain(self.name, field_name="name", error_class=ValidationError)
+    
+    def save(self, force_insert=False, only=None, validate=True):
+        if validate:
+            self._clean()
+        return Model.save(self, force_insert=force_insert, only=only)
+
+    @classmethod
+    def search(cls, protocol):
+        
+        sender = protocol.get('sender', None)
+        sender_domain = utils.parse_domain(sender)
+        recipient = protocol.get('recipient')
+        recipient_domain = utils.parse_domain(recipient)
+
+        if sender_domain:
+            if cls.select().where(fn.Lower(cls.name)==sender_domain).first():
+                return constants.DOMAIN_SENDER_FOUND 
+
+        if recipient_domain:
+            if cls.select().where(fn.Lower(cls.name)==recipient_domain).first():
+                return constants.DOMAIN_RECIPIENT_FOUND 
+        
+        return constants.DOMAIN_NOT_FOUND
+
+
+    def __unicode__(self):
+        return self.name
+    
+    class Meta:
+        database = database_proxy
+        order_by = ('name',)
+        
+class Mynetwork(Model):
+    
+    value = CharField(unique=True, index=True)
+
+    def _clean(self):
+        validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
+    
+    def save(self, force_insert=False, only=None, validate=True):
+        if validate:
+            self._clean()
+        return Model.save(self, force_insert=force_insert, only=only)
+    
+    @classmethod
+    def search(cls, protocol):
+        client_address = protocol['client_address']
+        return search_mynetwork(client_address, 
+                              objects=cls.select())
+
+    def __unicode__(self):
+        return self.value    
+
+    class Meta:
+        database = database_proxy
+        order_by = ('value',)
+
+
 class BaseSearchField(Model):
     
     _valid_fields = []
     _cache_key = None
 
-    value = CharField(unique=True, max_length=255)
+    value = CharField(unique=True, max_length=255, index=True)
 
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=False):
@@ -54,11 +139,30 @@ class BaseSearchField(Model):
                               cache_enable=cache_enable, 
                               return_instance=return_instance)
 
+    def _clean(self):
+
+        #TODO: helo_name and country validators
+
+        if self.field_name == "client_address":
+            validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
+
+        elif self.field_name == "client_name" and not "*" in self.value:
+            validators.clean_hostname(self.value, field_name="value", error_class=ValidationError)
+        
+        elif self.field_name in ["sender", "recipient"]:
+            if not "*" in self.value:
+                validators.clean_email_or_domain(self.value, field_name="value", error_class=ValidationError)
+            pass
+        
+    def save(self, force_insert=False, only=None, validate=True):
+        if validate:
+            self._clean()
+        return Model.save(self, force_insert=force_insert, only=only)
+
     class Meta:
         database = database_proxy
 
-
-class GreylistPolicy(BaseSearchField):
+class Policy(BaseSearchField):
 
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
     _cache_key = 'greypolicy'
@@ -68,7 +172,13 @@ class GreylistPolicy(BaseSearchField):
     #value_type = IntegerField(choices=constants.POLICY_TYPE, default=constants.POLICY_TYPE_COUNTRY)
     field_name = CharField(choices=constants.POLICY_FIELDS, default='client_address')
     
-    #value = CharField(unique=True, max_length=255)
+    mynetwork_vrfy = BooleanField(default=True)
+
+    domain_vrfy = BooleanField(default=True)
+
+    spoofing_enable = BooleanField(default=True)
+
+    greylist_enable = BooleanField(default=True)
     
     greylist_key = IntegerField(choices=constants.GREY_KEY, default=constants.GREY_KEY_MED)
     
@@ -80,7 +190,7 @@ class GreylistPolicy(BaseSearchField):
     
     @classmethod
     def search(cls, protocol, cache_enable=True):
-        return super(GreylistPolicy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
+        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
 
     class Meta:
         #database = database_proxy
@@ -91,7 +201,7 @@ class GreylistPolicy(BaseSearchField):
 
 class GreylistEntry(Model):
     
-    key = CharField()
+    key = CharField(index=True)
     
     timestamp = DateTimeFieldExtend(default=utils.utcnow)
     
@@ -221,8 +331,6 @@ class WhiteList(BaseSearchField):
     #value_type = IntegerField(choices=constants.WL_TYPE, default=constants.WL_TYPE_IP)
     field_name = CharField(choices=constants.WL_FIELDS, default='client_address')
     
-    value = CharField(unique=True, max_length=255)
-    
     comments = CharField(max_length=100, null=True)
 
     class Meta:
@@ -235,8 +343,6 @@ class BlackList(BaseSearchField):
     _cache_key = 'blist'
 
     field_name = CharField(choices=constants.BL_FIELDS, default='client_address')
-    
-    value = CharField(unique=True, max_length=255)
     
     comments = CharField(max_length=100, null=True)
 
@@ -326,7 +432,13 @@ def configure_peewee(db_name='sqlite:///:memory:', db_options={}, drop_before=Fa
     database = connect(db_name, **db_options)
     database_proxy.initialize(database)
 
-    tables = [GreylistPolicy, GreylistEntry, GreylistMetric, WhiteList, BlackList]
+    tables = [Domain,
+              Mynetwork,
+              Policy, 
+              GreylistEntry, 
+              GreylistMetric, 
+              WhiteList, 
+              BlackList]
     if drop_before:
         drop_model_tables(tables, fail_silently=True)
 

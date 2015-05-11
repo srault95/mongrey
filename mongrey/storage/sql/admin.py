@@ -53,6 +53,18 @@ class ModelView(SecureView, BaseModelView):
     
     filter_converter = CustomFilterConverter()
 
+class DomainView(ModelView):
+    
+    column_list = ('name',)
+
+    column_searchable_list = ('name',)
+
+class MynetworkView(ModelView):
+    
+    column_list = ('value',)
+
+    column_searchable_list = ('value',)
+
 class WhiteListView(ModelView):
     
     column_list = ('value', 'field_name', 'comments')
@@ -73,7 +85,7 @@ class BlackListView(ModelView):
 
     column_searchable_list = ('value', 'comments')
 
-class GreylistPolicyView(ModelView):
+class PolicyView(ModelView):
     
     column_list = ('name', 'value', 'field_name', 'greylist_key', 'greylist_remaining', 'greylist_expire', 'comments')
     
@@ -186,8 +198,13 @@ def init_admin(app,
                                base_template=base_template, 
                                template_mode='bootstrap3')
     
+    admin.add_view(DomainView(models.Domain, 
+                                 name=gettext(u"Domains")))
 
-    admin.add_view(GreylistPolicyView(models.GreylistPolicy, 
+    admin.add_view(MynetworkView(models.Mynetwork, 
+                                 name=gettext(u"Mynetworks")))
+
+    admin.add_view(PolicyView(models.Policy, 
                                       name=gettext(u"Policies")))
     
     admin.add_view(GreylistEntryView(models.GreylistEntry, 

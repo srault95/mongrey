@@ -2,18 +2,26 @@
 
 import arrow
 
-from .base import MongoGreylistBaseTestCase
-from ...test_models import TestModelsMixin
+from mongoengine import ValidationError, NotUniqueError
 
 from mongrey.storage.mongo import models
 from mongrey import constants
 from mongrey import utils
 
+from .base import MongoGreylistBaseTestCase
+from ...test_models import TestModelsMixin
+
 class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
     
     def _drop_model(self, model):
         model.drop_collection()
-    
+        
+    def test_mynetwork(self):
+        self._test_mynetwork(models, ValidationError, NotUniqueError)
+            
+    def test_domain(self):
+        self._test_domain(models, ValidationError, NotUniqueError)
+        
     def test_create_greylist_entry(self):
         self._test_create_greylist_entry(models)
         

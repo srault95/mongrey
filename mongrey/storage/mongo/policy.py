@@ -9,10 +9,18 @@ from . import models
 
 logger = logging.getLogger(__name__)
 
-
 class MongoPolicy(Policy):
     
     _name = "mongo"
+
+    def search_domain(self, protocol):
+        return models.Domain.search(protocol)
+
+    def search_mynetwork(self, protocol):
+        return models.Mynetwork.search(protocol)
+
+    def search_policy(self, protocol):
+        return models.Policy.search(protocol)
 
     def search_blacklist(self, protocol):
         return models.BlackList.search(protocol)
@@ -20,9 +28,6 @@ class MongoPolicy(Policy):
     def search_whitelist(self, protocol):
         return models.WhiteList.search(protocol)
         
-    def search_policy(self, protocol):
-        return models.GreylistPolicy.search(protocol)
-
     def search_greylist(self, key):
         return models.GreylistEntry.search_entry(key)
         

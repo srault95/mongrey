@@ -22,12 +22,14 @@ before_install:
 install:
   - pip install coveralls 
   - pip install -r requirements/tests.txt
-  - pip install -r requirements/mongo.txt
-  - pip install -r requirements/sql-pgsql.txt
-  - pip install -r requirements/sql-mysql.txt
-  #- "if [[ $MONGREY_STORAGE == 'mongo' ]]; then pip install -r requirements/mongo.txt; fi"
-  #- "if [[ $POSTGRESQL == '1' ]]; then pip install -r requirements/sql-pgsql.txt; fi"
-  #- "if [[ $MYSQL == '1' ]]; then pip install -r requirements/sql-mysql.txt; fi"
+  - pip install -r requirements/server-mongo.txt
+  - pip install -r requirements/server-sqlite.txt
+  - pip install -r requirements/server-pgsql.txt
+  - pip install -r requirements/server-mysql.txt
+  - pip install -r requirements/web-mongo.txt
+  - pip install -r requirements/web-sqlite.txt
+  - pip install -r requirements/web-pgsql.txt
+  - pip install -r requirements/web-mysql.txt
   - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
   - pip install --no-deps .
 

@@ -119,3 +119,7 @@ POSTFIX_PROTOCOL = {
     
     "valid_protocol_name" : ['SMTP', 'ESMTP']
 }
+
+DOMAIN_NOT_FOUND = -1
+DOMAIN_SENDER_FOUND = 1
+DOMAIN_RECIPIENT_FOUND = 2

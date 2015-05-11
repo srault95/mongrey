@@ -2,18 +2,27 @@
 
 import arrow
 
-from .base import MongoGreylistBaseTestCase
-from ...test_models import TestModelsMixin
+from peewee import IntegrityError
 
 from mongrey import constants
 from mongrey import utils
 from mongrey.storage.sql import models
+from mongrey.storage.sql.models import ValidationError
+
+from .base import MongoGreylistBaseTestCase
+from ...test_models import TestModelsMixin
 
 class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
     
     def _drop_model(self, model):
         model.delete().execute()
 
+    def test_mynetwork(self):
+        self._test_mynetwork(models, ValidationError, IntegrityError)
+            
+    def test_domain(self):
+        self._test_domain(models, ValidationError, IntegrityError)
+    
     def test_create_greylist_entry(self):
         self._test_create_greylist_entry(models)
         
@@ -33,25 +42,4 @@ class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
         self._test_greylist_metrics(models)
         
     
-    def Xtest_create_greylist_entry(self):
-        
-        doc = models.GreylistEntry.create_entry(key='key1', protocol={})
-        self.assertEquals(doc.rejects, 1)
-        self.assertIsNone(doc.expire_time)
-        
-        search = models.GreylistEntry.search_entry(key='key1')
-        self.assertIsNotNone(search)
-        self.assertEquals(search.key, 'key1')
-
-        expire = search.expire(delta=60, now=doc.timestamp)
-        self.assertEquals(expire, 60)
-
-        now = arrow.utcnow().replace(hours=+1)
-        expire = search.expire(delta=60, now=now.datetime)
-        self.assertTrue(expire < 0)
-        
-        doc.accept(expire=86400, now=doc.timestamp)
-        value = doc.expire_time - doc.timestamp
-        self.assertEquals(value.total_seconds(), 86400)
-        
         

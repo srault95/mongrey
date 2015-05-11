@@ -2,10 +2,79 @@
 
 import arrow
 
+from mongrey import constants
+
 class TestModelsMixin:
     
     def _drop_model(self, model):
         raise NotImplementedError()
+
+    def _test_domain(self, models, validation_klass, unique_error_klass):
+        
+        models.Domain(name="example.org").save()
+        
+        with self.assertRaises(validation_klass) as ex:
+            models.Domain(name="badvalue").save()
+            
+        with self.assertRaises(unique_error_klass) as ex:
+            models.Domain(name="example.org").save()
+
+        self._drop_model(models.Domain)
+            
+        protocol = {
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        search = models.Domain.search(protocol)
+        self.assertEquals(search, constants.DOMAIN_NOT_FOUND)
+        
+        models.Domain(name="example.net").save()
+        search = models.Domain.search(protocol)
+        self.assertEquals(search, constants.DOMAIN_SENDER_FOUND)
+        self._drop_model(models.Domain)
+            
+        models.Domain(name="example.org").save()
+        search = models.Domain.search(protocol)
+        self.assertEquals(search, constants.DOMAIN_RECIPIENT_FOUND)
+        self._drop_model(models.Domain)
+
+    def _test_mynetwork(self, models, validation_klass, unique_error_klass):
+        
+        models.Mynetwork(value="1.1.1.1").save()
+
+        models.Mynetwork(value="1.1.1.0/24").save()
+
+        models.Mynetwork(value="::1").save()
+        
+        with self.assertRaises(validation_klass) as ex:
+            models.Mynetwork(value="xxx").save()
+            
+        with self.assertRaises(unique_error_klass) as ex:
+            models.Mynetwork(value="1.1.1.1").save()
+
+        with self.assertRaises(unique_error_klass) as ex:
+            models.Mynetwork(value="1.1.1.0/24").save()
+
+        self._drop_model(models.Mynetwork)
+        
+        protocol = {
+            'client_address': '1.1.1.1',
+        }
+        
+        search = models.Mynetwork.search(protocol)
+        self.assertFalse(search)
+        
+        models.Mynetwork(value="1.1.1.1").save()
+        search = models.Mynetwork.search(protocol)
+        self.assertTrue(search)
+
+        self._drop_model(models.Mynetwork)
+        
+        models.Mynetwork(value="1.1.1.0/24").save()
+        search = models.Mynetwork.search(protocol)
+        self.assertTrue(search)
+            
+        self._drop_model(models.Mynetwork)
     
     def _test_create_greylist_entry(self, models):
         
@@ -32,87 +101,88 @@ class TestModelsMixin:
         protocol = {
             'client_address': '1.1.1.1',
             'client_name': 'mx1.example.net',
+            'helo_name': 'example.net',
             'sender': 'sender@example.net',
             'recipient': 'rcpt@example.org',
             'country': 'fr'
         }
         
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='client_address', 
                               value='1.1.1.1').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='client_address', 
                               value='1.1.1.0/24').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
         
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='country', value='fr').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='client_name', 
                               value='.*\.example.net').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='sender', 
                               value='.*@example.net').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='sender', 
                               value='sender@example.net').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
-        models.GreylistPolicy(name="policytest", 
+        models.Policy(name="policytest", 
                               field_name='recipient', 
                               value='.*@example.org').save()
-        policy = models.GreylistPolicy.search(protocol)
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
-        models.GreylistPolicy(name="policytest", field_name='recipient', value='rcpt@example.org').save()
-        policy = models.GreylistPolicy.search(protocol)
+        models.Policy(name="policytest", field_name='recipient', value='rcpt@example.org').save()
+        policy = models.Policy.search(protocol)
         self.assertIsNotNone(policy)
-        self.assertTrue(isinstance(policy, models.GreylistPolicy))
+        self.assertTrue(isinstance(policy, models.Policy))
         self.assertEquals(policy.name, "policytest")
 
-        self._drop_model(models.GreylistPolicy)
+        self._drop_model(models.Policy)
 
     def _test_search_wblist(self, model):
         
