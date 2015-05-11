@@ -6,4 +6,7 @@ sphinxcontrib-email
 sphinxcontrib-cheeseshop
 #sphinx-intl
 #transifex-client
+#https://github.com/snide/sphinx_rtd_theme
 sphinx_rtd_theme
+reportlab
+sphinxcontrib-blockdiag

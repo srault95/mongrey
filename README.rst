@@ -4,30 +4,23 @@ Greylist Server for Postfix
 
 |Build Status| |Coverage Status| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
-Fonctionnalités
-***************
+Features
+********
 
 - Greylist Server high performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
 - Configuration by ip address & cidr, sender, recipient, ... (and by regex)
 - WebUI (optional)
 - White and Black lists
+- Anti-relaying and anti-spoofing controls
 - REST Api (in progress)
+- Cache with Memory or Redis
 
-`Version Française <https://github.com/srault95/mongrey/blob/master/README_fr.rst>`_ 
+Documentations
+**************
 
-Installation
-************
-
-::
-
-    pip install mongrey
-    
-    docker run -e MONGREY_WEB_PORT=8082 -e MONGREY_DB=mongodb://172.17.0.2/greylist -it --rm srault95/mongrey
-    ou    
-    docker run --link mongodb1:mongodb -e MONGREY_WEB_PORT=8082 -e MONGREY_DB=mongodb://mongodb/greylist -it --rm srault95/mongrey
-
-
+- `English <http://mongrey.readthedocs.org/en/latest/>`_
+- `French <http://mongrey.readthedocs.org/fr/latest/>`_
 
 Contributing
 ************

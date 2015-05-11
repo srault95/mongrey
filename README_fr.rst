@@ -4,16 +4,23 @@ Serveur de liste grise pour Postfix
 
 |Build Status| |Coverage Status| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
-
 Fonctionnalités
 ***************
 
 - Serveur de liste grise haute performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
-- Configuration par adresse ip & cidr, expéditeur, destinataire, ... (fixe ou par expression régulières)
+- Configuration par adresse ip & cidr, expéditeur, destinataire, ... (+expression régulières)
 - Listes blanches & noires
+- Contrôles anti-relais, anti-spoofing
 - Application Web (facultative)
 - Api REST (en cours de développement)
+- Cache en Mémoire ou avec Redis
+
+Documentations
+**************
+
+- `Français <http://mongrey.readthedocs.org/fr/latest/>`_
+- `Anglais <http://mongrey.readthedocs.org/en/latest/>`_
 
 Contribution
 ************
