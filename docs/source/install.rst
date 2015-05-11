@@ -11,12 +11,21 @@ Vous avez le choix entre plusieurs méthodes d'installation.
 
 Le plus simple étant la version binaire adaptée au backend que vous utiliserez (MongoDB, PostgreSQL, ...)
 
-Les binaires sont des versions préparés à l'aide de l'outil pyInstaller et n'ont aucune dépendances externes.
+Les binaires sont des versions compilés à l'aide de l'outil PyInstaller et n'ont aucunes dépendances externes.
 
 **Ces versions ont été testés avec :**
 
 - Ubuntu 14.04 (Trusty) 64 bits 
 - CentOS 7 64 bits
+
+Commun à tous les binaires
+**************************
+
+- https://mongrey.radical-software.fr/download/mongrey/[RELEASE]/mongrey-server-mongo-Linux-x86_64
+
+**Ou pour la dernière version:**
+
+- https://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64
 
 Mongrey Serveur
 ***************
