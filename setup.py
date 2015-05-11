@@ -96,8 +96,8 @@ setup(
     test_suite='nose.collector',      
     entry_points={
         'console_scripts': [
-            'mongrey-server = mongrey.server:main',
-            'mongrey-web = mongrey.web:main',
+            'mongrey-server = mongrey.server.core:main',
+            'mongrey-web = mongrey.web.manager:main',
         ],
     },    
     keywords=['postfix','policy','filter', 'smtp', 'greylist'],
