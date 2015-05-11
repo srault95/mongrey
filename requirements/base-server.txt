@@ -1,15 +1,2 @@
-six
-cython
-gevent>=1.0
-arrow
-IPy
-psutil
-python-decouple
-#geoip-data
-https://github.com/srault95/geoip-data/tarball/master
-pygeoip
-regex
-werkzeug
-PyYAML
+-r base.txt
 python-daemon
-redis

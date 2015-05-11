@@ -1,14 +1,4 @@
-six
-cython
-gevent>=1.0
-arrow
-IPy
-python-decouple
-#geoip-data
-https://github.com/srault95/geoip-data/tarball/master
-pygeoip
-regex
-redis
+-r base.txt
 wtforms
 Flask-BabelEx
 Flask-Script
