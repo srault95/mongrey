@@ -63,12 +63,18 @@ _DEFAULT_CONFIG = {
     'country_ipv4': None,
     'country_ipv6': None,
 
-    'greylist_settings': {
+    'policy_settings': {
+        'blacklist_enable': True,       
+        'domain_vrfy': False,       
+        'mynetwork_vrfy': False,       
+        'spoofing_enable': False,       
+        'greylist_enable': True,                        
         'greylist_key': constants.GREY_KEY_MED,
         'greylist_remaining': 20,
         'greylist_expire': 35*86400,
         'greylist_excludes': [],
         'greylist_private_bypass': True
+        
     }
                   
 }
@@ -105,12 +111,14 @@ class NoRunServerTestCase(BaseTestCase):
         
         server = PolicyServer(host="127.0.0.1", port=9999,
                               security_by_host=True,
-                              allow_hosts=['1.1.1.1'])
+                              allow_hosts=['1.1.1.1', '10.10.1.0/24'])
 
         self.assertTrue(server._security_check(("1.1.1.1",)))
         
         self.assertFalse(server._security_check(("2.2.2.2",)))
         self.assertInLog("reject host [2.2.2.2]")
+
+        self.assertTrue(server._security_check(("10.10.1.1",)))
         
     
 class NoRunServerMixin:
@@ -565,7 +573,7 @@ class BaseRunServerMixin:
         raise NotImplementedError()
 
     def _get_config(self):
-        greylist_settings={
+        policy_settings={
             'greylist_key': constants.GREY_KEY_MED,       
             'greylist_remaining': 1,
             'greylist_expire': 3600,
@@ -573,7 +581,7 @@ class BaseRunServerMixin:
             'greylist_private_bypass': False,                         
         }
 
-        policy = self._get_policy(**greylist_settings)
+        policy = self._get_policy(**policy_settings)
         
         return dict(policy=policy, 
                     error_action="DUNNO ERROR[%s]" % os.getpid())

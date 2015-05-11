@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import time
-import platform
-import re
 from pprint import pprint as pp
-import urlparse
-import itertools
-import uuid
-import types
 import hashlib
 import logging
 import argparse
@@ -20,9 +13,12 @@ import json
 
 import gevent
 from gevent.server import StreamServer
-from gevent import socket
+#from gevent import socket
+import socket
 
 from decouple import config as env_config
+
+import IPy
 
 from .. import version
 from .. import constants
@@ -104,7 +100,12 @@ DEFAULT_CONFIG = {
     
     'country_ipv6': env_config('MONGREY_GEOIP_COUNTRY_V6', None),
 
-    'greylist_settings': {
+    'policy_settings': {
+        'blacklist_enable': env_config('MONGREY_BLACKLIST_ENABLE', True, cast=bool),       
+        'domain_vrfy': env_config('MONGREY_DOMAIN_ENABLE', False, cast=bool),       
+        'mynetwork_vrfy': env_config('MONGREY_MYNETWORK_ENABLE', False, cast=bool),       
+        'spoofing_enable': env_config('MONGREY_SPOOFING_ENABLE', False, cast=bool),       
+        'greylist_enable': env_config('MONGREY_GREYLIST_ENABLE', True, cast=bool),       
         'greylist_key': env_config('MONGREY_POLICY', constants.GREY_KEY_MED, cast=int),       
         'greylist_remaining': env_config('MONGREY_REMAINING', 20, cast=int),    # 60 second
         'greylist_expire': env_config('MONGREY_EXPIRE', 35*86400, cast=int), # 35 days
@@ -151,7 +152,7 @@ class PolicyServer(StreamServer):
                  backlog=256, 
                  spawn=50,
                  security_by_host=False,
-                 allow_hosts=[],
+                 allow_hosts=None,
                  error_action=None,
                  connection_timeout=None,
                  no_stress=False,
@@ -205,12 +206,21 @@ class PolicyServer(StreamServer):
         
         try:
             host = address[0]
+            host_ipy = IPy.IP(host)
 
-            if not host in self._allow_hosts:
-                logger.critical("reject host [%s]" % host)
-                return False
-            
-            return True
+            for ip in self._allow_hosts:
+                
+                allow = IPy.IP(ip)
+                
+                if allow.len() == 1:
+                    if ip == host:
+                        return True
+                else:
+                    if host_ipy in allow:
+                        return True
+
+            logger.critical("reject host [%s]" % host)
+            return False
             
         except Exception, err:
             logger.error(str(err))
@@ -413,14 +423,14 @@ def start_command(**config):
     metrics_interval = config.pop('metrics_interval')
     
     cache_settings = config.pop('cache_settings')
-    greylist_settings = config.pop('greylist_settings')
+    policy_settings = config.pop('policy_settings')
     
     from .. import cache
     cache.cache = cache.Cache(**cache_settings)
 
     policy_klass = None
 
-    kwargs = greylist_settings.copy()
+    kwargs = policy_settings.copy()
     kwargs['purge_interval'] = purge_interval
     kwargs['metrics_interval'] = metrics_interval
 

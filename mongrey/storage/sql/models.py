@@ -190,7 +190,7 @@ class Policy(BaseSearchField):
     
     @classmethod
     def search(cls, protocol, cache_enable=True):
-        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
+        return BaseSearchField.search(cls, protocol, cache_enable=cache_enable, return_instance=True)
 
     class Meta:
         #database = database_proxy
@@ -426,8 +426,11 @@ def connect(url, **options):
 
     return database_class(**options)
 
-def configure_peewee(db_name='sqlite:///:memory:', db_options={}, drop_before=False):
+def configure_peewee(db_name='sqlite:///:memory:', db_options=None, drop_before=False):
+    
     from peewee import create_model_tables, drop_model_tables
+    
+    db_options = db_options or {}
 
     database = connect(db_name, **db_options)
     database_proxy.initialize(database)

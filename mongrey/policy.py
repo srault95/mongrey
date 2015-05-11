@@ -11,7 +11,7 @@ from . import constants
 
 logger = logging.getLogger(__name__)
 
-def search_mynetwork(client_address=None, objects=[]):
+def search_mynetwork(client_address=None, objects=None):
 
     for obj in objects:
         try:
@@ -20,17 +20,17 @@ def search_mynetwork(client_address=None, objects=[]):
             if ip.len() == 1:
                 if client_address == obj.value:
                     return True
-            else:
-                '''Include network'''
-                if client_address in ip:
-                    return True
+                
+            elif client_address in ip:
+                #---Include in network
+                return True
     
         except Exception, err:
             logger.warning(str(err))
     
     return False
 
-def generic_search(protocol=None, objects=[], valid_fields=[], 
+def generic_search(protocol=None, objects=None, valid_fields=None, 
                    cache_key=None, cache_enable=True, 
                    return_instance=False):
 
@@ -82,13 +82,12 @@ def generic_search(protocol=None, objects=[], valid_fields=[],
                                 return_value = reg
                             break
                         
-                    else:
-                        '''Include network'''
-                        if client_address in ip:
-                            return_value = client_address
-                            if return_instance:
-                                return_value = reg
-                            break
+                    elif client_address in ip:
+                        #---Include network
+                        return_value = client_address
+                        if return_instance:
+                            return_value = reg
+                        break
                 
                 elif 'client_name' in valid_fields and client_name != 'unknow' and reg.field_name == "client_name":
                     if regex.match(reg.value, client_name, regex.IGNORECASE):
@@ -147,7 +146,7 @@ class Policy(object):
                  greylist_remaining=20,        # 20 seconds
                  greylist_expire=35*86400,     # 35 days
                  greylist_private_bypass=True,
-                 greylist_excludes=[],
+                 greylist_excludes=None,
                  purge_interval=60,
                  metrics_interval=60*5):
         """

@@ -30,17 +30,21 @@ class GeventDaemonContext(daemon.DaemonContext):
     If the daemon context forks. It calls gevent.reinit().
     """
 
-    def __init__(self, monkey_greenlet_report=True,
-            monkey=True, gevent_hub=None, signal_map=None, **daemon_options):
+    def __init__(self, 
+                 monkey_greenlet_report=True,
+                 monkey=True, 
+                 gevent_hub=None, 
+                 signal_map=None, **daemon_options):
+        
         self.gevent_signal_map = signal_map
         self.monkey = monkey
         self.monkey_greenlet_report = monkey_greenlet_report
         self.gevent_hub = gevent_hub
-        super(GeventDaemonContext, self).__init__(
+        daemon.DaemonContext.__init__(self, 
                 signal_map={}, **daemon_options)
 
     def open(self):
-        super(GeventDaemonContext, self).open()
+        daemon.DaemonContext.open(self)
         # always reinit even when not forked when registering signals
         self._apply_monkey_patch()
         if self.gevent_hub is not None:

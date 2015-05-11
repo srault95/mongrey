@@ -32,7 +32,7 @@ from mongrey.storage.mongo import models
 
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', "mongo") != "mongo", "Skip no mongodb tests")
 class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
-
+    
     def _create_app(self):
         from mongrey.web import create_app
         app = create_app(config=self.CONFIG, force_storage="mongo")

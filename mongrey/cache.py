@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import urlparse
 
 logger = logging.getLogger(__name__)
 

@@ -1,1 +1,1 @@
-from .core import PolicyServer, logger, main
+from .core import PolicyServer, logger

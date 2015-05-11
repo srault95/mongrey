@@ -436,7 +436,9 @@ def configure_logging(debug=False,
     return logger
 
     
-def load_yaml_config(settings=None, default_config={}):
+def load_yaml_config(settings=None, default_config=None):
+    
+    default_config = default_config or {}
     
     try:    
         from yaml import load as yaml_load
