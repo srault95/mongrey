@@ -320,9 +320,9 @@ class PolicyServer(StreamServer):
 
 def options():
 
-    parser = argparse.ArgumentParser(description='Postfix Greylist Server',
+    parser = argparse.ArgumentParser(description='Mongrey Server',
                                      prog=os.path.basename(sys.argv[0]),
-                                     version="mongo-greylist-%s" % (version.__VERSION__), 
+                                     version="mongrey-%s" % (version.__VERSION__), 
                                      add_help=True)
 
     parser.add_argument('--settings',

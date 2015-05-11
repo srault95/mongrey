@@ -170,7 +170,7 @@ class AdminIndexView(SecureView, BaseAdminIndexView):
 def init_admin(app, 
                admin_app=None, 
                url='/admin',
-               name=u"Greylist",
+               name=u"Mongrey Admin",
                base_template='mongrey/layout.html',
                index_template=None,
                index_view=None,
