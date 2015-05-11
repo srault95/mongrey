@@ -9,6 +9,8 @@ https://github.com/srault95/geoip-data/tarball/master
 pygeoip
 regex
 redis
+wtforms
 Flask-BabelEx
 Flask-Script
 flask-admin
+flask-wtf

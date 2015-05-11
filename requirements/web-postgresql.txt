@@ -1,4 +1,4 @@
 -r base-web.txt
 peewee
-psycopg2
 wtf-peewee
+psycopg2
