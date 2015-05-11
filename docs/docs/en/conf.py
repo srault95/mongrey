@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
+#language = "en"
+#today_fmt = '%Y-%m-%d %H:%M:%S'
+
 import os, sys
 import datetime
 
 CURRENT = os.path.abspath(os.path.dirname(__file__))
 PACKAGE_DIR = os.path.abspath(os.path.join(CURRENT, '..', '..', '..', '..'))
-EXT_DIR = os.path.abspath(os.path.join(CURRENT, '..', '..', '_ext'))
+#EXT_DIR = os.path.abspath(os.path.join(CURRENT, '..', '..', '_ext'))
 sys.path.insert(0, PACKAGE_DIR)
-sys.path.append(EXT_DIR)
+#sys.path.append(EXT_DIR)
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
