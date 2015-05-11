@@ -2,7 +2,7 @@
 Greylist Server for Postfix
 ***************************
 
-|Build Status| |Coverage Status| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+|Build Status| |Coverage Status| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
 Fonctionnalités
 ***************
@@ -12,7 +12,7 @@ Fonctionnalités
 - Configuration by ip address & cidr, sender, recipient, ... (and by regex)
 - WebUI (optional)
 - White and Black lists
-- REST Api (todo...)
+- REST Api (in progress)
 
 `Version Française <https://github.com/srault95/mongrey/blob/master/README_fr.rst>`_ 
 
@@ -71,4 +71,6 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
      :target: https://requires.io/github/srault95/mongrey/requirements/?branch=master
      :alt: Requirements Status
 
-     
+.. |docs| image:: https://readthedocs.org/projects/mongrey-en/badge/?version=latest
+    :target: https://readthedocs.org/projects/mongrey-en/?badge=latest
+    :alt: Documentation Status     

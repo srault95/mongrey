@@ -2,7 +2,8 @@
 Serveur de liste grise pour Postfix
 ***********************************
 
-|Build Status| |Coverage Status| |pypi downloads| |pypi version| |pypi licence| |requires status|
+|Build Status| |Coverage Status| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+
 
 Fonctionnalités
 ***************
@@ -50,6 +51,14 @@ Toutes les contributions et suggestions sont les bienvenues.
     :target: https://pypi.python.org/pypi/mongrey
     :alt: License
 
+.. |pypi wheel| image:: https://pypip.in/wheel/mongrey/badge.png
+    :target: https://pypi.python.org/pypi/mongrey/
+    :alt: Python Wheel
+
 .. |requires status| image:: https://requires.io/github/srault95/mongrey/requirements.svg?branch=master
      :target: https://requires.io/github/srault95/mongrey/requirements/?branch=master
      :alt: Requirements Status
+
+.. |docs| image:: https://readthedocs.org/projects/mongrey/badge/?version=latest
+    :target: https://readthedocs.org/projects/mongrey/?badge=latest
+    :alt: Documentation Status          
