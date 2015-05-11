@@ -17,19 +17,13 @@ env:
   
 before_install:
  - "sudo apt-get update -qq"
- - "sudo apt-get install -y build-essential ca-certificates language-pack-en python-dev cython libmysqlclient-dev"
+ - "sudo apt-get install -y build-essential ca-certificates language-pack-en python-dev cython libmysqlclient-dev libpq-dev"
  
 install:
   - pip install coveralls 
   - pip install -r requirements/tests.txt
-  - pip install -r requirements/server-mongo.txt
-  - pip install -r requirements/server-sqlite.txt
-  - pip install -r requirements/server-postgresql.txt
-  - pip install -r requirements/server-mysql.txt
-  - pip install -r requirements/web-mongo.txt
-  - pip install -r requirements/web-sqlite.txt
-  - pip install -r requirements/web-postgresql.txt
-  - pip install -r requirements/web-mysql.txt
+  - pip install -r requirements/server.txt
+  - pip install -r requirements/web.txt
   - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
   - pip install --no-deps .
 
