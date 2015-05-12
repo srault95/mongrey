@@ -8,6 +8,7 @@ sphinxcontrib-cheeseshop
 #transifex-client
 #https://github.com/snide/sphinx_rtd_theme
 sphinx_rtd_theme
+sphinx-bootstrap-theme
 reportlab
 sphinxcontrib-blockdiag
 sphinx-git

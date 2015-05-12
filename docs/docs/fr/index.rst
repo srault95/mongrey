@@ -6,7 +6,6 @@
     configuration
     screenshots
     tips
-    api/index
     todolist
     changelog
 
@@ -26,3 +25,9 @@
       A -> nofound -> D
     }
        
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`
+* :ref:`modindex`

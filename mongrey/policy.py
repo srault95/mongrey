@@ -153,7 +153,7 @@ class Policy(object):
             Constructor
 
             :param greylist_key:
-                Numeric value (@see constants.GREY_KEY_MED)
+                (@see constants.GREY_KEY_MED)
             :param greylist_remaining:
                 Delay for attempt after the first greylist request
         """

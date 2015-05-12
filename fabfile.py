@@ -28,6 +28,11 @@ def babel_init():
 
 @task
 def docs():
+    """
+    sphinx-apidoc -o docs/source/modules mongrey
+    --no-toc
+    --no-headings
+    """
     local('sphinx-build -a -v -N -w docs/_build/errors-fr.log -b html docs/docs/fr docs/_build/html/fr')
     local('sphinx-build -a -v -N -w docs/_build/errors-en.log -b html docs/docs/en docs/_build/html/en')
     local('sphinx-build -a -v -N -b changes docs/docs/fr docs/_build/html/fr/changes')

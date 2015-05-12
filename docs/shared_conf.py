@@ -46,6 +46,8 @@ source_suffix = '.rst'
 
 master_doc = 'index'
 
+add_module_names = False
+
 locale_dirs = []
 
 #html_logo
@@ -63,14 +65,101 @@ html_show_copyright = False
 html_compact_lists = False
 html_scaled_image_link = False
 
-html_theme = 'default'
-if not on_rtd:
+if on_rtd:    
+    html_theme = 'default'
+    html_theme_options = {
+        'nosidebar': False,
+        'sticky_navigation': True,
+    }
+else:    
+    import sphinx_bootstrap_theme
+    html_theme = 'bootstrap'
+    html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+    #htmlhelp_basename = 'MyProjectDoc'
+    html_theme_options = {
+        # Navigation bar title. (Default: ``project`` value)
+        #'navbar_title': "Demo",
+    
+        # Tab name for entire site. (Default: "Site")
+        'navbar_site_name': "Site",
+    
+        # Tab name for the current pages TOC. (Default: "Page")
+        'navbar_pagenav_name': "Page",
+    
+        # A list of tuples containing pages or urls to link to.
+        # Valid tuples should be in the following forms:
+        #    (name, page)                 # a link to a page
+        #    (name, "/aa/bb", 1)          # a link to an arbitrary relative url
+        #    (name, "http://example.com", True) # arbitrary absolute url
+        # Note the "1" or "True" value above as the third argument to indicate
+        # an arbitrary url.
+        # 'navbar_links': [
+        #     ("Examples", "examples"),
+        #     ("Link", "http://example.com", True),
+        # ],
+    
+        # Global TOC depth for "site" navbar tab. (Default: 1)
+        # Switching to -1 shows all levels.
+        'globaltoc_depth': 2,
+    
+        # Include hidden TOCs in Site navbar?
+        #
+        # Note: If this is "false", you cannot have mixed ``:hidden:`` and
+        # non-hidden ``toctree`` directives in the same page, or else the build
+        # will break.
+        #
+        # Values: "true" (default) or "false"
+        'globaltoc_includehidden': "true",
+    
+        # HTML navbar class (Default: "navbar") to attach to <div> element.
+        # For black navbar, do "navbar navbar-inverse"
+        'navbar_class': "navbar",
+    
+        # Fix navigation bar to top of page?
+        # Values: "true" (default) or "false"
+        'navbar_fixed_top': "true",
+    
+        # Location of link to source.
+        # Options are "nav" (default), "footer" or anything else to exclude.
+        'source_link_position': "nav",
+    
+        # Bootswatch (http://bootswatch.com/) theme.
+        #
+        # Options are nothing (default) or the name of a valid theme such
+        # as "amelia" or "cosmo".
+        #
+        # Themes:
+        # * amelia
+        # * cerulean
+        # * cosmo
+        # * cyborg
+        # * cupid (v3 only)
+        # * flatly
+        # * journal
+        # * lumen (v3 only)
+        # * readable
+        # * simplex
+        # * slate
+        # * spacelab
+        # * spruce (v2 only)
+        # * superhero
+        # * united
+        # * yeti (v3 only)
+        'bootswatch_theme': "flatly",
+    
+        # Choose Bootstrap version.
+        # Values: "3" (default) or "2" (in quotes)
+        'bootstrap_version': "3",
+    }
+        
+    """
     try:
         import sphinx_rtd_theme
         html_theme = 'sphinx_rtd_theme'
         html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
     except ImportError:
         pass
+    """
 
 """
 html_sidebars = {
@@ -82,12 +171,6 @@ html_additional_pages = {
 }
 """
     
-html_theme_options = {
-    'nosidebar': False,
-    'sticky_navigation': True,
-}
-    
-
 show_authors = True
 
 #blockdiag_fontpath = '_static/ipagp.ttf'

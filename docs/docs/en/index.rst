@@ -6,7 +6,6 @@
     configuration
     screenshots
     tips
-    api/index    
     todolist
     changelog
 
