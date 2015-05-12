@@ -1,8 +1,13 @@
 services:
   - mongodb
-  - postgres
   - redis-server
+  
+addons:
+  postgresql: "9.3"  
 
+git:
+  depth: 100
+  
 language: python
 
 python:
@@ -24,12 +29,11 @@ install:
   - pip install coveralls 
   - pip install -r requirements/tests.txt
   - pip install --process-dependency-links -e .[full]
-  - "if [[ $REDIS == '1' ]]; then pip install redis; fi"
-  - pip install --no-deps .
 
 before_script:
   - sleep 5
-  - "if [[ $POSTGRESQL == '1' ]]; then sh -c \"psql -c 'create database mongrey_test;' -U postgres\"; fi"
+  - psql -c 'create database mongrey_test;' -U postgres
+  #- "if [[ $POSTGRESQL == '1' ]]; then sh -c \"psql -c 'create database mongrey_test;' -U postgres\"; fi"
   - "if [[ $MYSQL == '1' ]]; then mysql -e 'create database mongrey_test;'; fi"
   
 script:
