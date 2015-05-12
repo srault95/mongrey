@@ -63,17 +63,17 @@ setup(
     packages=find_packages(),
     install_requires=[],
     extras_require = {
-        'server-mongo': set(server_mongo_req),
-        'server-mysql': set(server_mysql_req),
-        'server-postgresql': set(server_postgresql_req),
-        'server-sqlite': set(server_sqlite_req),
-        'web-mongo': set(server_mongo_req),
-        'web-mysql': set(server_mysql_req),
-        'web-postgresql': set(server_postgresql_req),
-        'web-sqlite': set(server_sqlite_req),
+        'server_mongo': set(server_mongo_req),
+        'server_mysql': set(server_mysql_req),
+        'server_postgresql': set(server_postgresql_req),
+        'server_sqlite': set(server_sqlite_req),
+        'web_mongo': set(server_mongo_req),
+        'web_mysql': set(server_mysql_req),
+        'web_postgresql': set(server_postgresql_req),
+        'web_sqlite': set(server_sqlite_req),
         'server': set(server_req),
         'web': set(web_req),
-        'full': set(server_req+web_req),
+        'full': set(server_req+web_req)
     },      
     dependency_links=[
       'https://github.com/MongoEngine/flask-mongoengine/tarball/master/#egg=flask-mongoengine-0.7.1',
@@ -87,8 +87,8 @@ setup(
     test_suite='nose.collector',      
     entry_points={
         'console_scripts': [
-            'mongrey-server = mongrey.server.core:main [server-mongo, server-mysql, server-postgresql, server-sqlite, server, full]',
-            'mongrey-web = mongrey.web.manager:main [web-mongo, web-mysql, web-postgresql, web-sqlite, web, full]',
+            'mongrey-server = mongrey.server.core:main [server_mongo, server_mysql, server_postgresql, server_sqlite, server, full]',
+            'mongrey-web = mongrey.web.manager:main [web_mongo, web_mysql, web_postgresql, web_sqlite, web, full]',
         ],
     },    
     keywords=['postfix','policy','filter', 'smtp', 'greylist'],
