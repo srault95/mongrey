@@ -131,7 +131,7 @@ class BaseSearchField(Model):
 
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=False):
-        
+
         return generic_search(protocol=protocol, 
                               objects=cls.select().order_by('field_name'), 
                               valid_fields=cls._valid_fields, 
@@ -169,7 +169,6 @@ class Policy(BaseSearchField):
     
     name = CharField(unique=True, max_length=20)
     
-    #value_type = IntegerField(choices=constants.POLICY_TYPE, default=constants.POLICY_TYPE_COUNTRY)
     field_name = CharField(choices=constants.POLICY_FIELDS, default='client_address')
     
     mynetwork_vrfy = BooleanField(default=True)
@@ -180,7 +179,8 @@ class Policy(BaseSearchField):
 
     greylist_enable = BooleanField(default=True)
     
-    greylist_key = IntegerField(choices=constants.GREY_KEY, default=constants.GREY_KEY_MED)
+    greylist_key = CharField(choices=constants.GREY_KEY, 
+                             default=constants.GREY_KEY_MED)
     
     greylist_remaining = IntegerField(default=10)#, min_value=1)
 
@@ -190,10 +190,10 @@ class Policy(BaseSearchField):
     
     @classmethod
     def search(cls, protocol, cache_enable=True):
-        return BaseSearchField.search(cls, protocol, cache_enable=cache_enable, return_instance=True)
+        #return BaseSearchField.search(cls, protocol, cache_enable=cache_enable, return_instance=True)
+        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
 
     class Meta:
-        #database = database_proxy
         order_by = ('name',)
 
     def __unicode__(self):
@@ -294,8 +294,6 @@ class GreylistEntry(Model):
         
         return metrics
     
-
-        
     def __unicode__(self):
         return self.key
 
@@ -328,13 +326,11 @@ class WhiteList(BaseSearchField):
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
     _cache_key = 'wlist'
 
-    #value_type = IntegerField(choices=constants.WL_TYPE, default=constants.WL_TYPE_IP)
     field_name = CharField(choices=constants.WL_FIELDS, default='client_address')
     
     comments = CharField(max_length=100, null=True)
 
     class Meta:
-        database = database_proxy
         order_by = ('value',)
 
 class BlackList(BaseSearchField):
@@ -347,7 +343,6 @@ class BlackList(BaseSearchField):
     comments = CharField(max_length=100, null=True)
 
     class Meta:
-        database = database_proxy
         order_by = ('value',)
 
         

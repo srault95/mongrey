@@ -5,11 +5,11 @@ _ = lambda s:s
 SESSION_LANG_KEY = "current_lang"
 SESSION_TIMEZONE_KEY = "current_tz"
 
-GREY_KEY_HIGH = 1
-GREY_KEY_MED = 2
-GREY_KEY_LOW = 3
-GREY_KEY_VERY_LOW = 4
-GREY_KEY_SPECIAL = 5
+GREY_KEY_HIGH = "high"
+GREY_KEY_MED = "med"
+GREY_KEY_LOW = "low"
+GREY_KEY_VERY_LOW = "vlow"
+GREY_KEY_SPECIAL = "special"
 
 GREY_KEY = (
     (GREY_KEY_VERY_LOW, _(u"IP Address")),
@@ -17,22 +17,6 @@ GREY_KEY = (
     (GREY_KEY_MED, _(u"IP Address + Email Recipient")),
     (GREY_KEY_HIGH, _(u"IP Address + Email Sender + Email Recipient")),
     (GREY_KEY_SPECIAL, _(u"Email Sender + Email Recipient")),
-)
-
-WL_TYPE_IP = 1
-WL_TYPE_NET = 2
-WL_TYPE_DOMAIN = 3
-WL_TYPE_EMAIL = 4
-WL_TYPE_HOSTNAME = 5
-WL_TYPE_PARTIAL_HOSTNAME = 6
-
-WL_TYPE = (
-    (WL_TYPE_IP, _(u"IP Address")),
-    #(WL_TYPE_NET, _(u"Network CIDR")),
-    (WL_TYPE_DOMAIN, _(u"Internet Domain")),
-    (WL_TYPE_EMAIL, _(u"Email Address")),
-    (WL_TYPE_HOSTNAME, _(u"Hostname")),
-    #(WL_TYPE_PARTIAL_HOSTNAME, _(u"Partial Hostname")),
 )
 
 FIELD_CLIENT_ADDRESS = ('client_address', _(u"IP Address"))

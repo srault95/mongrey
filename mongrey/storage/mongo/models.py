@@ -133,7 +133,9 @@ class Policy(BaseSearchField):
 
     greylist_enable = fields.BooleanField(default=True)
     
-    greylist_key = fields.IntField(required=True, choices=constants.GREY_KEY, default=constants.GREY_KEY_MED)
+    greylist_key = fields.StringField(required=True, 
+                                      choices=constants.GREY_KEY, 
+                                      default=constants.GREY_KEY_MED)
     
     greylist_remaining = fields.IntField(default=10, min_value=1)
 
@@ -143,6 +145,7 @@ class Policy(BaseSearchField):
 
     @classmethod
     def search(cls, protocol, cache_enable=True):
+        #return BaseSearchField.search(cls, protocol, cache_enable=cache_enable, return_instance=True)
         return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
 
     def __unicode__(self):

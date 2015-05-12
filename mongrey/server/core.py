@@ -106,7 +106,7 @@ DEFAULT_CONFIG = {
         'mynetwork_vrfy': env_config('MONGREY_MYNETWORK_ENABLE', False, cast=bool),       
         'spoofing_enable': env_config('MONGREY_SPOOFING_ENABLE', False, cast=bool),       
         'greylist_enable': env_config('MONGREY_GREYLIST_ENABLE', True, cast=bool),       
-        'greylist_key': env_config('MONGREY_POLICY', constants.GREY_KEY_MED, cast=int),       
+        'greylist_key': env_config('MONGREY_POLICY', constants.GREY_KEY_MED),       
         'greylist_remaining': env_config('MONGREY_REMAINING', 20, cast=int),    # 60 second
         'greylist_expire': env_config('MONGREY_EXPIRE', 35*86400, cast=int), # 35 days
         'greylist_excludes': env_config('MONGREY_EXCLUDES', '', cast=utils.to_list),
