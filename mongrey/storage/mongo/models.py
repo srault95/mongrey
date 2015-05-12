@@ -102,11 +102,8 @@ class BaseSearchField(Document):
         elif self.field_name in ["sender", "recipient"]:
             if not "*" in self.value:
                 validators.clean_email_or_domain(self.value, field_name="value", error_class=ValidationError)
-            pass
 
-        """
-        TODO: .*@        
-        """
+        #TODO: .*@        
 
     def clean(self):
         Document.clean(self)
@@ -144,9 +141,8 @@ class Policy(BaseSearchField):
     comments = fields.StringField(max_length=100)
 
     @classmethod
-    def search(cls, protocol, cache_enable=True):
-        #return BaseSearchField.search(cls, protocol, cache_enable=cache_enable, return_instance=True)
-        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
+    def search(cls, protocol, cache_enable=True, return_instance=True):
+        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=return_instance)
 
     def __unicode__(self):
         return u"%s - %s (%s)" % (self.name, self.value, self.get_field_name_display())    

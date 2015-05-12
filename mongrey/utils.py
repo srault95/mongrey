@@ -204,6 +204,16 @@ def read_postgrey_logs(filepath):
 
 def read_whitelist(whitelist_filename):
     raise NotImplementedError
+    """
+    python -m mongrey.web.manager import-whitelist -f contrib/postgrey/postgrey_whitelist_clients.txt
+    
+    TODO: record DB - choix field_name selon type
+    - ip/cidr: field_name="client_address"
+    - regexp: field_name="client_name" ou sender ou recipient !!!!
+    Ou générer un yaml intermédiaire à finaliser manuellement pour import
+    
+    TODO: validité des regexp !
+    """
 
     with open(whitelist_filename, 'r') as whitelist_fh:
     
@@ -214,18 +224,26 @@ def read_whitelist(whitelist_filename):
             line = line.split('#', 1)[0]
             line = line.split(';', 1)[0]
             line = line.strip()
-            if line == "":
+            
+            if not line or line == "":
                 continue
+            
             if line.startswith('/') and line.endswith('/'):
                 # line is regex
-                whitelist.append(re.compile(line[1:-1]))
-                continue
-            try:
-                IP(line)
-                whitelist_ip.append(line)
-            except (ValueError):
-                # Ordinary string (domain name or username)
-                whitelist.append(line)
+                try:
+                    re.compile(line[1:-1])
+                    whitelist.append(line[1:-1])
+                except Exception, err:
+                    logger.error("LINE[%s] ERROR[%s]" % (line, str(err)))
+            else:
+                try:
+                    IP(line)
+                    whitelist_ip.append(line)
+                except ValueError:
+                    whitelist.append(line)
+                except Exception, err:
+                    logger.error("LINE[%s] ERROR[%s]" % (line, str(err)))
+                    
         return (whitelist, whitelist_ip)
 
 def domain_from_hostname(host):

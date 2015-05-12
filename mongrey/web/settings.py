@@ -25,7 +25,7 @@ class Config(object):
 
     #---Flask-Basic-Auth
     BASIC_AUTH_USERNAME = config('MONGREY_USERNAME', 'radicalspam')
-    BASIC_AUTH_PASSWORD = config('MONGREY_PASSWORD', 'radicalspam')
+    BASIC_AUTH_PASSWORD = config('MONGREY_PASSWORD', 'radicalspam') # noqa
     BASIC_AUTH_FORCE = True
     BASIC_AUTH_REALM = '/'
     BASIC_AUTH_MAX_ATTEMPT = config('MONGREY_AUTH_MAX_ATTEMPT', 3, cast=int)
@@ -55,7 +55,7 @@ class Dev(Config):
 
     DEBUG = True
 
-    SECRET_KEY = 'dev_key'
+    SECRET_KEY = 'dev_key' # noqa
     
     MAIL_DEBUG = True
     
@@ -63,7 +63,7 @@ class Test(Config):
 
     TESTING = True
     
-    SECRET_KEY = 'test_key'
+    SECRET_KEY = 'test_key' # noqa
     
     WTF_CSRF_ENABLED = False
     

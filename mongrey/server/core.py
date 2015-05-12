@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from pprint import pprint as pp
-import hashlib
 import logging
 import argparse
 import sys
 import os
 import atexit
-
-import six
+import six # noqa
 import json
 
 import gevent
 from gevent.server import StreamServer
-#from gevent import socket
-import socket
 
 from decouple import config as env_config
 
@@ -23,7 +19,11 @@ import IPy
 from .. import version
 from .. import constants
 from .. import utils
-from ..exceptions import *
+from ..exceptions import (BypassProtocolError, 
+                          ConfigurationError, 
+                          InvalidProtocolError, 
+                          PolicyError, 
+                          TimeoutError)
 
 try:
     import psutil
@@ -239,9 +239,7 @@ class PolicyServer(StreamServer):
             return
 
         timeout = None
-        
         fileobj = None
-        instance_id = None
         
         try:
             if self._connection_timeout:        
@@ -367,32 +365,16 @@ def options():
                         dest='command',
                         help="Run command.")
     
-    args = parser.parse_args()
-    return dict(args._get_kwargs())
+    return dict(parser.parse_args()._get_kwargs())
 
 def daemonize(pid_file, callback=None, **config):
     
-    def stop(signal, frame):
+    def stop(signal, frame): # noqa
         raise SystemExit('terminated by signal %d' % int(signal))    
 
     from .geventdaemon import GeventDaemonContext
     import signal
-    """
-            chroot_directory=None,
-            working_directory="/",
-            umask=0,
-            uid=None,
-            gid=None,
-            prevent_core=True,
-            detach_process=None,
-            files_preserve=None,
-            pidfile=None,
-            stdin=None,
-            stdout=None,
-            stderr=None,
-            signal_map=None,
-    
-    """
+
     context = GeventDaemonContext(pidfile=pid_file,
                                   signal_map={signal.SIGTERM: stop,
                                               signal.SIGINT: stop})
@@ -526,7 +508,4 @@ def main():
 
     
 if __name__ == "__main__":
-    """
-    python -m mongrey.server start
-    """
     main()

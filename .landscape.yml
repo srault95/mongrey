@@ -18,13 +18,15 @@ ignore-paths:
   - mongrey/ext
   - mongrey/tests
   - mongrey/translations
-  - fabric.py
+  - mongrey/server/geventdaemon.py
+  - fabfile.py
   
 ignore-patterns:
   - ^.*\.yml$
   
 pep8:
   disable:
+    - E1002
     - E226
     - W293
     - E302

@@ -7,7 +7,6 @@ import arrow
 
 from peewee import (Proxy, 
                     Model,
-                    DataError, 
                     CharField, 
                     DateTimeField, 
                     IntegerField, 
@@ -18,18 +17,18 @@ from peewee import (Proxy,
 
 try:
     from peewee import PostgresqlDatabase
-    import psycopg2
+    import psycopg2 # noqa
     HAVE_PSYCOPG2 = True
 except ImportError:
     HAVE_PSYCOPG2 = False
 
 try:
     from peewee import MySQLDatabase
-    import MySQLdb as mysql  # prefer the C module.
+    import MySQLdb as mysql   # noqa
     HAVE_MYSQL = True
 except ImportError:
     try:
-        import pymysql as mysql
+        import pymysql as mysql # noqa
     except ImportError:
         HAVE_MYSQL = False
 
@@ -92,7 +91,7 @@ class Domain(Model):
     def __unicode__(self):
         return self.name
     
-    class Meta:
+    class Meta: # noqa
         database = database_proxy
         order_by = ('name',)
         
@@ -117,7 +116,7 @@ class Mynetwork(Model):
     def __unicode__(self):
         return self.value    
 
-    class Meta:
+    class Meta: # noqa
         database = database_proxy
         order_by = ('value',)
 
@@ -159,7 +158,7 @@ class BaseSearchField(Model):
             self._clean()
         return Model.save(self, force_insert=force_insert, only=only)
 
-    class Meta:
+    class Meta: # noqa
         database = database_proxy
 
 class Policy(BaseSearchField):
@@ -189,11 +188,10 @@ class Policy(BaseSearchField):
     comments = CharField(max_length=100, null=True)
     
     @classmethod
-    def search(cls, protocol, cache_enable=True):
-        #return BaseSearchField.search(cls, protocol, cache_enable=cache_enable, return_instance=True)
-        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=True)
+    def search(cls, protocol, cache_enable=True, return_instance=True):
+        return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=return_instance)
 
-    class Meta:
+    class Meta: # noqa
         order_by = ('name',)
 
     def __unicode__(self):
@@ -297,7 +295,7 @@ class GreylistEntry(Model):
     def __unicode__(self):
         return self.key
 
-    class Meta:
+    class Meta: # noqa
         database = database_proxy
         order_by = ('-timestamp',)
 
@@ -317,9 +315,10 @@ class GreylistMetric(Model):
 
     delay = FloatField(default=0.0)
 
-    class Meta:
+    class Meta: # noqa
         database = database_proxy
         order_by = ('-timestamp',)
+
 
 class WhiteList(BaseSearchField):
 

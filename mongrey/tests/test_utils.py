@@ -9,6 +9,9 @@ from .utils import protocol_yaml_TO_dict
 
 class UtilsTestCase(BaseTestCase):
     
+    def test_import_postgrey_whitelist(self):
+        self.fail("NotImplemented")
+    
     def test_build_key(self):
 
         protocol = {

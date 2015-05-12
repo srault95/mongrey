@@ -3,7 +3,6 @@
 import datetime
 import json
 
-from jinja2 import Markup
 from flask import abort, redirect, url_for, request, session, current_app
 
 from flask_admin import Admin, AdminIndexView as BaseAdminIndexView, expose
@@ -136,7 +135,6 @@ class GreylistEntryView(ModelView):
         
         return self.render('mongrey/greylistentry_show.html', **kwargs)
         
-        return jsonify(kwargs)
 
 class AdminIndexView(SecureView, BaseAdminIndexView):
     

@@ -136,8 +136,8 @@ class GreylistEntryView(ModelView):
 
     @expose('/show')
     def show(self):
-        id = request.args.get('id')
-        model = self.get_one(id)
+        _id = request.args.get('id')
+        model = self.get_one(_id)
         if not model:
             abort(404)
 
@@ -145,8 +145,6 @@ class GreylistEntryView(ModelView):
         kwargs['protocol'] = json.loads(model.protocol)
 
         return self.render('mongrey/greylistentry_show.html', **kwargs)
-
-        return jsonify(kwargs)
 
 
 class AdminIndexView(SecureView, BaseAdminIndexView):
