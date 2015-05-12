@@ -1,13 +1,46 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 
 from setuptools import setup, find_packages
 
 from mongrey.version import __VERSION__
-
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+
+def pip(filename):
+    requirements_path = os.path.abspath(os.path.join(CURRENT_DIR, 'requirements'))
+    filepath = os.path.abspath(os.path.join(requirements_path, filename))
+    
+    requirements=[]    
+    for line in open(filepath, 'rb').readlines():
+        _line = line.strip()
+        if not _line or _line[0] in ['#']: continue
+        _line = line.strip()
+        include = _line.split('-r ')
+        if len(include) == 2:
+            filename = include[1]
+            requirements.extend(pip(filename))
+        else:
+            if '#egg=' in _line:
+                requirements.append(_line.split("egg=")[1])
+            else:
+                requirements.append(include[0])
+    return requirements
+
+
+server_mongo_req = pip('server-mongo.txt')
+server_mysql_req = pip('server-mysql.txt')
+server_postgresql_req = pip('server-postgresql.txt')
+server_sqlite_req = pip('server-sqlite.txt')
+server_req = server_mongo_req + server_mysql_req + server_postgresql_req + server_sqlite_req
+
+web_mongo_req = pip('web-mongo.txt')
+web_mysql_req = pip('web-mysql.txt')
+web_postgresql_req = pip('web-postgresql.txt')
+web_sqlite_req = pip('web-sqlite.txt')
+web_req = web_mongo_req + web_mysql_req + web_postgresql_req + web_sqlite_req
+
+mongrey_full = set(server_req + web_req)
 
 def get_readme():
     readme_path = os.path.abspath(os.path.join(CURRENT_DIR, 'README.rst'))
@@ -16,25 +49,6 @@ def get_readme():
             return fp.read()
     return ""
 
-install_requires=[
-    'six',
-    'cython',
-    'gevent>=1.0',
-    'psutil',
-    'PyYAML',
-    'arrow',
-    'IPy',
-    'python-decouple',
-    'geoip-data',
-    'pygeoip',
-    'regex',
-    'werkzeug',   
-    'pymongo>=2.8,<3.0',
-    'Mongoengine>=0.9',
-]
-if not sys.platform.startswith("win32"):
-    install_requires.append('python-daemon')
-    
 setup(
     name='mongrey',
     version=__VERSION__,
@@ -47,42 +61,19 @@ setup(
     include_package_data=True,
     zip_safe=False,
     packages=find_packages(),
-    install_requires=install_requires,
+    install_requires=[],
     extras_require = {
-        'web': [
-            'Flask-BabelEx',
-            'Flask-Script',
-            'flask-admin',
-            'flask-mongoengine',
-        ],
-        #'mongo': [
-        #    'pymongo>=2.8,<3.0',
-        #    'Mongoengine>=0.9',
-        #    'flask-mongoengine',
-        #],
-        #'sql': [
-        #    'peewee',
-        #    'wtf-peewee'
-        #],
-        #'mysql': [
-        #    'peewee',
-        #    'wtf-peewee'
-        #],
-        #'pg': [
-        #    'peewee',
-        #    'wtf-peewee'
-        #],
-        'redis': [
-            'redis',
-        ],
-                      
-    #    'WEB': [
-    #        'Flask-BabelEx',
-    #        'Flask-BasicAuth',
-    #        'Flask-Script',
-    #        'flask-mongoengine',
-    #        'flask-admin',
-    #    ],
+        'server-mongo': set(server_mongo_req),
+        'server-mysql': set(server_mysql_req),
+        'server-postgresql': set(server_postgresql_req),
+        'server-sqlite': set(server_sqlite_req),
+        'web-mongo': set(server_mongo_req),
+        'web-mysql': set(server_mysql_req),
+        'web-postgresql': set(server_postgresql_req),
+        'web-sqlite': set(server_sqlite_req),
+        'server': set(server_req),
+        'web': set(web_req),
+        'full': set(server_req+web_req),
     },      
     dependency_links=[
       'https://github.com/MongoEngine/flask-mongoengine/tarball/master/#egg=flask-mongoengine-0.7.1',
@@ -96,8 +87,8 @@ setup(
     test_suite='nose.collector',      
     entry_points={
         'console_scripts': [
-            'mongrey-server = mongrey.server.core:main',
-            'mongrey-web = mongrey.web.manager:main',
+            'mongrey-server = mongrey.server.core:main [server-mongo, server-mysql, server-postgresql, server-sqlite, server, full]',
+            'mongrey-web = mongrey.web.manager:main [web-mongo, web-mysql, web-postgresql, web-sqlite, web, full]',
         ],
     },    
     keywords=['postfix','policy','filter', 'smtp', 'greylist'],
