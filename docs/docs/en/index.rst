@@ -1,6 +1,3 @@
-Mongrey - Documentation
-=======================
-
 .. toctree::
     :hidden:
 
@@ -11,13 +8,7 @@ Mongrey - Documentation
     tips
     api/index    
     todolist
+    changelog
 
 .. include:: ../../../README.rst   
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
-* :ref:`modindex`
 

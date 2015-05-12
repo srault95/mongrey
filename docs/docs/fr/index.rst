@@ -1,6 +1,3 @@
-Mongrey - Documentation
-=======================
-
 .. toctree::
     :hidden:
 
@@ -10,14 +7,22 @@ Mongrey - Documentation
     screenshots
     tips
     api/index
-    todolist    
+    todolist
+    changelog
 
-.. include:: ../../../README_fr.rst   
+.. include:: ../../../README_fr.rst
 
-Indices and tables
-==================
+.. blockdiag::
 
-* :ref:`genindex`
-* :ref:`search`
-* :ref:`modindex`
-
+    blockdiag {
+      orientation = portrait;
+      A [label="BlackList", description = "Black List (ip, sender, recipient, country"];
+      B [label="WhiteList"];
+      found [label="Found", color="red", shape=flowchart.condition];
+      nofound [label="Not Found", color="red", shape=flowchart.condition];
+    
+      A -> found -> B -> C;
+      D -> E [folded];
+      A -> nofound -> D
+    }
+       

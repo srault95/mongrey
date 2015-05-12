@@ -28,6 +28,8 @@ extensions = ['sphinx.ext.autodoc',
               'sphinxcontrib.email',
               'sphinxcontrib.cheeseshop',
               'sphinxcontrib.blockdiag',
+              'sphinx_git',
+              'releases',
               ]
 
 project = u'Mongrey'
@@ -93,3 +95,17 @@ blockdiag_fontpath = os.path.abspath(os.path.join(STATIC_DIR, 'ipagp.ttf'))
 blockdiag_html_image_format = "PNG"
 blockdiag_debug = True
 #blockdiag_outputdir
+
+releases_github_path = "srault95/mongrey"
+
+def setup(app):
+    from sphinx.ext.autodoc import cut_lines
+    from sphinx.util.docfields import GroupedField
+    #app.connect('autodoc-process-docstring', cut_lines(4, what=['module']))
+    app.add_object_type('confval', 'confval',
+                        objname='configuration value',
+                        indextemplate='pair: %s; configuration value')
+    #fdesc = GroupedField('parameter', label='Parameters',
+    #                     names=['param'], can_collapse=True)
+    #app.add_object_type('event', 'event', 'pair: %s; event', parse_event,
+    #                    doc_field_types=[fdesc])

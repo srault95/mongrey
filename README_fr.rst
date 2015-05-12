@@ -16,11 +16,7 @@ Fonctionnalités
 - Api REST (en cours de développement)
 - Cache en Mémoire ou avec Redis
 
-Documentations
-**************
-
-- `Français <http://mongrey.readthedocs.org/fr/latest/>`_
-- `Anglais <http://mongrey.readthedocs.org/en/latest/>`_
+* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
 
 Contribution
 ************
@@ -73,4 +69,3 @@ Toutes les contributions et suggestions sont les bienvenues.
 .. |health| image:: https://landscape.io/github/srault95/mongrey/master/landscape.svg?style=flat
    :target: https://landscape.io/github/srault95/mongrey/master
    :alt: Code Health
-       

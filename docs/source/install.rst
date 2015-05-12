@@ -7,41 +7,42 @@ Mongrey - Installation
 Introduction
 ************
 
-Vous avez le choix entre plusieurs méthodes d'installation.
-
-Le plus simple étant la version binaire adaptée au backend que vous utiliserez (MongoDB, PostgreSQL, ...)
-
+Vous avez le choix entre plusieurs méthodes d'installation. 
+Le plus simple étant la version binaire adaptée au backend que vous utiliserez (MongoDB, PostgreSQL, ...).
 Les binaires sont des versions compilés à l'aide de l'outil PyInstaller et n'ont aucunes dépendances externes.
 
-**Ces versions ont été testés avec :**
+**Tous ces binaires ont été testés avec :**
 
-- Ubuntu 14.04 (Trusty) 64 bits 
-- CentOS 7 64 bits
+- Ubuntu 14.04 (Trusty) - 64 bits 
+- CentOS 7 - 64 bits
 
 Commun à tous les binaires
 **************************
 
-- https://mongrey.radical-software.fr/download/mongrey/[RELEASE]/mongrey-server-mongo-Linux-x86_64
+**Version en cours: |release| **
 
-**Ou pour la dernière version:**
+Exemples
+========
 
-- https://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64
+*Remplacez [RELEASE] et [BACKEND] par la version et le backend souhaité.*
+
+- http://mongrey.radical-software.fr/download/mongrey/[RELEASE]/mongrey-server-[BACKEND]-Linux-x86_64
+
+*Pour la version la plus récente avec un backend MongoDB:*
+
+- http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64
 
 Mongrey Serveur
 ***************
 
-Version binaire
-===============
+.. _`install_mongrey_server_mongodb`:
 
 MongoDB
--------
+=======
 
 .. code:: bash
 
-    http://mongrey.radical-software.fr/download/mongrey/0.2.0/mongrey-server-mongo-Linux-x86_64
-    http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64
-
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey-server-mongo-`uname -s`-`uname -m`-latest > /usr/local/bin/mongrey-server-mongo
+    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server-mongo
     
     $ chmod +x /usr/local/bin/mongrey-server-mongo
     
@@ -50,15 +51,16 @@ MongoDB
 .. _`install_mongrey_server_postgresql`:
 
 PostgreSQL
-----------
+==========
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey-server-postgresql-`uname -s`-`uname -m`-latest > /usr/local/bin/mongrey-server-postgresql
+    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server-postgresql
     
     $ chmod +x /usr/local/bin/mongrey-server-postgresql
     
     $ /usr/local/bin/mongrey-server-postgresql --version    
+
 
 Docker - Build personnalisé
 ***************************
@@ -77,7 +79,7 @@ Exemple avec la version binaire de Mongrey Server PostgreSQL
         apt-get install -y --no-install-recommends \
         ca-certificates git curl language-pack-en
     
-    RUN curl -L http://mongrey.radical-software.fr/download/mongrey-server-postgresql-`uname -s`-`uname -m`-latest > /usr/local/bin/mongrey-server-postgresql
+    RUN curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server-postgresql
     
     RUN chmod +x /usr/local/bin/mongrey-server-postgresql
     
@@ -87,7 +89,6 @@ Exemple avec la version binaire de Mongrey Server PostgreSQL
     
     # Build du contenair
     $ docker build -t mongrey-server-postgresql .
-        
 
 
 Docker - PostgreSQL
@@ -128,22 +129,34 @@ Docker - MySQL
 Mongrey Web
 ***********
 
-Version binaire
-===============
-
 MongoDB
--------
+=======
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey-web-mongo-`uname -s`-`uname -m`-latest > /usr/local/bin/mongrey-web-mongo
+    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-web-mongo
     
     $ chmod +x /usr/local/bin/mongrey-web-mongo
     
-    $ /usr/local/bin/mongrey-web-mongo --help    
+    $ /usr/local/bin/mongrey-web-mongo --help
 
-pip installation
-****************
+    $ /usr/local/bin/mongrey-web-mongo server -p 8081 -h 127.0.0.1
+    
+    # Ouvrez le navigateur à l'adresse http://127.0.0.1:8081
+
+PostgreSQL
+==========
+
+.. code:: bash
+
+    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-web-postgresql
+    
+    $ chmod +x /usr/local/bin/mongrey-web-postgresql
+    
+    $ /usr/local/bin/mongrey-web-postgresql --help    
+
+Python Installation
+*******************
 
 **Requis :**
 
@@ -155,10 +168,14 @@ pip installation
 
 .. code:: bash
 
-    $ pip install mongrey
-    
-    # option cache redis
-    $ pip install mongrey['redis']
+    # Serveur et Web - Tous les backend 
+    $ pip install mongrey[full]
+
+    # Serveur - Backend MongoDB 
+    $ pip install mongrey[server_mongodb]
+
+    # Serveur - Tous les backend 
+    $ pip install mongrey[server]
     
     $ mongrey-server --help
     

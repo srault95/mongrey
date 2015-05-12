@@ -182,25 +182,11 @@ class GeventAccessLogger(object):
 
 
 """
-action=greylist, reason=new, client_name=qc206.internetdsl.tpnet.pl, client_address=80.55.28.206, sender=Jessica.fa@ataaksa.com, recipient=cias@ciasdublaisois.fr
-
 >>> result.groups()
-('pass', 'client whitelist', 'mx1.ville-blois.fr', '195.101.212.30', 'Sylvain.HEURTEBISE@blois.fr', 'mcsauve@ciasdublaisois.fr')
-
 >>> result.groupdict()
-{'sender': 'Sylvain.HEURTEBISE@blois.fr', 'client_name': 'mx1.ville-blois.fr', 'reason': 'client whitelist', 'action': 'pass', 'recipient': 'mcsauve@ciasdublaisois.fr', 'client_address': '195.101.212.30'}
-
 results = read_postgrey_logs('/tmp/greylist.csv')
-
 >>> import pprint
 >>> pprint.pprint(results[0])
-{'action': 'greylist',
- 'client_address': '209.43.22.9, sender=bounce-2067564_HTML-87484678-1167334-10875875-0@bounce.vp-email.com',
- 'client_name': 'mta9.vp-email.com',
- 'reason': 'new',
- 'recipient': 'lverdier@ciasdublaisois.fr',
- 'sender': None}
-
 """
 
 def read_postgrey_logs(filepath):

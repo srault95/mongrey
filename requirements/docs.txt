@@ -10,3 +10,5 @@ sphinxcontrib-cheeseshop
 sphinx_rtd_theme
 reportlab
 sphinxcontrib-blockdiag
+sphinx-git
+releases

@@ -2,18 +2,39 @@
 Téléchargement
 **************
 
-.. list-table:: Exemple de tableau 
-   :widths: 10 10 20 
-   :header-rows: 1 
-   :stub-columns: 1 
+- Server et Web (tous les backends): `Mongrey All`_
 
-   * - Titre 1 
-     - Titre 2 
-     - Titre 3 
-   * - `mongrey_server_mongo_latest`_ 
-     - `mongrey_server_mongo_latest`_ 
-     - `mongrey_server_pogresql_latest`_
-     
 
-.. _`mongrey_server_mongo_latest`: http://mongrey.radical-software.fr/download/mongrey-server-mongo-Linux-x86_64-latest     
-.. _`mongrey_server_pogresql_latest`: http://mongrey.radical-software.fr/download/mongrey-server-pogresql-Linux-x86_64-latest     
+.. csv-table:: Téléchargement Serveur ou Web (Tous Backend)
+   :header: "Server", "Web"
+   :widths: 40, 50
+
+   "Serveur", "`Mongrey Server All`_"
+   "Web", "`Mongrey Web All`_"
+
+   
+
+.. csv-table:: Téléchargement Serveur ou Web (par Backend)
+   :header: "Backend", "Serveur", "Web"
+   :widths: 30, 30, 30
+
+   MongoDB, `Mongrey Server MongoDB`_, `Mongrey Web MongoDB`_
+   MySQL, `Mongrey Server MySQL`_, `Mongrey Web MySQL`_
+   PostgreSQL, `Mongrey Server PostgreSQL`_, `Mongrey Web PostgreSQL`_
+   Sqlite, `Mongrey Server Sqlite`_, `Mongrey Web Sqlite`_
+
+
+.. _`Mongrey Server MongoDB`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64     
+.. _`Mongrey Server PostgreSQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-postgresql-Linux-x86_64     
+.. _`Mongrey Server MySQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mysql-Linux-x86_64     
+.. _`Mongrey Server Sqlite`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-sqlite-Linux-x86_64     
+.. _`Mongrey Server All`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-Linux-x86_64     
+
+.. _`Mongrey Web MongoDB`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-mongo-Linux-x86_64     
+.. _`Mongrey Web PostgreSQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-postgresql-Linux-x86_64     
+.. _`Mongrey Web MySQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-mysql-Linux-x86_64     
+.. _`Mongrey Web Sqlite`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-sqlite-Linux-x86_64     
+.. _`Mongrey Web All`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-Linux-x86_64     
+
+.. _`Mongrey All`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-Linux-x86_64     
+

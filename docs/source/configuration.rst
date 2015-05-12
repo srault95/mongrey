@@ -7,7 +7,7 @@ Mongrey Configuration
 Postfix intégration
 *******************
 
-- See Postfix_Policy_ for details
+- Voir `Postfix_Policy`_ pour plus de détail
 
 ::
 
@@ -40,3 +40,5 @@ Greylisting
 ***********
 
 .. todo::
+
+.. _`Postfix_Policy`: http://www.postfix.org/SMTPD_POLICY_README.html
