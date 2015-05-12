@@ -15,10 +15,17 @@ requirements:
     
 ignore-paths:
   - docs
+  - mongrey/ext
+  - mongrey/tests
+  - mongrey/translations
+  - fabric.py
+  
+ignore-patterns:
+  - ^.*\.yml$
   
 pep8:
   disable:
     - E226
-    - W293  
+    - W293
     - E302
-    - E41   
+    - E41

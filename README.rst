@@ -16,11 +16,7 @@ Features
 - REST Api (in progress)
 - Cache with Memory or Redis
 
-Documentations
-**************
-
-- `English <http://mongrey.readthedocs.org/en/latest/>`_
-- `French <http://mongrey.readthedocs.org/fr/latest/>`_
+* `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
 
 Contributing
 ************
