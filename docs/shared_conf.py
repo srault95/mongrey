@@ -179,7 +179,7 @@ blockdiag_html_image_format = "PNG"
 blockdiag_debug = True
 #blockdiag_outputdir
 
-releases_github_path = "srault95/mongrey"
+releases_github_path = "radical-software/mongrey"
 
 def setup(app):
     from sphinx.ext.autodoc import cut_lines
