@@ -2,6 +2,7 @@
 
 import time
 import unittest
+import os
 
 from mongrey.helpers import check_dnsl
 
@@ -47,7 +48,8 @@ class RBLTest(unittest.TestCase):
         rbl_host, rbl_txt = check_dnsl.check_dns_wb_lists("5.1.10.10", rbls=['rbl.example.net'], resolver=resolver.gethostbyname)
         self.assertIsNone(rbl_host)
         self.assertIsNone(rbl_txt)
-        
+
+    @unittest.skipIf('TRAVIS' in os.environ, "Skip Travis")        
     def test_check_rbl_real(self):
         
         rbl_host, rbl_txt = check_dnsl.check_dns_wb_lists("83.221.194.7", rbls=['zen.spamhaus.org'])
