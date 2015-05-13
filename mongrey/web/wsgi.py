@@ -6,7 +6,54 @@ from decouple import config as config_from_env
 
 from .. import constants
 from .. import utils
-from .extensions import auth, babel
+from .extensions import auth, babel, session_store
+
+def _configure_session(app):
+    """
+    SESSION_SET_TTL
+    
+    simplekv.fs.FilesystemStore(root, perm=None, **kwargs)
+    file://
+    simplekv.db.mongo.MongoStore(db, collection)
+    """
+    store = None
+    
+    SESSION_BACKEND = app.config.get('SESSION_BACKEND', 'memory://')
+    from simplekv.memory import DictStore
+
+    if SESSION_BACKEND.startswith('memory'):
+        store = DictStore()
+    
+    elif SESSION_BACKEND.startswith('mongodb'):
+        
+        if app.config.get('STORAGE') != "mongo":
+            raise Exception("Use mongodb for session storage only if app STORAGE is mongodb")
+        
+        from ..storage.mongo.models import Domain
+        from simplekv.db.mongo import MongoStore
+        db = Domain._get_db()
+        store = MongoStore(db, 'session')
+    
+    elif SESSION_BACKEND.startswith('redis://'):
+        from simplekv.memory.redisstore import RedisStore
+        from simplekv.decorator import PrefixDecorator
+        from redis import from_url
+        redis_cli = from_url(SESSION_BACKEND)
+        store = PrefixDecorator('mongrey', RedisStore(redis_cli))
+
+    else:
+        store = DictStore()
+    
+    """
+    TODO: CacheDecorator
+    from simplekv.cache import CacheDecorator
+    store = CacheDecorator(
+      cache=MemcacheStore(mc),
+      store=FilesystemStore('.')
+    )
+    """
+    
+    session_store.init_app(app, store)    
 
 def _configure_i18n(app):
 
@@ -77,6 +124,8 @@ def create_app(config='mongrey.web.settings.Prod', force_storage=None):
         _configure_storage_mongo(app)
     elif app.config.get('STORAGE') == "sql":
         _configure_storage_sql(app)
+        
+    _configure_session(app)
     
     @app.context_processor
     def all_processors():

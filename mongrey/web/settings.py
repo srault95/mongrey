@@ -43,9 +43,14 @@ class Config(object):
         }
     }        
     
-    WEB_HOST = config('MONGREY_WEB_HOST', '127.0.0.1', cast=str)
+    WEB_HOST = config('MONGREY_WEB_HOST', '127.0.0.1')
     
     WEB_PORT = config('MONGREY_WEB_PORT', 8081, cast=int)
+    
+    #---Flask-Kvsession
+    SESSION_BACKEND = config('MONGREY_SESSION_BACKEND', 'memory://')
+    SESSION_KEY_BITS = 64
+    #TODO: PERMANENT_SESSION_LIFETIME
     
 
 class Prod(Config):

@@ -4,3 +4,4 @@ Flask-BabelEx
 Flask-Script
 flask-admin
 flask-wtf
+Flask-KVSession
