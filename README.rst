@@ -2,7 +2,7 @@
 Greylist Server for Postfix
 ***************************
 
-|Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+|Build Status| |Coverage Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
 Features
 ********
@@ -33,10 +33,13 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
 .. _Postfix_Policy: http://www.postfix.org/SMTPD_POLICY_README.html
 .. _Coroutine: http://en.wikipedia.org/wiki/Coroutine
  
-.. |Build Status| image:: https://travis-ci.org/radical-software/mongrey.svg?branch=master
-   :target: https://travis-ci.org/radical-software/mongrey
+.. |Build Status| image:: https://travis-ci.org/srault95/mongrey.svg?branch=master
+   :target: https://travis-ci.org/srault95/mongrey
    :alt: Travis Build Status
    
+.. |Coverage Status| image:: https://coveralls.io/repos/srault95/mongrey/badge.svg 
+   :target: https://coveralls.io/r/srault95/mongrey   
+
 .. |pypi downloads| image:: https://img.shields.io/pypi/dm/mongrey.svg
     :target: https://pypi.python.org/pypi/mongrey
     :alt: Number of PyPI downloads
@@ -53,14 +56,14 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
     :target: https://pypi.python.org/pypi/mongrey/
     :alt: Python Wheel
         
-.. |requires status| image:: https://requires.io/github/radical-software/mongrey/requirements.svg?branch=master
-     :target: https://requires.io/github/radical-software/mongrey/requirements/?branch=master
+.. |requires status| image:: https://requires.io/github/srault95/mongrey/requirements.svg?branch=master
+     :target: https://requires.io/github/srault95/mongrey/requirements/?branch=master
      :alt: Requirements Status
 
 .. |docs| image:: https://readthedocs.org/projects/mongrey-en/badge/?version=latest
     :target: https://readthedocs.org/projects/mongrey-en/?badge=latest
     :alt: Documentation Status     
     
-.. |health| image:: https://landscape.io/github/radical-software/mongrey/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/radical-software/mongrey/master
+.. |health| image:: https://landscape.io/github/srault95/mongrey/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/srault95/mongrey/master
    :alt: Code Health

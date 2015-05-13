@@ -56,7 +56,7 @@ setup(
     long_description=get_readme(),
     author='Stéphane RAULT',
     author_email='stephane.rault@radicalspam.org',
-    url='https://github.com/srault95/mongrey', 
+    url='https://github.com/radical-software/mongrey', 
     license='BSD',
     include_package_data=True,
     zip_safe=False,
