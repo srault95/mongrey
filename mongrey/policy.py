@@ -8,6 +8,7 @@ import IPy
 from . import cache
 from . import utils
 from . import constants
+from .helpers.check_dnsl import check_dns_wb_lists
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ def search_mynetwork(client_address=None, objects=None):
     
     return False
 
+#TODO: test case
 def generic_search(protocol=None, objects=None, valid_fields=None, 
                    cache_key=None, cache_enable=True, 
                    return_instance=False):
@@ -132,6 +134,11 @@ def generic_search(protocol=None, objects=None, valid_fields=None,
     return return_value
 
 
+class StopCheck(Exception):
+    
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
 class Policy(object):
     
     _name = None
@@ -141,6 +148,12 @@ class Policy(object):
                  domain_vrfy=False,
                  mynetwork_vrfy=False,
                  spoofing_enable=False,
+                 rbl_enable=False,
+                 rbl_hosts=None,
+                 rwl_enable=False,
+                 rwl_hosts=None,
+                 rwbl_timeout=30,
+                 rwbl_cache_timeout=3600,
                  greylist_enable=True,
                  greylist_key=constants.GREY_KEY_MED, 
                  greylist_remaining=20,        # 20 seconds
@@ -163,6 +176,11 @@ class Policy(object):
         self.domain_vrfy = domain_vrfy
         self.mynetwork_vrfy = mynetwork_vrfy
         self.spoofing_enable = spoofing_enable
+        
+        self.rbl_enable = rbl_enable
+        self.rbl_hosts = rbl_hosts
+        self.rwbl_timeout = rwbl_timeout
+        self.rwbl_cache_timeout = rwbl_cache_timeout
         
         self.greylist_key = greylist_key 
         self.greylist_remaining = greylist_remaining
@@ -203,17 +221,24 @@ class Policy(object):
         return "action=%(action)s, reason=%(reason)s, client_name=%(client_name)s, client_address=%(client_address)s, sender=%(sender)s, recipient=%(recipient)s policy=%(policy_name)s" % kwargs
 
     def check_actions(self, protocol):
+        
+        '''
+        TODO: Séparer chaque check et utiliser Exception spécifique pour arrêter la procédure et renvoyer l'action
+        
+        TODO: Gérer un score pour certains actions et déterminer si score > Max: rejet 4xx ou rejet5xx
+            - Policy pour décider action
+        
+        TODO: message rbl:  $rbl_code Service unavailable; $rbl_class [$rbl_what] blocked using $rbl_domain${rbl_reason?; $rbl_reason}
+        - il faut dict pour utiliser %(field)s dans le template
+        - ex postfix: May 13 08:15:15 ns339295 postfix/smtpd[16495]: NOQUEUE: reject: RCPT from ip-79-111-119-78.bb.netbynet.ru[79.111.119.78]: 554 5.7.1 Service unavailable; Client host [79.111.119.78] blocked using zen.spamhaus.org; http://www.spamhaus.org/sbl/query/SBLCSS / http://www.spamhaus.org/query/bl?ip=79.111.119.78; from=<5C4B728D-D2EB-4290-ACC9-73DBAC6BB00C@ghkaaakaahkgjbfg.notifycenter63.net> to=<rcpt@example.org> proto=SMTP helo=<ghkaaakaahkgjbfg.notifycenter63.net>
+        '''
 
         policy_name = "default"
         
         cache_action = None
         cache_msg = None
-        cache_is_relay_denied = False
-        cache_is_blacklist = False
-        cache_is_whitelist = False
-        cache_is_outgoing = False
-        cache_is_spoofing = False
-        
+        is_cached = False
+
         uid = utils.get_uid(protocol)
         
         if cache.cache:
@@ -221,14 +246,13 @@ class Policy(object):
             if cache_value:
                 cache_msg = cache_value['msg']
                 cache_action = cache_value['action']
-                cache_is_relay_denied = cache_value['is_relay_denied']
-                cache_is_blacklist = cache_value['is_blacklist']
-                cache_is_whitelist = cache_value['is_whitelist']
-                cache_is_outgoing = cache_value['is_outgoing']
-                cache_is_spoofing = cache_value['is_spoofing']
-
+                for c in ['is_relay_denied', 'is_blacklist', 'is_whitelist',
+                          'is_outgoing', 'is_spoofing', 'is_rbl']:
+                    if cache_value.get(c, False) is True:
+                        is_cached = True
+                
         #---Cache actions
-        if cache_is_relay_denied or cache_is_outgoing or cache_is_spoofing or cache_is_blacklist or cache_is_whitelist:
+        if is_cached:
             self.return_cache_action(action=cache_action, msg=cache_msg, setcache=False)
     
         if self.greylist_excludes and protocol['client_address'] in self.greylist_excludes:
@@ -241,7 +265,6 @@ class Policy(object):
             action = "DUNNO private address [%(client_address)s]" % protocol
             return self.return_cache_action(uid=uid, action=action, msg=msg, setcache=False)
 
-    
         if not 'country' in protocol:
             protocol['country'] = utils.get_country(protocol['client_address'])
             
@@ -265,6 +288,7 @@ class Policy(object):
         greylist_key = self.greylist_key
         greylist_expire = self.greylist_expire
 
+        #TODO: renvoyer une policy par défaut
         policy = self.search_policy(protocol)
         if policy:
             policy_name = policy.name
@@ -305,11 +329,22 @@ class Policy(object):
         wl = self.search_whitelist(protocol)
         if wl:
             msg = self.get_msg(action="pass", reason="whitelisted", protocol=protocol, policy_name=policy_name)
+            #TODO: Choix OK ???
             action = "DUNNO whitelisted [%s]" % wl
             return self.return_cache_action(uid=uid, action=action, msg=msg, is_whitelist=True)
 
-        #TODO: spf, rbl, ... ?
+        #TODO: spf, ... ?
         #TODO: DDOS
+        
+        #---Check RBL for incoming mail 
+        if mynetwork_vrfy and not is_outgoing and self.rbl_enable:
+            #TODO: yield ?
+            rbl_host, rbl_txt = check_dns_wb_lists(protocol['client_address'], rbls=self.rbl_hosts, timeout=self.rwbl_timeout, cache_timeout=self.rwbl_cache_timeout)
+            if rbl_txt:
+                msg = self.get_msg(action="reject", reason="rbl-%s" % rbl_host, 
+                                   protocol=protocol, policy_name=policy_name)
+                action = "554 5.7.1 relay denied"
+                return self.return_cache_action(uid=uid, action=action, msg=msg, is_relay_denied=True)            
         
         if not greylist_enable:
             msg = self.get_msg(action="pass", reason="disable-greylisting", protocol=protocol, policy_name=policy_name)

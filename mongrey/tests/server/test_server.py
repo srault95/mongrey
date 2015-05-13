@@ -12,7 +12,7 @@ import gevent
 import arrow
 
 from mongrey import constants
-from mongrey.server import PolicyServer, logger as server_logger
+from mongrey.server.core import PolicyServer, logger as server_logger
 from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
 from mongrey.server.core import start_command, options, main
 from mongrey import utils
@@ -64,7 +64,7 @@ _DEFAULT_CONFIG = {
     'country_ipv6': None,
 
     'policy_settings': {
-        'blacklist_enable': True,       
+        'blacklist_enable': True,
         'domain_vrfy': False,       
         'mynetwork_vrfy': False,       
         'spoofing_enable': False,       

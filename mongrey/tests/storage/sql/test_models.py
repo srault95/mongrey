@@ -7,7 +7,7 @@ from peewee import IntegrityError
 from mongrey import constants
 from mongrey import utils
 from mongrey.storage.sql import models
-from mongrey.storage.sql.models import ValidationError
+from mongrey.exceptions import ValidationError
 
 from .base import MongoGreylistBaseTestCase
 from ...test_models import TestModelsMixin

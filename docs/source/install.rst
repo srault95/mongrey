@@ -42,11 +42,11 @@ MongoDB
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server-mongo
+    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
     
-    $ chmod +x /usr/local/bin/mongrey-server-mongo
+    $ chmod +x /usr/local/bin/mongrey-server
     
-    $ /usr/local/bin/mongrey-server-mongo --version    
+    $ /usr/local/bin/mongrey-server --version    
 
 .. _`install_mongrey_server_postgresql`:
 

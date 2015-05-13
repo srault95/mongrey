@@ -72,7 +72,7 @@ class Test(Config):
     MAIL_SUPPRESS_SEND = True
 
     BASIC_AUTH_USERNAME = 'radicalspamtest'
-    BASIC_AUTH_PASSWORD = 'radicalspamtest'
+    BASIC_AUTH_PASSWORD = 'radicalspamtest' # noqa
 
     MONGODB_SETTINGS = {
         'host': config('MONGREY_DB', 'mongodb://localhost/greylist_test'),

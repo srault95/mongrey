@@ -32,24 +32,13 @@ except ImportError:
     except ImportError:
         HAVE_MYSQL = False
 
+from ...exceptions import ValidationError
 from ... import utils
 from ... import validators
 from ... import constants
 from ...policy import generic_search, search_mynetwork
 
 database_proxy = Proxy()
-
-class ValidationError(AssertionError):
-
-    def __init__(self, message="", **kwargs):
-        self.field_name = kwargs.get('field_name')
-        self.message = message
-        
-    def __str__(self):
-        return unicode(self.message)
-
-    def __unicode__(self):
-        return self.message
 
 class DateTimeFieldExtend(DateTimeField):
 
@@ -188,7 +177,7 @@ class Policy(BaseSearchField):
     comments = CharField(max_length=100, null=True)
     
     @classmethod
-    def search(cls, protocol, cache_enable=True, return_instance=True):
+    def search(cls, protocol, cache_enable=True, return_instance=True): # noqa
         return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=return_instance)
 
     class Meta: # noqa

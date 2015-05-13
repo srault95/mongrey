@@ -2,6 +2,7 @@
 
 import re
 
+from .exceptions import ValidationError
 from . import utils
 from .constants import _
 
@@ -14,7 +15,7 @@ EMAIL_REGEX = re.compile(
     r')@(?:[A-Z0-9](?:[A-Z0-9-]{0,253}[A-Z0-9])?\.)+[A-Z]{2,22}$', re.IGNORECASE
 )
 
-def clean_domain(value, field_name=None, error_class=None):
+def clean_domain(value, field_name=None, error_class=ValidationError):
     
     new_value = "user@%s" % value
 
@@ -22,13 +23,13 @@ def clean_domain(value, field_name=None, error_class=None):
         message = _(u"Invalid Domain: %s") % value
         raise error_class(message, field_name=field_name)
 
-def clean_email(value, field_name=None, error_class=None):
+def clean_email(value, field_name=None, error_class=ValidationError):
     
     if not EMAIL_REGEX.match(value):
         message = _(u"Invalid Email: %s") % value
         raise error_class(message, field_name=field_name)
     
-def clean_email_or_domain(value, field_name=None, error_class=None):
+def clean_email_or_domain(value, field_name=None, error_class=ValidationError):
     
     valid_email = False
     valid_domain = False
@@ -49,7 +50,7 @@ def clean_email_or_domain(value, field_name=None, error_class=None):
         message = _(u"Invalid Email or Domain: %s") % value
         raise error_class(message, field_name=field_name)
 
-def clean_ip_address(value, field_name=None, error_class=None):
+def clean_ip_address(value, field_name=None, error_class=ValidationError):
 
     valid = utils.check_ipv4(value) or utils.check_ipv6(value)
 
@@ -57,7 +58,7 @@ def clean_ip_address(value, field_name=None, error_class=None):
         message = _(u"Invalid IP Address: %s") % value
         raise error_class(message, field_name=field_name)
 
-def clean_ip_address_or_network(value, field_name=None, error_class=None):
+def clean_ip_address_or_network(value, field_name=None, error_class=ValidationError):
     
     valid = utils.check_ipv4(value) or utils.check_ipv6(value) or utils.check_is_network(value)
 
@@ -65,7 +66,7 @@ def clean_ip_address_or_network(value, field_name=None, error_class=None):
         message = _(u"Invalid IP Address: %s") % value
         raise error_class(message, field_name=field_name)
     
-def clean_hostname(value, field_name=None, error_class=None):
+def clean_hostname(value, field_name=None, error_class=ValidationError):
     
     valid = True
     

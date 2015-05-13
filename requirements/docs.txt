@@ -4,12 +4,11 @@ Sphinx
 sphinx-autobuild
 sphinxcontrib-email
 sphinxcontrib-cheeseshop
-#sphinx-intl
-#transifex-client
-#https://github.com/snide/sphinx_rtd_theme
 sphinx_rtd_theme
 sphinx-bootstrap-theme
 reportlab
 sphinxcontrib-blockdiag
 sphinx-git
 releases
+#sphinx-intl
+#transifex-client

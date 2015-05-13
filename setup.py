@@ -75,10 +75,6 @@ setup(
         'web': set(web_req),
         'full': set(server_req+web_req)
     },      
-    dependency_links=[
-      'https://github.com/MongoEngine/flask-mongoengine/tarball/master/#egg=flask-mongoengine-0.7.1',
-      'https://github.com/srault95/geoip-data/tarball/master/#egg=geoip-data-0.1.1',
-    ],      
     tests_require=[
         'nose>=1.0'
         'coverage',

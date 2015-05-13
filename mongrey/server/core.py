@@ -21,10 +21,9 @@ from .. import constants
 from .. import utils
 from ..exceptions import (BypassProtocolError, 
                           ConfigurationError, 
-                          InvalidProtocolError, 
                           PolicyError, 
                           TimeoutError)
-
+from . import protocols
 try:
     import psutil
     HAVE_PSUTIL = True
@@ -250,14 +249,14 @@ class PolicyServer(StreamServer):
             
             fileobj = sock.makefile()
                         
-            protocol = utils.parse_postfix_protocol(fileobj, self._verbose > 2)
+            protocol = protocols.parse_policy_protocol(fileobj, self._verbose > 2)
             
             if self._no_stress and 'stress' in protocol:
                 if protocol['stress']:
                     raise BypassProtocolError("stress bypass")
             
             if not self._no_verify_protocol:
-                utils.verify_protocol(protocol)
+                protocols.verify_protocol(protocol)
             
             actions = self._policy.check_actions(protocol)
             
@@ -408,7 +407,8 @@ def start_command(**config):
     policy_settings = config.pop('policy_settings')
     
     from .. import cache
-    cache.cache = cache.Cache(**cache_settings)
+    cache.configure_cache(**cache_settings)
+    #cache.cache = cache.Cache(**cache_settings)
 
     policy_klass = None
 

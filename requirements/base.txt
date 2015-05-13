@@ -5,7 +5,6 @@ arrow
 IPy
 python-decouple
 psutil
-git+https://github.com/srault95/geoip-data.git#egg=geoip-data
 pygeoip
 regex
 werkzeug

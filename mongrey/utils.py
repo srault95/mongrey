@@ -13,18 +13,15 @@ import arrow
 from IPy import IP
 
 try:
-    from geoip_data import where_country_ipv4, where_country_ipv6
+    from .ext.geoip_data import where_country_ipv4, where_country_ipv6
     HAVE_GEOIP_DATA = True
 except ImportError:
     HAVE_GEOIP_DATA = False
 
 from . import constants
-from .exceptions import *    
 
 geoip_country_v4 = None
 geoip_country_v6 = None
-
-line_regex = re.compile(r'^\s*([^=\s]+)\s*=(.*)$')
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +52,7 @@ def get_country(client_address):
             
             return geoip_country_v6.country_code_by_addr_v6(client_address)
         
-    except:
+    except Exception:
         pass
 
 def configure_geoip(country_ipv4=None, country_ipv6=None):
@@ -88,7 +85,7 @@ def to_list(value):
 def is_private_address(client_address):
     try:
         return IP(client_address).iptype() in ['PRIVATE', 'LOOPBACK']
-    except:
+    except Exception:
         pass
     return False
 
@@ -111,7 +108,7 @@ def parse_domain(email):
         else:
             return values[-1].lower().strip()
 
-    except Exception, err:
+    except Exception:
         return
 
 def do_filesizeformat(value, binary=False):
@@ -147,19 +144,19 @@ def do_filesizeformat(value, binary=False):
 def check_is_network(value):
     try:
         return IP(value).len() > 1
-    except:
+    except Exception:
         return False
 
 def check_ipv4(value):
     try:
         return IP(value).version() == 4 
-    except:
+    except Exception:
         return False
 
 def check_ipv6(value):
     try:
         return IP(value).version() == 6 
-    except:
+    except Exception:
         return False
     
 class GeventAccessLogger(object):
@@ -285,66 +282,6 @@ def build_key(protocol, greylist_key=constants.GREY_KEY_MED):
     return "-".join(build_key)
     
     
-def verify_protocol(protocol):
-
-    if not 'protocol_state' in protocol:
-        raise InvalidProtocolError("protocol_state field not in protocol")
-    
-    protocol_state = protocol.get('protocol_state')
-    if not protocol_state.lower() in constants.ACCEPT_PROTOCOL_STATES:
-        raise InvalidProtocolError("this protocol_state is not supported: %s" % protocol_state)
-    
-    for key in protocol.keys():
-        if not key.lower() in constants.POSTFIX_PROTOCOL['valid_fields']:
-            raise InvalidProtocolError("invalid field in protocol: %s" % key)
-
-def parse_postfix_protocol(fileobj, debug=False):
-
-    protocol = {}
-
-    while True:
-        line = fileobj.readline()
-        
-        if line:
-            line = line.strip()
-            if debug:
-                print(line)
-            
-        if not line:
-            break
-        else:
-            m = line_regex.match(line)
-            if not m:
-                break
-             
-            key = m.group(1)        
-            value = m.group(2)
-            
-            if len(protocol) == 0:
-                '''First line'''
-                if key != 'request':
-                    raise InvalidProtocolError("Invalid Protocol")
-                if not value or value != 'smtpd_access_policy':
-                    raise InvalidProtocolError("Invalid Protocol")
-            elif key == 'request':
-                '''request=smtpd_access_policy already parsing'''
-                raise InvalidProtocolError("Invalid Protocol")
-
-            if key in protocol:
-                logger.warn("key is already in protocol : %s" % key)
-            else:
-                protocol[key] = value.lower()
-    
-    request = protocol.get('request', None)
-    if not request:
-        raise InvalidProtocolError("Invalid Protocol")
-    else:
-        if request != 'smtpd_access_policy':
-            raise InvalidProtocolError("Invalid Protocol")
-    
-    return protocol
-
-
 def configure_logging(debug=False, 
                       stdout_enable=True, 
                       syslog_enable=False,

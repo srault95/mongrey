@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import unittest
+
 from mongrey import utils
 from mongrey import constants
 from mongrey.exceptions import InvalidProtocolError
@@ -9,8 +11,15 @@ from .utils import protocol_yaml_TO_dict
 
 class UtilsTestCase(BaseTestCase):
     
-    def test_import_postgrey_whitelist(self):
+    @unittest.skip("NotImplemented")
+    def test_read_whitelist(self):
         self.fail("NotImplemented")
+        #utils.read_whitelist(whitelist_filename)
+
+    @unittest.skip("NotImplemented")
+    def test_read_postgrey_logs(self):
+        self.fail("NotImplemented")
+        #utils.read_postgrey_logs(filepath)
     
     def test_build_key(self):
 
@@ -48,23 +57,4 @@ class UtilsTestCase(BaseTestCase):
 
         key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_SPECIAL)
         self.assertEquals(key, '<>-test@example.org')
-
-    def test_verify_protocol(self):
-
-        with self.assertRaises(InvalidProtocolError) as ex:
-            utils.verify_protocol({})
-            self.assertEquals(str(ex), "protocol_state field not in protocol")
-
-        with self.assertRaises(InvalidProtocolError) as ex:
-            utils.verify_protocol({'protocol_state': 'DATA'})
-            self.assertEquals(str(ex), "this protocol_state is not supported: DATA")
-        
-        with self.assertRaises(InvalidProtocolError) as ex:
-            utils.verify_protocol({'protocol_state': 'RCPT', 'BADFIELD': 'value'})
-            self.assertEquals(str(ex), "invalid field in protocol: BADFIELD")
-
-        protocol = protocol_yaml_TO_dict()
-        result = utils.verify_protocol(protocol)
-        self.assertIsNone(result)
-        
 
