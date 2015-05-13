@@ -1,7 +1,7 @@
-mongrey.tests.web package
-=========================
+mongrey.server package
+======================
 
-.. automodule:: mongrey.tests.web
+.. automodule:: mongrey.server
     :members:
     :undoc-members:
     :show-inheritance:
@@ -9,12 +9,12 @@ mongrey.tests.web package
 Submodules
 ----------
 
-.. automodule:: mongrey.tests.web.test_admin
+.. automodule:: mongrey.server.core
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: mongrey.tests.web.test_session
+.. automodule:: mongrey.server.protocols
     :members:
     :undoc-members:
     :show-inheritance:

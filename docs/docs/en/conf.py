@@ -10,3 +10,9 @@ language = "en"
 today_fmt = '%Y-%m-%d %H:%M:%S'
 html_last_updated_fmt = today_fmt
 html_static_path += [LOCAL_STATIC_DIR]
+
+extlinks = {
+    'wikipedia': ('http://fr.wikipedia.org/wiki/' '%s', ''),
+}
+
+html_theme_options['lang'] = 'en'

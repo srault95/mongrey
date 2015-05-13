@@ -1,11 +1,13 @@
-***************************
+===========================
 Greylist Server for Postfix
-***************************
+===========================
 
 |Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
+* `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
+
 Features
-********
+========
 
 - Greylist Server high performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
@@ -16,10 +18,8 @@ Features
 - REST Api (in progress)
 - Cache with Memory or Redis
 
-* `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
-
 Contributing
-************
+============
 
 To contribute to the project, fork it on GitHub and send a pull request, all contributions and suggestions are welcome.
 

@@ -1,27 +1,51 @@
-**************
-Téléchargement
-**************
+===============
+Téléchargements
+===============
 
-- Server et Web (tous les backends): `Mongrey All`_
+**Exemple d'installation avec la version Serveur - Backend MongoDB:**
 
+.. code:: bash
 
-.. csv-table:: Téléchargement Serveur ou Web (Tous Backend)
-   :header: "Server", "Web"
-   :widths: 40, 50
+    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
+    
+    $ chmod +x /usr/local/bin/mongrey-server
+    
+    $ /usr/local/bin/mongrey-server --version
 
-   "Serveur", "`Mongrey Server All`_"
-   "Web", "`Mongrey Web All`_"
+Version intégrale
+=================
 
-   
+:Full: `Mongrey All`_ *(Contient le serveur et l'application Web ainsi que les drivers pour tous les backends)*
+:Serveur: `Mongrey Server All`_ *(Contient le serveur et les drivers pour tous les backends)*
+:Web: `Mongrey Web All`_ *(Contient l'application Web et les drivers pour tous les backends)*
 
-.. csv-table:: Téléchargement Serveur ou Web (par Backend)
-   :header: "Backend", "Serveur", "Web"
-   :widths: 30, 30, 30
+MongoDB
+=======
 
-   MongoDB, `Mongrey Server MongoDB`_, `Mongrey Web MongoDB`_
-   MySQL, `Mongrey Server MySQL`_, `Mongrey Web MySQL`_
-   PostgreSQL, `Mongrey Server PostgreSQL`_, `Mongrey Web PostgreSQL`_
-   Sqlite, `Mongrey Server Sqlite`_, `Mongrey Web Sqlite`_
+*  * Requis:
+   * Linux Ubuntu 14.04+ ou CentOS 7 (64bits)
+   * MongoDB Server
+
+:Serveur: `Mongrey Server MongoDB`_
+:Web UI: `Mongrey Web MongoDB`_
+
+PostgreSQL
+==========
+
+:Serveur: `Mongrey Server MongoDB`_
+:Web UI: `Mongrey Web MongoDB`_
+
+MySQL
+=====
+
+:Serveur: `Mongrey Server MySQL`_
+:Web UI: `Mongrey Web MySQL`_
+
+Sqlite
+======
+
+:Serveur: `Mongrey Server Sqlite`_
+:Web UI: `Mongrey Web Sqlite`_
 
 
 .. _`Mongrey Server MongoDB`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64     

@@ -16,7 +16,6 @@ Subpackages
     mongrey.helpers
     mongrey.server
     mongrey.storage
-    mongrey.tests
     mongrey.translations
     mongrey.web
 

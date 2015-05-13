@@ -8,7 +8,7 @@ Introduction
 ************
 
 Vous avez le choix entre plusieurs méthodes d'installation. 
-Le plus simple étant la version binaire adaptée au backend que vous utiliserez (MongoDB, PostgreSQL, ...).
+Le plus simple étant la version :term:`binaire` adaptée au backend que vous utiliserez (MongoDB, PostgreSQL, ...).
 Les binaires sont des versions compilés à l'aide de l'outil PyInstaller et n'ont aucunes dépendances externes.
 
 **Tous ces binaires ont été testés avec :**
@@ -19,7 +19,9 @@ Les binaires sont des versions compilés à l'aide de l'outil PyInstaller et n'o
 Commun à tous les binaires
 **************************
 
-**Version en cours: |release| **
+.. note::
+    
+    Version en cours: |release|
 
 Exemples
 ========
@@ -84,6 +86,7 @@ Exemple avec la version binaire de Mongrey Server PostgreSQL
     RUN chmod +x /usr/local/bin/mongrey-server-postgresql
     
     CMD /usr/local/bin/mongrey-server-postgresql start    
+
 
 .. code:: bash
     
@@ -155,8 +158,10 @@ PostgreSQL
     
     $ /usr/local/bin/mongrey-web-postgresql --help    
 
-Python Installation
-*******************
+.. _install_pip:
+
+Installation par PIP
+********************
 
 **Requis :**
 
@@ -181,16 +186,13 @@ Python Installation
     
     $ mongrey-web --help
     
-Mongrey - Intégration
-*********************
-
-Gunicorn (Mongrey WEB seulement)
-================================
-
 Supervisor
 ==========
 
+Un exemple d'intégration se trouve dans le répertoire contrib/ du projet.   
+
 Systemd
 =======
-    
+
+.. todo::    
 

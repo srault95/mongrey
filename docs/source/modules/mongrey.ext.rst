@@ -1,7 +1,7 @@
-mongrey.api package
+mongrey.ext package
 ===================
 
-.. automodule:: mongrey.api
+.. automodule:: mongrey.ext
     :members:
     :undoc-members:
     :show-inheritance:
@@ -9,17 +9,12 @@ mongrey.api package
 Submodules
 ----------
 
-.. automodule:: mongrey.api.base
+.. automodule:: mongrey.ext.flask_login
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: mongrey.api.mongo
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. automodule:: mongrey.api.sql
+.. automodule:: mongrey.ext.geoip_data
     :members:
     :undoc-members:
     :show-inheritance:

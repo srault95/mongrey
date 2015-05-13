@@ -10,3 +10,12 @@ language = "fr"
 today_fmt = '%d/%m/%Y %H:%M:%S'
 html_last_updated_fmt = today_fmt
 html_static_path += [LOCAL_STATIC_DIR]
+
+#http://fr.wikipedia.org/wiki/Greylisting
+#http://en.wikipedia.org/wiki/Greylisting
+
+extlinks = {
+    'wikipedia': ('http://fr.wikipedia.org/wiki/' '%s', ''),
+}
+
+html_theme_options['lang'] = 'fr'

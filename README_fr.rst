@@ -1,11 +1,13 @@
-***********************************
+===================================
 Serveur de liste grise pour Postfix
-***********************************
+===================================
+
+* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
 
 |Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
 Fonctionnalités
-***************
+===============
 
 - Serveur de liste grise haute performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
@@ -16,14 +18,10 @@ Fonctionnalités
 - Api REST (en cours de développement)
 - Cache en Mémoire ou avec Redis
 
-* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
-
 Contribution
-************
+============
 
-Pour contribuer à ce projet, créer un fork et dans la mesure du possible, effectuer les modifications dans une nouvelle branche puis envoyez un "pull request". 
-
-Toutes les contributions et suggestions sont les bienvenues. 
+Pour contribuer à ce projet, créer un fork et dans la mesure du possible, effectuer les modifications dans une nouvelle branche puis envoyez un "pull request". Toutes les contributions et suggestions sont les bienvenues. 
 
 .. _MongoDB: http://mongodb.org/
 .. _Docker: https://www.docker.com/

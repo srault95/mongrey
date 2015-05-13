@@ -2,10 +2,10 @@ docutils
 Pygments
 Sphinx
 sphinx-autobuild
-sphinxcontrib-email
 sphinxcontrib-cheeseshop
 sphinx_rtd_theme
-sphinx-bootstrap-theme
+#sphinx-bootstrap-theme
+sphinxjp.themes.basicstrap
 reportlab
 sphinxcontrib-blockdiag
 sphinx-git

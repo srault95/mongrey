@@ -4,9 +4,14 @@ from fabric.api import *
 from fabric.operations import local
 
 @task
-def runserver():
-    with settings(warn_only=True):
-        local('python runserver.py')
+def serve(lang='fr'):
+    with lcd('docs/_build/html/%s' % lang):
+        with settings(warn_only=True):
+            local('python -m SimpleHTTPServer 8000')
+
+@task
+def serve_en():
+    serve(lang='en')
 
 @task
 def test():
@@ -30,8 +35,7 @@ def babel_init():
 def docs():
     """
     sphinx-apidoc -o docs/source/modules mongrey
-    --no-toc
-    --no-headings
+    sphinx-apidoc --force -l -T -E -M -o docs/source/modules mongrey
     """
     local('sphinx-build -a -v -N -w docs/_build/errors-fr.log -b html docs/docs/fr docs/_build/html/fr')
     local('sphinx-build -a -v -N -w docs/_build/errors-en.log -b html docs/docs/en docs/_build/html/en')
