@@ -9,6 +9,14 @@ import hashlib
 
 from six import string_types
 
+try:    
+    from yaml import load as yaml_load
+    from yaml import dump as yaml_dump
+    from yaml import safe_dump    
+    HAVE_YAML = True
+except ImportError, err:
+    HAVE_YAML = False
+
 import arrow
 from IPy import IP
 
@@ -299,7 +307,7 @@ def configure_logging(debug=False,
     
     LOGGING = {
         'version': 1,
-        'disable_existing_loggers': True,
+        'disable_existing_loggers': False,
         'formatters': {
             'debug': {
                 'format': 'line:%(lineno)d - %(asctime)s %(name)s: [%(levelname)s] - [%(process)d] - [%(module)s] - %(message)s',
@@ -376,25 +384,59 @@ def configure_logging(debug=False,
     
     return logger
 
-    
-def load_yaml_config(settings=None, default_config=None):
-    
-    default_config = default_config or {}
-    
-    try:    
-        from yaml import load as yaml_load
-        HAVE_YAML = True
-    except ImportError, err:
-        HAVE_YAML = False
+
+def dump_dict_to_yaml_file(filepath, data={}, replace=False, createdir=True):
+    """Enregistre le fichier de configuration au format YAML"""
 
     if not HAVE_YAML:
         raise Exception("PyYAML is not installed\n")
     
+    filepath = os.path.abspath(os.path.expanduser(filepath))
+    
+    if os.path.exists(filepath) and not replace:
+        raise Exception("file %s exist" % filepath)
+    
+    filedir = os.path.abspath(os.path.dirname(filepath))
+    if not os.path.exists(filedir):
+        if createdir:
+            os.makedirs(filedir)
+        else:
+            raise Exception("directory %s not found" % filedir)
+    
+    stream = file(filepath, 'w')
+    safe_dump(data, stream, explicit_start=False, default_flow_style=False)
+    #yaml_dump(data, stream, explicit_start=False, default_flow_style=False)
+    stream.close()
+    
+    return filepath
+    
+def load_yaml_config(settings=None, default_config=None):
+
+    if not HAVE_YAML:
+        raise Exception("PyYAML is not installed\n")
+    
+    default_config = default_config or {}
+    
+    if isinstance(settings, list):
+        found = False
+        for s in settings:
+            if not s: 
+                continue
+            filepath = os.path.abspath(os.path.expanduser(s))
+            
+            logger.debug("search in %s" % filepath)
+            
+            if filepath and os.path.exists(filepath):
+                logger.info("load from %s" % filepath)
+                settings = filepath
+                found = True
+                break
+        if not found:
+            raise Exception("file not found in all paths")
+        
     stream = settings
     
     if isinstance(settings, string_types):
-        if not os.path.exists(settings):
-            raise Exception("YAML settings not found : %s\n" % settings)
     
         with open(settings) as fp:
             from StringIO import StringIO
@@ -405,5 +447,22 @@ def load_yaml_config(settings=None, default_config=None):
         
     return default_config
 
+def confirm_with_exist(install_path, **data):
+    try:
+        print("The file %s exist.\n" % install_path)
+        
+        while True:
+            answer = raw_input("Are you sure you want to destroy it? [y/N] : ")
+            answer = answer.strip().lower()
 
+            if answer == 'y':
+                return dump_dict_to_yaml_file(install_path, data=data, replace=True, createdir=True)
+            
+            elif answer == 'n':
+                return False
+    except EOFError:
+        pass
+    except KeyboardInterrupt:
+        return False
     
+    return False

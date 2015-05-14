@@ -32,8 +32,25 @@ except ImportError:
     
 logger = logging.getLogger(__name__)
 
+DEFAULT_SETTINGS_PATH = [
+    '~/mongrey/server.yml',
+    '~/mongrey-server.yml',
+    '/etc/mongrey-server.yml',
+    '/etc/mongrey/server.yml',
+]
+
+DEFAULT_FIXTURES_PATH = [
+    '~/mongrey/server-fixtures.yml',
+    '~/mongrey-server-fixtures.yml',
+    '/etc/mongrey-server-fixtures.yml',
+    '/etc/mongrey/server-fixtures.yml',
+]
 
 DEFAULT_CONFIG = {
+                  
+    'settings_path': env_config('MONGREY_SERVER_SETTINGS', None),             
+
+    'fixtures_path': env_config('MONGREY_SERVER_FIXTURES', None),             
     
     'storage': env_config('MONGREY_STORAGE', 'mongo'),             
                       
@@ -333,8 +350,13 @@ def options():
                                      add_help=True)
 
     parser.add_argument('--settings',
-                        dest="yaml_settings_path", 
+                        dest="settings_path", 
+                        default=DEFAULT_CONFIG['settings_path'], 
                         help='load settings from YAML file')
+
+    parser.add_argument('--fixtures', 
+                        dest='fixtures_path',
+                        help='load fixtures from YAML file')
     
     parser.add_argument('-D', '--debug', action="store_true")
     
@@ -345,6 +367,10 @@ def options():
     parser.add_argument('--syslog', 
                         action="store_true",
                         help="Enable syslog")
+
+    parser.add_argument('--quiet', 
+                        action="store_true",
+                        help="Silent mode (install command only)")
 
     parser.add_argument('--log-config',
                         dest="log_config", 
@@ -359,7 +385,10 @@ def options():
                         help='Enable write pid file')
     
     parser.add_argument(choices=['start',                                  
-                                 'showconfig',
+                                 'config',
+                                 'config-install',
+                                 'fixtures-import',
+                                 'fixtures-export'
                                  ],
                         dest='command',
                         help="Run command.")
@@ -380,11 +409,84 @@ def daemonize(pid_file, callback=None, **config):
     
     with context:
         callback(**config)
-
-def start_command(**config):
+        
+def command_fixtures_import(option_fixtures_path=None, raise_error=False, **config):
+    """
+    domain:
+    - name: example.net
+    - name: example.org
+    mynetwork:
+    - value: 1.1.1.1
+    - value: 192.168.0.0/24
+    whitelist:
+    - field_name: recipient
+      value: rcpt@example.net
+    - field_name: client_address
+      value: 1.1.1.0/24
+    - field_name: sender
+      value: partner.org
+    blacklist:
+    - field_name: sender
+      value: spam.com
+    - field_name: client_address
+      value: 1.1.1.0/24
     
-    storage = config.pop('storage')
+    """
 
+    fixtures_path = [
+        option_fixtures_path,
+        config.get('fixtures_path', None),
+    ] + DEFAULT_FIXTURES_PATH
+            
+    try:
+        fixtures = utils.load_yaml_config(settings=fixtures_path, default_config={})
+        
+        if fixtures and len(fixtures) > 0:
+            valid_storage(**config)
+            db, policy_klass, models = get_store(**config)
+            result = models.import_fixtures(**fixtures)
+            
+            logger.info("IMPORT entries[%(entries)s] - success[%(success)s] - warn[%(warn_error)s] - error[%(fatal_error)s]" % result)
+            
+            for error in result['errors']:
+                logger.error(error)
+        
+    except Exception, err:
+        if raise_error:
+            logger.error(str(err))
+            raise
+        logger.warning(str(err))
+        
+def command_fixtures_export(filepath=None, raise_error=False, **config):
+
+    try:
+        valid_storage(**config)
+        db, policy_klass, models = get_store(**config)
+
+        fixtures = models.export_fixtures()
+        return utils.dump_dict_to_yaml_file(filepath, data=fixtures, replace=True, createdir=True)
+        
+    except Exception, err:
+        if raise_error:
+            logger.error(str(err))
+            raise
+        logger.warning(str(err))
+    
+def command_load_settings(default_config=None, option_settings_path=None, raise_error=True):
+
+    settings_path = [
+        option_settings_path, 
+        default_config.get('settings_path', None),
+    ] + DEFAULT_SETTINGS_PATH
+    
+    try:
+        return utils.load_yaml_config(settings=settings_path, default_config=default_config)
+    except Exception, err:
+        if raise_error:
+            raise
+
+def valid_storage(storage=None, **config):
+    
     if not storage in ["mongo", "sql"]:
         raise ConfigurationError("storage not available: %s\n" % storage)
     
@@ -393,6 +495,37 @@ def start_command(**config):
 
     if storage == "mongo" and not "mongodb_settings" in config:
         raise ConfigurationError("mongodb_settings not found in configuration")
+
+
+def get_store(storage=None, **config):
+
+    if storage == "mongo":
+        from mongrey.storage.mongo.utils import create_mongo_connection
+        from mongrey.storage.mongo.policy import MongoPolicy
+        from mongrey.storage.mongo import models
+        mongodb_settings = config.pop('mongodb_settings')
+        create_mongo_connection(mongodb_settings)
+        db = mongodb_settings['host']
+        policy_klass = MongoPolicy
+        return db, policy_klass, models
+
+    elif storage == "sql":
+        from mongrey.storage.sql.models import configure_peewee
+        from mongrey.storage.sql.policy import SqlPolicy
+        from mongrey.storage.mongo import models
+        peewee_settings = config.pop('peewee_settings')
+        configure_peewee(**peewee_settings)
+        db = peewee_settings['db_name']
+        policy_klass = SqlPolicy
+        return db, policy_klass, models
+    
+    return None, None, None
+    
+def command_start(**config):
+    
+    storage = config.pop('storage')
+    
+    valid_storage(storage=storage, **config)
 
     stats_enable = config.pop('stats_enable')
     stats_interval = config.pop('stats_interval')
@@ -408,34 +541,18 @@ def start_command(**config):
     
     from .. import cache
     cache.configure_cache(**cache_settings)
-    #cache.cache = cache.Cache(**cache_settings)
 
-    policy_klass = None
+    db, policy_klass, models = get_store(storage=storage, **config)
+
+    config.pop('mongodb_settings', None)
+    config.pop('peewee_settings', None)
+    config.pop('settings_path', None)
+    config.pop('fixtures_path', None)
 
     kwargs = policy_settings.copy()
     kwargs['purge_interval'] = purge_interval
     kwargs['metrics_interval'] = metrics_interval
 
-    db = None
-
-    if storage == "mongo":
-        from mongrey.storage.mongo.utils import create_mongo_connection
-        from mongrey.storage.mongo.policy import MongoPolicy
-        mongodb_settings = config.pop('mongodb_settings')
-        create_mongo_connection(mongodb_settings)
-        db = mongodb_settings['host']
-        policy_klass = MongoPolicy
-        config.pop('peewee_settings')
-
-    elif storage == "sql":
-        from mongrey.storage.sql.models import configure_peewee
-        from mongrey.storage.sql.policy import SqlPolicy
-        peewee_settings = config.pop('peewee_settings')
-        configure_peewee(**peewee_settings)
-        db = peewee_settings['db_name']
-        policy_klass = SqlPolicy
-        config.pop('mongodb_settings')
-    
     policy = policy_klass(**kwargs)
     
     server = PolicyServer(policy=policy, **config)
@@ -467,15 +584,7 @@ def main():
     opts = options()
 
     config = DEFAULT_CONFIG.copy()
-    
-    yaml_settings_path = opts.get('yaml_settings_path')
-    if yaml_settings_path:
-        try:
-            config = utils.load_yaml_config(settings=yaml_settings_path, default_config=config)
-        except Exception, err:
-            sys.stderr.write("%s\n" % str(err))
-            sys.exit(1)
-        
+
     debug = opts.get('debug')
     command = opts.get('command')
     pid_file = opts.get('pid_file')
@@ -488,23 +597,76 @@ def main():
                             syslog_enable=opts.get('syslog'), 
                             prog_name="mongrey", 
                             config_file=opts.get('log_config'))
-    
+
+    _config = command_load_settings(default_config=config, 
+                                   option_settings_path=opts.get('settings_path', None),
+                                   raise_error=False)
+    if not _config:
+        logger.warning("not setting file")
+    else:
+        config = _config
+
     if command == 'start':
-        utils.configure_geoip(country_ipv4=config.pop('country_ipv4'), country_ipv6=config.pop('country_ipv6'))
+        
+        utils.configure_geoip(country_ipv4=config.pop('country_ipv4'), 
+                              country_ipv6=config.pop('country_ipv6'))
+
+        command_fixtures_import(option_fixtures_path=opts.get('fixtures_path', None),
+                              raise_error=False,
+                              **config)
+        
         try:
             if not sys.platform.startswith("win32") and daemon:
-                daemonize(pid_file, callback=start_command, **config)
+                daemonize(pid_file, callback=command_start, **config)
             else: 
-                start_command(**config)
+                command_start(**config)
                 
             sys.exit(0)
         except Exception, err:
             sys.stderr.write("%s\n" % str(err))
             sys.exit(1)
         
-    elif command == 'showconfig':
+    elif command == 'config-install':
+        filepath = opts.get('settings_path', None) or config.get('settings_path', None) or DEFAULT_SETTINGS_PATH[0]
+        
+        filepath = os.path.abspath(os.path.expanduser(filepath))
+        
+        if os.path.exists(filepath) and not opts.get('quiet'):
+            result = utils.confirm_with_exist(filepath, **config)
+        else:
+            try:
+                result = utils.dump_dict_to_yaml_file(filepath, data=config, replace=True, createdir=True)
+                print("Success operation !. file writed: %s\n" % filepath)
+                
+            except Exception, err:
+                print(str(err))
+                sys.exit(1)
+        if not result:
+            sys.stdout.write("canceled operation\n")
+
+    elif command == 'config':
         pp(config)
-        sys.exit(0)
+
+    elif command == 'fixtures-export':
+        filepath = opts.get('fixtures_path', None) or config.get('fixtures_path', None) or DEFAULT_FIXTURES_PATH[0]
+        try:
+            result = command_fixtures_export(filepath=filepath, raise_error=True, **config)
+            print("Success operation !. file writed: %s\n" % result)
+        except Exception, err:
+            print("ERROR: %s" % str(err))
+            sys.exit(1)
+
+    elif command == 'fixtures-import':
+        try:
+            command_fixtures_import(option_fixtures_path=opts.get('fixtures_path', None),
+                                  raise_error=True, 
+                                  **config)
+        except Exception, err:
+            print("ERROR: %s" % str(err))
+            sys.exit(1)
+            
+        
+    sys.exit(0)
 
     
 if __name__ == "__main__":

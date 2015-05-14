@@ -6,7 +6,7 @@ import datetime
 import arrow
 
 from mongoengine import Document, Q, fields
-from mongoengine import ValidationError
+from mongoengine import ValidationError, NotUniqueError
 
 from ... import utils
 from ... import validators
@@ -326,4 +326,104 @@ def query_for_purge():
     
     return GreylistEntry.objects(query)
         
+def import_fixtures(**fixtures):
+    
+    domains = fixtures.get('domain', [])
 
+    mynetworks = fixtures.get('mynetwork', [])
+
+    whitelists = fixtures.get('whitelist', [])
+
+    blacklists = fixtures.get('blacklist', [])
+
+    entries = 0    
+    success = 0
+    warn_error = 0
+    fatal_error = 0
+    errors = []
+    
+    for value in domains:
+        entries += 1
+        try:
+            Domain(**value).save()
+            success +=1
+        except NotUniqueError:
+            warn_error += 1
+        except Exception, err:
+            logger.error(err)
+            fatal_error += 1
+            errors.append(str(err))
+
+    for value in mynetworks:
+        entries += 1
+        try:
+            Mynetwork(**value).save()
+            success +=1
+        except NotUniqueError:
+            warn_error += 1
+        except Exception, err:
+            logger.error(err)
+            fatal_error += 1
+            errors.append(str(err))
+
+    for value in whitelists:
+        entries += 1
+        try:
+            WhiteList(**value).save()
+            success +=1            
+        except NotUniqueError:
+            warn_error += 1
+        except Exception, err:
+            logger.error(err)
+            fatal_error += 1
+            errors.append(str(err))
+
+    for value in blacklists:
+        entries += 1
+        try:
+            BlackList(**value).save()
+            success +=1            
+        except NotUniqueError:
+            warn_error += 1
+        except Exception, err:
+            logger.error(err)
+            fatal_error += 1
+            errors.append(str(err))
+
+    return {
+        'entries': entries,
+        'success': success,
+        'warn_error': warn_error,
+        'fatal_error': fatal_error,
+        'errors': errors
+    }
+
+def export_fixtures():
+
+    fixtures = {
+        'domain': [],
+        'mynetwork': [],
+        #'policy': [],
+        #'greylist_entry': [],
+        #'greylist_metric': [],
+        'whitelist': [],
+        'blacklist': [],
+    }
+  
+    for d in Domain.objects.as_pymongo():
+        d.pop('_id', None)
+        fixtures['domain'].append(d)
+
+    for d in Mynetwork.objects.as_pymongo():
+        d.pop('_id', None)
+        fixtures['mynetwork'].append(d)
+
+    for d in WhiteList.objects.as_pymongo():
+         d.pop('_id', None)
+         fixtures['whitelist'].append(d)
+    
+    for d in BlackList.objects.as_pymongo():
+         d.pop('_id', None)
+         fixtures['blacklist'].append(d)
+
+    return fixtures
