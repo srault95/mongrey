@@ -2,9 +2,13 @@
 Serveur de liste grise pour Postfix
 ===================================
 
-* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
-
 |Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+
+Documentations
+==============
+
+* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
+* `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
 
 Fonctionnalités
 ===============

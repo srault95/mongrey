@@ -36,11 +36,14 @@ Table des matières
     integration
     configuration
     security
+    migration
     screenshots
     tips
+    otherprojects
+    references
     changelog
     glossary
-    todolist
+    todo
 
 
 Index - Recherche

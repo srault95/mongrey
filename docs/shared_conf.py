@@ -72,7 +72,7 @@ html_show_copyright = False
 
 #TODO: A surveiller
 #html_compact_lists = False
-#html_scaled_image_link = False
+html_scaled_image_link = False
 
 """
 if on_rtd:    

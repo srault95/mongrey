@@ -22,9 +22,10 @@ Version intégrale
 MongoDB
 =======
 
-*  * Requis:
-   * Linux Ubuntu 14.04+ ou CentOS 7 (64bits)
-   * MongoDB Server
+**Requis :**
+
+* Linux Ubuntu 14.04+ ou CentOS 7 (64bits)
+* MongoDB Server 2.6.5+
 
 :Serveur: `Mongrey Server MongoDB`_
 :Web UI: `Mongrey Web MongoDB`_
@@ -32,11 +33,21 @@ MongoDB
 PostgreSQL
 ==========
 
+**Requis :**
+
+* Linux Ubuntu 14.04+ ou CentOS 7 (64bits)
+* PostgreSQL Server 9.1+
+
 :Serveur: `Mongrey Server MongoDB`_
 :Web UI: `Mongrey Web MongoDB`_
 
 MySQL
 =====
+
+**Requis :**
+
+* Linux Ubuntu 14.04+ ou CentOS 7 (64bits)
+* MySQL Server 
 
 :Serveur: `Mongrey Server MySQL`_
 :Web UI: `Mongrey Web MySQL`_

@@ -36,12 +36,14 @@ Table of Contents
     integration
     configuration
     security
+    migration
     screenshots
     tips
+    otherprojects
+    references
     changelog
     glossary
-    todolist
-
+    todo
 
 Indices and tables
 ==================

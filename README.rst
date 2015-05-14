@@ -4,6 +4,10 @@ Greylist Server for Postfix
 
 |Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
+Documentations
+==============
+
+* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
 * `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
 
 Features

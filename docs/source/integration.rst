@@ -1,9 +1,13 @@
-***********
+===========
 Intégration
-***********
+===========
 
-.. note:: Mongrey WEB est livré avec un serveur WSGI Gevent intégré très performant mais si vous avez besoin 
+.. note:: Mongrey WEB est livré avec un serveur WSGI `Gevent`_ intégré très performant mais si vous avez besoin 
     d'intégrer l'application dans Nginx ou Apache, vous pouvez suivre les procédures suivantes.
+
+Mongrey Serveur
+===============
+
 
 Mongrey WEB - WSGI
 ==================
@@ -42,3 +46,21 @@ Chaussette
 ----------
 
 .. todo::
+
+
+Upstart
+=======
+
+http://upstart.ubuntu.com/
+
+.. todo::    
+
+Systemd
+=======
+
+http://freedesktop.org/wiki/Software/systemd/
+
+.. todo::    
+
+
+.. _`Gevent`: http://www.gevent.org/

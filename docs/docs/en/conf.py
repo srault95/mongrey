@@ -16,3 +16,4 @@ extlinks = {
 }
 
 html_theme_options['lang'] = 'en'
+html_search_language = "en"
