@@ -14,7 +14,7 @@ import arrow
 from mongrey import constants
 from mongrey.server.core import PolicyServer, logger as server_logger
 from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
-from mongrey.server.core import start_command, options, main
+from mongrey.server.core import options, main
 from mongrey import utils
 
 from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port

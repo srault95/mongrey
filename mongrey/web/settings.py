@@ -31,7 +31,7 @@ class Config(object):
     BASIC_AUTH_MAX_ATTEMPT = config('MONGREY_AUTH_MAX_ATTEMPT', 3, cast=int)
     
     MONGODB_SETTINGS = {
-        'host': config('MONGREY_DB', 'mongodb://localhost/greylist'),
+        'host': config('MONGREY_DB', 'mongodb://localhost/mongrey'),
         'use_greenlets': True,
         'tz_aware': True,    
     }   
@@ -80,7 +80,7 @@ class Test(Config):
     BASIC_AUTH_PASSWORD = 'radicalspamtest' # noqa
 
     MONGODB_SETTINGS = {
-        'host': config('MONGREY_DB', 'mongodb://localhost/greylist_test'),
+        'host': config('MONGREY_DB', 'mongodb://localhost/mongrey_test'),
         'use_greenlets': True,
         'tz_aware': True,    
     }   

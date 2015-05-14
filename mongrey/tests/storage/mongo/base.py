@@ -14,7 +14,7 @@ from ...base import BaseTestCase
 class MongoGreylistBaseTestCase(BaseTestCase):
     
     mongodb_settings = {
-        'host': 'mongodb://localhost/greylist_test',
+        'host': 'mongodb://localhost/mongrey_test',
         'use_greenlets': True,
         'tz_aware': True,    
     }
