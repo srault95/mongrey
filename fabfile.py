@@ -32,7 +32,7 @@ def babel_init():
     
 
 @task
-def docs():
+def build_docs():
     """
     sphinx-apidoc -o docs/source/modules mongrey
     sphinx-apidoc --force -l -T -E -M -o docs/source/modules mongrey
@@ -40,16 +40,11 @@ def docs():
     local('sphinx-build -a -v -N -w docs/_build/errors-fr.log -b html docs/docs/fr docs/_build/html/fr')
     local('sphinx-build -a -v -N -w docs/_build/errors-en.log -b html docs/docs/en docs/_build/html/en')
     local('sphinx-build -a -v -N -b changes docs/docs/fr docs/_build/html/fr/changes')
-    with lcd('docs/_build/html/fr'):
-        with settings(warn_only=True):
-            local('python -m SimpleHTTPServer 8000')
     
-    #local('cd ../builds/flask_user/docs && zip -u -r flask_user_docs *')
-
 @task
 def rebuild_docs():
     local('rm -fr docs/_build/html')
-    docs()
+    build_docs()
 
 @task
 def upload_to_pypi():
@@ -71,6 +66,12 @@ def runtests_sql():
 def runtests():
     with settings(warn_only=True):
         local('nosetests -s -v mongrey')
+
+@task
+def runtests_skip_travis():
+    with shell_env(TRAVIS='true'):
+        with settings(warn_only=True):
+            local('nosetests -s -v mongrey')
         
 @task
 def run_web():

@@ -5,6 +5,7 @@ cache:
   - apt
 
 python:
+  #Python 2.7.9
   - "2.7"
 
 services:
@@ -18,7 +19,7 @@ git:
   depth: 100
   
 env:
-  #GEVENT_RESOLVER=ares GEVENTARES_SERVERS=8.8.8.8
+  #- GEVENT_RESOLVER=ares GEVENTARES_SERVERS=8.8.8.8
   - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey_test MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=sqlite:////tmp/mongrey_test.db MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
@@ -39,8 +40,8 @@ before_script:
   - sleep 5
   - env
   - psql -c 'create database mongrey_test;' -U postgres
-  #- "if [[ $POSTGRESQL == '1' ]]; then sh -c \"psql -c 'create database mongrey_test;' -U postgres\"; fi"
   - "if [[ $MYSQL == '1' ]]; then mysql -e 'create database mongrey_test;'; fi"
+  - pip freeze
   
 script:
   - nosetests -s -v mongrey
