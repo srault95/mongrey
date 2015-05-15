@@ -40,7 +40,11 @@ class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
     def test_greylist_metrics(self):
         self._test_greylist_metrics(models)
         
+    def test_import_fixtures(self):
+        self._test_import_fixtures(models)
         
+    def test_export_fixtures(self):
+        self._test_export_fixtures(models)
         
         
         

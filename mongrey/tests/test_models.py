@@ -95,6 +95,18 @@ class TestModelsMixin:
         doc.accept(expire=86400, now=doc.timestamp)
         value = doc.expire_time - doc.timestamp
         self.assertEquals(value.total_seconds(), 86400)
+
+        protocol = {
+            'client_address': '1.1.1.1',
+            'client_name': 'mx1.example.net',
+            'helo_name': 'example.net',
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+            'country': 'fr'
+        }
+
+        doc = models.GreylistEntry.create_entry(key='key2', protocol=protocol)
+        self.assertDictEqual(doc.protocol, protocol)
         
     def _test_search_policy(self, models):
 
@@ -304,4 +316,104 @@ class TestModelsMixin:
         models.GreylistMetric(**metrics).save()
         self._drop_model(models.GreylistEntry)
         
-    
+    def _test_import_fixtures(self, models):
+
+        fixtures = {
+            'domain': [{
+                'name': 'example.org',
+            }],
+            'mynetwork': [{
+                'value': '1.1.1.1',
+            }],
+            'whitelist': [{
+                'value': '1.1.1.0/24',
+                'field_name': 'client_address',
+            }],
+            'blacklist': [{
+                'value': '2.2.2.2',
+                'field_name': 'client_address',
+            }],
+            'policy': [{
+                'name': 'policytest',
+                'value': '1.1.1.0/24',
+                'field_name': 'client_address',
+            }],
+        }
+        
+        result = models.import_fixtures(fixtures)
+        
+        result_attempt = {
+            'entries': 5,
+            'success': 5,
+            'warn_error': 0,
+            'fatal_error': 0,
+            'errors': []
+        }
+        
+        self.assertDictEqual(result, result_attempt)
+
+        fixtures = {
+            'mynetwork': [{
+                'value': '1.1.1.1',
+            }],
+        }
+        result = models.import_fixtures(fixtures)
+        
+        result_attempt = {
+            'entries': 1,
+            'success': 0,
+            'warn_error': 1,
+            'fatal_error': 0,
+            'errors': []
+        }
+        self.assertDictEqual(result, result_attempt)
+        
+        fixtures = {
+            'mynetwork': [{
+                'value': 'badvalue',
+            }],
+        }
+        result = models.import_fixtures(fixtures)
+        self.assertEquals(result['fatal_error'], 1)
+        self.assertEquals(len(result['errors']), 1)
+        
+    def _test_export_fixtures(self, models):
+
+        fixtures = {
+            'domain': [{
+                'name': 'example.org',
+            }],
+            'mynetwork': [{
+                'value': '1.1.1.1',
+            }],
+            'whitelist': [{
+                'value': '1.1.1.0/24',
+                'field_name': 'client_address',
+                'comments': None
+            }],
+            'blacklist': [{
+                'value': '2.2.2.2',
+                'field_name': 'client_address',
+                'comments': None
+            }],
+            'policy': [{
+                'name': 'policytest',
+                'value': '1.1.1.0/24',
+                'field_name': 'client_address',
+                'domain_vrfy': True,
+                'greylist_enable': True,
+                'greylist_expire': 100,
+                'greylist_key': 'med',
+                'greylist_remaining': 20,
+                'mynetwork_vrfy': True,
+                'spoofing_enable': True,
+                'comments': None
+            }],
+        }
+        
+        models.import_fixtures(fixtures)
+        
+        export_fixtures = models.export_fixtures()
+        
+        self.assertDictEqual(export_fixtures, fixtures)
+            

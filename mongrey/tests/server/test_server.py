@@ -21,7 +21,9 @@ from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port
 from ..base import BaseTestCase
 
 _DEFAULT_CONFIG = {
-    'storage': 'mongo',             
+    'settings_path': None,
+    'fixtures_path': None,
+    'storage': 'sql',             
     'host': '127.0.0.1',
     'port': 9999,
     'allow_hosts': [],
@@ -81,6 +83,10 @@ _DEFAULT_CONFIG = {
 
 
 class NoRunServerTestCase(BaseTestCase):
+    
+    def test_default_config(self):
+        self.maxDiff = None
+        self.assertDictEqual(_DEFAULT_CONFIG, SERVER_CONFIG)
 
     def test_configuration_from_yaml(self):
         
@@ -92,12 +98,12 @@ class NoRunServerTestCase(BaseTestCase):
           use_greenlets: true        
         """
         
-        config = utils.load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG)
+        config = utils.load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG.copy())
         
         self.assertEquals(config['allow_hosts'], ['1.1.1.1'])
         self.assertEquals(config['mongodb_settings']['host'], 'mongodb://host/db')
         self.assertEquals(config['port'], 9999)
-        
+                
     def test_security_disable(self):
         u"""Disable security by ip"""
         
