@@ -11,8 +11,8 @@ from mongrey import cache
 from ...base import BaseTestCase
 
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', 'mongo') != "mongo", "Skip no mongodb tests")
-class MongoGreylistBaseTestCase(BaseTestCase):
-    
+class MongreyBaseTestCase(BaseTestCase):
+
     mongodb_settings = {
         'host': 'mongodb://localhost/mongrey_test',
         'use_greenlets': True,
@@ -30,8 +30,10 @@ class MongoGreylistBaseTestCase(BaseTestCase):
         models.BlackList.drop_collection()
         models.Domain.drop_collection()
         models.Mynetwork.drop_collection()
+        models.Mailbox.drop_collection()
     
     def tearDown(self):
         BaseTestCase.tearDown(self)
         if self._cache:
             self._cache.clear()
+    

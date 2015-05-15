@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import urlparse
 import base64
 import logging
@@ -12,6 +13,11 @@ JSON_HEADERS = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
 }
+
+
+from . import resources
+
+RESOURCE_DIR = os.path.abspath(os.path.dirname(resources.__file__)) 
 
 class BaseTestCase(unittest.TestCase):
 

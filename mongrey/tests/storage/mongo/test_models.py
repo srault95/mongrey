@@ -8,10 +8,10 @@ from mongrey.storage.mongo import models
 from mongrey import constants
 from mongrey import utils
 
-from .base import MongoGreylistBaseTestCase
+from .base import MongreyBaseTestCase
 from ...test_models import TestModelsMixin
 
-class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
+class ModelsTestCase(TestModelsMixin, MongreyBaseTestCase):
     
     def _drop_model(self, model):
         model.drop_collection()

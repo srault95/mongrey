@@ -1,0 +1,2 @@
+mx1.example.org			local:
+example.org			relay:[10.10.1.1]:25

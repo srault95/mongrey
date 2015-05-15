@@ -3,10 +3,13 @@
 import unittest
 import os
 
+from flask import url_for, session
+
 from ...base import BaseFlaskTestCase
 from ...web.test_admin import AdminTestCaseMixin
 
 from mongrey.storage.mongo import models
+from mongrey import constants
 
 """
 /change-lang                   admin.change_lang HEAD,OPTIONS,GET
@@ -30,6 +33,8 @@ from mongrey.storage.mongo import models
 
 """
 
+#http://127.0.0.1:8081/change-lang?locale=fr
+
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', "mongo") != "mongo", "Skip no mongodb tests")
 class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
     
@@ -40,3 +45,22 @@ class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
     
     def test_security(self):
         self._test_security(models)
+        
+    def test_change_lang(self):
+
+        self.assertEquals(self.flask_app.config.get('BABEL_DEFAULT_LOCALE'), 'en')
+        
+        #self.assertTrue(constants.SESSION_LANG_KEY in session)
+        
+        headers_login = self.login_basic_headers("radicalspamtest", "radicalspamtest")
+        
+        url = "%s?locale=fr" % url_for('admin.change_lang')
+        with self.client as c:
+            response = c.get(url, headers=headers_login, follow_redirects=True)
+            print response
+            
+            current_lang = self.get_context_variable('current_lang')
+            print "current_lang : ", current_lang            
+            
+            #self.assertEquals(session.get(constants.SESSION_LANG_KEY, None), 'fr')
+        

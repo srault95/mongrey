@@ -4,26 +4,26 @@ from mongrey.storage.sql import models
 from mongrey.storage.sql.policy import SqlPolicy as Policy
 from mongrey.cache import remove_cache
 
-from .base import MongoGreylistBaseTestCase
+from .base import MongreyBaseTestCase
 from ...server.test_server import (NoRunServerMixin, 
                                    NoRunServerWithCacheMixin, 
                                    BaseRunServerMixin, 
                                    ServerRequestMixin)
 
-class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
+class NoRunServerTestCase(NoRunServerMixin, MongreyBaseTestCase):
+
+    def setUp(self):
+        MongreyBaseTestCase.setUp(self)
+        remove_cache()
 
     def _drop_model(self, model):
         return model.delete().execute()
         
     def _model_count(self, model):
         return model.select().count()
-    
+
     def _get_policy(self, **kwargs):
         return Policy(**kwargs)
-
-    def setUp(self):
-        MongoGreylistBaseTestCase.setUp(self)
-        remove_cache()
 
     def test_purge_expire(self):
         self._test_purge_expire(models)
@@ -49,17 +49,14 @@ class NoRunServerTestCase(NoRunServerMixin, MongoGreylistBaseTestCase):
     def test_action_policy(self):
         self._test_action_policy(models)
 
-class NoRunServerWithCacheTestCase(NoRunServerWithCacheMixin, MongoGreylistBaseTestCase):
+class NoRunServerWithCacheTestCase(NoRunServerWithCacheMixin, MongreyBaseTestCase):
     
     def setUp(self):
-        MongoGreylistBaseTestCase.setUp(self)
+        MongreyBaseTestCase.setUp(self)
 
     def _drop_model(self, model):
         return model.delete().execute()
         
-    def _model_count(self, model):
-        return model.select().count()
-    
     def _get_policy(self, **kwargs):
         return Policy(**kwargs)
 
@@ -79,20 +76,23 @@ class NoRunServerWithCacheTestCase(NoRunServerWithCacheMixin, MongoGreylistBaseT
         self._test_cache_action_relay_denied(models)
         
         
-class BaseRunServerTestCase(BaseRunServerMixin, MongoGreylistBaseTestCase):
+class BaseRunServerTestCase(BaseRunServerMixin, MongreyBaseTestCase):
 
-    def _get_policy(self, **kwargs):
-        return Policy(**kwargs)
-    
     def setUp(self):
-        MongoGreylistBaseTestCase.setUp(self)
+        MongreyBaseTestCase.setUp(self)
         self._get_server()
         self.server.start()
         
     def tearDown(self):
-        MongoGreylistBaseTestCase.tearDown(self)
+        MongreyBaseTestCase.tearDown(self)
         self.server.stop()
         
+    def _get_policy(self, **kwargs):
+        return Policy(**kwargs)
+
+    def _drop_model(self, model):
+        return model.delete().execute()
+            
 class RequestsTestCase(ServerRequestMixin, BaseRunServerTestCase):
 
     def test_sent_request(self):

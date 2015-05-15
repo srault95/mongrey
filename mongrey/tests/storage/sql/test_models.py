@@ -9,14 +9,14 @@ from mongrey import utils
 from mongrey.storage.sql import models
 from mongrey.exceptions import ValidationError
 
-from .base import MongoGreylistBaseTestCase
+from .base import MongreyBaseTestCase
 from ...test_models import TestModelsMixin
 
-class ModelsTestCase(TestModelsMixin, MongoGreylistBaseTestCase):
-    
-    def _drop_model(self, model):
-        model.delete().execute()
+class ModelsTestCase(TestModelsMixin, MongreyBaseTestCase):
 
+    def _drop_model(self, model):
+        return model.delete().execute()
+    
     def test_mynetwork(self):
         self._test_mynetwork(models, ValidationError, IntegrityError)
             

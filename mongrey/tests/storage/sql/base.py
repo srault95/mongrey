@@ -9,7 +9,7 @@ from mongrey import cache
 from ...base import BaseTestCase
 
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', 'sql') != "sql", "Skip no sql tests")
-class MongoGreylistBaseTestCase(BaseTestCase):
+class MongreyBaseTestCase(BaseTestCase):
     
     peewee_settings = {
         'db_name': 'sqlite:///../mongrey_test.db',
@@ -27,3 +27,5 @@ class MongoGreylistBaseTestCase(BaseTestCase):
         BaseTestCase.tearDown(self)
         if self._cache:
             self._cache.clear()
+
+    

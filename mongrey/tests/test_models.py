@@ -322,6 +322,9 @@ class TestModelsMixin:
             'domain': [{
                 'name': 'example.org',
             }],
+            'mailbox': [{
+                'name': 'email@example.org',
+            }],
             'mynetwork': [{
                 'value': '1.1.1.1',
             }],
@@ -343,8 +346,8 @@ class TestModelsMixin:
         result = models.import_fixtures(fixtures)
         
         result_attempt = {
-            'entries': 5,
-            'success': 5,
+            'entries': 6,
+            'success': 6,
             'warn_error': 0,
             'fatal_error': 0,
             'errors': []
@@ -383,8 +386,12 @@ class TestModelsMixin:
             'domain': [{
                 'name': 'example.org',
             }],
+            'mailbox': [{
+                'name': 'email@example.org',
+            }],
             'mynetwork': [{
                 'value': '1.1.1.1',
+                'comments': None
             }],
             'whitelist': [{
                 'value': '1.1.1.0/24',
