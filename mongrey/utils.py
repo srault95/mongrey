@@ -88,7 +88,10 @@ def utcnow():
 def to_list(value):
     if not value:
         return []
-    return value.split(',')
+    values = []
+    for v in value.split(','):
+        values.append(v.strip())
+    return values
 
 def is_private_address(client_address):
     try:
