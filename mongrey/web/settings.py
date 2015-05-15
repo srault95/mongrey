@@ -37,7 +37,6 @@ class Config(object):
     
     MONGODB_SETTINGS = {
         'host': config('MONGREY_DB', 'mongodb://localhost/mongrey'),
-        'use_greenlets': True,
         'tz_aware': True,    
     }   
     
@@ -103,7 +102,6 @@ class Test(Config):
 
     MONGODB_SETTINGS = {
         'host': config('MONGREY_DB', 'mongodb://localhost/mongrey_test'),
-        'use_greenlets': True,
         'tz_aware': True,    
     }   
 

@@ -96,7 +96,6 @@ DEFAULT_CONFIG = {
     
     'mongodb_settings': {
         'host': env_config('MONGREY_DB', 'mongodb://localhost/mongrey'),
-        'use_greenlets': True,
         'tz_aware': True,    
     },
                   
@@ -505,6 +504,9 @@ def get_store(storage=None, **config):
         from mongrey.storage.mongo.policy import MongoPolicy
         from mongrey.storage.mongo import models
         mongodb_settings = config.pop('mongodb_settings')
+        from mongrey.storage.mongo import PYMONGO2
+        if PYMONGO2:
+            mongodb_settings['use_greenlets'] = True
         create_mongo_connection(mongodb_settings)
         db = mongodb_settings['host']
         policy_klass = MongoPolicy

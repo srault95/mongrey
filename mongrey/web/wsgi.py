@@ -88,11 +88,13 @@ def _configure_i18n(app):
         def get_timezone():
             return session.get(constants.SESSION_TIMEZONE_KEY, app.config.get('BABEL_DEFAULT_TIMEZONE'))
     
-def _configure_storage_mongo(app):
+def _configure_storage_mongo(app):    
     from flask_mongoengine import MongoEngine
     from mongrey.storage.mongo.admin import init_admin
+    from mongrey.storage.mongo import PYMONGO2
+    if PYMONGO2:
+        app.config['MONGODB_SETTINGS']['use_greenlets'] = True                
     db = MongoEngine(app)
-    #db.init_app(app)
     init_admin(app=app, url='/')
 
 def _configure_storage_sql(app):
