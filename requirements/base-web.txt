@@ -1,5 +1,6 @@
 -r base.txt
 wtforms
+blinker
 Flask-BabelEx
 Flask-Script
 flask-admin
