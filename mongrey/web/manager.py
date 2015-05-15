@@ -10,11 +10,11 @@ from flask_script import Command, Option, Manager
 from flask_script import prompt_bool
 
 from werkzeug.debug import DebuggedApplication
-from gevent.wsgi import WSGIServer
 from flask_script.commands import Shell, Server
 from decouple import config as config_from_env
 
 from mongrey.utils import GeventAccessLogger, read_whitelist
+from mongrey.web.utils import SecureWSGIServer
 
 def _import_postgrey_whitelist(filepath):
     whitelist, whitelist_ip = read_whitelist(filepath)
@@ -110,15 +110,24 @@ def main(create_app_func=None):
     
         def __call__(self, app, host=None, port=None, use_debugger=None, use_reloader=None,
                    threaded=False, processes=1, passthrough_errors=False):
+            
+            config = app.config
+            logger = app.logger
+            
             if use_debugger:
                 app = DebuggedApplication(app, evalex=True)
     
-            host = app.config.get('WEB_HOST', host)
-            port = app.config.get('WEB_PORT', port)
+            host = config.get('WEB_HOST', host)
+            port = config.get('WEB_PORT', port)
+            security_by_host = config.get('SECURITY_BY_HOST', False)
+            allow_hosts = config.get('ALLOW_HOSTS', [])
     
-            server = WSGIServer((host, port), app, log=GeventAccessLogger(app.logger))
+            server = SecureWSGIServer((host, port), application=app,
+                                      security_by_host=security_by_host,
+                                      allow_hosts=allow_hosts,
+                                      log=GeventAccessLogger(logger))
             try:
-                app.logger.info('Listening on http://%s:%s' % (host, port))
+                logger.info('Listening on http://%s:%s' % (host, port))
                 server.serve_forever()
             except KeyboardInterrupt:
                 pass
