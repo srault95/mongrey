@@ -88,6 +88,10 @@ def utcnow():
 def to_list(value):
     if not value:
         return []
+    
+    if isinstance(value, list):
+        return value
+    
     values = []
     for v in value.split(','):
         values.append(v.strip())
