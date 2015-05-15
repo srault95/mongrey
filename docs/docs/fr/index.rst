@@ -39,6 +39,7 @@ Table des matières
     migration
     screenshots
     tips
+    errors
     otherprojects
     references
     changelog

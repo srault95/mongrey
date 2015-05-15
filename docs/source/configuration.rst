@@ -10,7 +10,7 @@ Mongrey Serveur
 Configuration par défaut
 ------------------------
 
-Par défaut, Mongrey Serveur utilise les variables d'environnemets mais vous pouvez aussi charger la configuration à partir d'un fichier YAML.
+Par défaut, Mongrey Serveur utilise les variables d'environnements mais vous pouvez aussi charger la configuration à partir d'un fichier YAML.
 
 La commande **mongrey-server install** crééer un fichier YAML avec la configuration par défaut.
 
