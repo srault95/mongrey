@@ -58,9 +58,9 @@ DEFAULT_CONFIG = {
     
     'port': env_config('MONGREY_PORT', 9999, cast=int),
     
-    'allow_hosts': env_config('MONGREY_ALLOW_HOSTS', '', cast=utils.to_list),
+    'allow_hosts': env_config('MONGREY_ALLOW_HOSTS', '127.0.0.1, ::1', cast=utils.to_list),
     
-    'security_by_host': env_config('MONGREY_SECURITY_BY_HOST', False, cast=bool),
+    'security_by_host': env_config('MONGREY_SECURITY_BY_HOST', True, cast=bool),
     
     'spawn': env_config('MONGREY_SPAWN', 50, cast=int),
     
@@ -496,6 +496,7 @@ def valid_allow_hosts(*allow_hosts):
             IPy.IP(ip)
         except Exception:
             return ip
+    
 
 def get_store(storage=None, **config):
 
@@ -528,7 +529,10 @@ def command_start(**config):
     valid_storage(storage=storage, **config)
 
     if config.get('security_by_host', False):
-        valid_allow_hosts(*config.get('allow_hosts')) 
+        ip_error = valid_allow_hosts(*config.get('allow_hosts'))
+        if ip_error:
+            sys.stderr.write("ip format error for [%s]" % ip)
+            sys.exit(1) 
 
     stats_enable = config.pop('stats_enable')
     stats_interval = config.pop('stats_interval')
@@ -637,12 +641,11 @@ def main():
         filepath = os.path.abspath(os.path.expanduser(filepath))
         
         if os.path.exists(filepath) and not opts.get('quiet'):
-            result = utils.confirm_with_exist(filepath, **config)
+            result = utils.confirm_with_exist(filepath, **DEFAULT_CONFIG.copy())
         else:
             try:
-                result = utils.dump_dict_to_yaml_file(filepath, data=config, replace=True, createdir=True)
+                result = utils.dump_dict_to_yaml_file(filepath, data=DEFAULT_CONFIG.copy(), replace=True, createdir=True)
                 print("Success operation !. file writed: %s\n" % filepath)
-                
             except Exception, err:
                 print(str(err))
                 sys.exit(1)
