@@ -34,15 +34,22 @@ class BaseFlaskTestCase(BaseTestCase):
         
     def setUp(self):
         BaseTestCase.setUp(self)
+        
         self.flask_app = self._create_app()
         self.client = self.flask_app.test_client()
         self._ctx = self.flask_app.test_request_context()
         self._ctx.push()
+
         from flask import json
+        from flask import template_rendered
         self.json_mod = json
+        self.templates = []
+        template_rendered.connect(self._add_template)
 
     def tearDown(self):
         BaseTestCase.tearDown(self)
+        from flask import template_rendered
+        template_rendered.disconnect(self._add_template)
         _ctx = getattr(self, '_ctx', None)
         if self._ctx:
             self._ctx.pop()
@@ -57,6 +64,19 @@ class BaseFlaskTestCase(BaseTestCase):
         url = '/logout'
         return self.client.get(url)
 
+    def get_context_variable(self, name):
+    
+        for template, context in self.templates:
+            if name in context:
+                return context[name]
+
+    def _add_template(self, app, template, context, **kwargs):
+
+        if len(self.templates) > 0:
+            self.templates = []
+        
+        self.templates.append((template, context))
+        
     def assertStatusCode(self, response, status_code):
         self.assertEquals(status_code, response.status_code)
         return response
