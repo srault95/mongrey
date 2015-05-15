@@ -273,7 +273,7 @@ class Policy(object):
             bl = self.search_blacklist(protocol)
             if bl:
                 msg = self.get_msg(action="reject", reason="blacklisted", protocol=protocol, policy_name=policy_name)
-                action = "554 5.7.1 blacklisted [%s]" % bl
+                action = "554 5.7.1 blacklisted [%s] - %s#554" % (bl, constants.ERRORS_URL_BASE)
                 return self.return_cache_action(uid=uid, action=action, msg=msg, is_blacklist=True)
 
         domain_found = None
@@ -310,7 +310,7 @@ class Policy(object):
             
         if domain_vrfy and mynetwork_vrfy and not mynetwork_found and domain_found == constants.DOMAIN_NOT_FOUND:
             msg = self.get_msg(action="reject", reason="relay-denied", protocol=protocol, policy_name=policy_name)
-            action = "554 5.7.1 relay denied"
+            action = "554 5.7.1 relay denied - %s#554" % constants.ERRORS_URL_BASE
             return self.return_cache_action(uid=uid, action=action, msg=msg, is_relay_denied=True)            
 
         if is_outgoing:
@@ -322,7 +322,7 @@ class Policy(object):
         #TODO: spoofing helo
         if domain_vrfy and mynetwork_vrfy and spoofing_enable and not is_outgoing and domain_found == constants.DOMAIN_SENDER_FOUND:
             msg = self.get_msg(action="reject", reason="spoofing", protocol=protocol, policy_name=policy_name)
-            action = "554 5.7.1 spoofing [%s]" % protocol['sender']
+            action = "554 5.7.1 spoofing [%s] - %s#554" % (protocol['sender'], constants.ERRORS_URL_BASE)
             return self.return_cache_action(uid=uid, action=action, msg=msg, is_spoofing=True)
 
         #---Whitelist
@@ -343,7 +343,7 @@ class Policy(object):
             if rbl_txt:
                 msg = self.get_msg(action="reject", reason="rbl-%s" % rbl_host, 
                                    protocol=protocol, policy_name=policy_name)
-                action = "554 5.7.1 relay denied"
+                action = "554 5.7.1 relay denied - %s#554" % constants.ERRORS_URL_BASE
                 return self.return_cache_action(uid=uid, action=action, msg=msg, is_relay_denied=True)            
         
         if not greylist_enable:
@@ -360,7 +360,7 @@ class Policy(object):
                 msg = self.get_msg(action="greylist", reason="retry", protocol=protocol, policy_name=policy_name)
                 logger.info(msg)
                 doc.reject()
-                return ["450 4.2.0 Greylisted for %s seconds. policy[%s]" % (delta, policy_name)]
+                return ["450 4.2.0 Greylisted for %s seconds. policy[%s] - %s#greylisted" % (delta, policy_name, constants.ERRORS_URL_BASE)]
             else:
                 msg = self.get_msg(action="pass", reason="delay", protocol=protocol, policy_name=policy_name)
                 logger.info(msg)
@@ -371,7 +371,7 @@ class Policy(object):
             doc = self.create_greylist(key=key, protocol=protocol, policy=policy_name)
             msg = self.get_msg(action="greylist", reason="new", protocol=protocol, policy_name=policy_name)
             logger.info(msg)
-            return ["450 4.2.0 Greylisted for %s seconds. policy[%s]" % (doc.expire(delta=greylist_remaining), policy_name)]
+            return ["450 4.2.0 Greylisted for %s seconds. policy[%s] - %s#greylisted" % (doc.expire(delta=greylist_remaining), policy_name, constants.ERRORS_URL_BASE)]
                           
                           
     def search_domain(self, protocol):

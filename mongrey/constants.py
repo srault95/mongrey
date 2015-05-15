@@ -2,6 +2,8 @@
 
 _ = lambda s:s
 
+ERRORS_URL_BASE = "http://mongrey.readthedocs.org/en/latest/errors.html"
+
 SESSION_LANG_KEY = "current_lang"
 SESSION_TIMEZONE_KEY = "current_tz"
 
