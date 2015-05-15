@@ -2,11 +2,6 @@
 Migrations
 ==========
 
-Postgrey
-========
-
-.. todo::
-
 Radical-Spam
 ============
 
@@ -18,4 +13,10 @@ assurés actuellement par Postfix à travers des fichiers plats.
 - Domaines internet (local-relays)
 - Autorisations Mynetwork (local-mynetwork-*)
 - Listes Noires (local-blacklist-*)
+- Mailbox (local-directory)
+
+Postgrey
+========
+
+.. todo::
 

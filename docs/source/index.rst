@@ -10,6 +10,7 @@ Serveur de Filtrage pour Postfix
 :Mise à jour: |today|
 :Doc EN: `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
 :Doc FR: `French Documentation <http://mongrey.readthedocs.org/fr/latest/>`_
+:Builder: https://github.com/radical-software/mongrey-build
     
 |Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 

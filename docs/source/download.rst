@@ -6,7 +6,7 @@ Téléchargements
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
     
     $ chmod +x /usr/local/bin/mongrey-server
     
@@ -59,17 +59,17 @@ Sqlite
 :Web UI: `Mongrey Web Sqlite`_
 
 
-.. _`Mongrey Server MongoDB`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64     
-.. _`Mongrey Server PostgreSQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-postgresql-Linux-x86_64     
-.. _`Mongrey Server MySQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mysql-Linux-x86_64     
-.. _`Mongrey Server Sqlite`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-sqlite-Linux-x86_64     
-.. _`Mongrey Server All`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-Linux-x86_64     
+.. _`Mongrey Server MongoDB`: http://download.mongrey.io/latest/mongrey-server-mongo-Linux-x86_64     
+.. _`Mongrey Server PostgreSQL`: http://download.mongrey.io/latest/mongrey-server-postgresql-Linux-x86_64     
+.. _`Mongrey Server MySQL`: http://download.mongrey.io/latest/mongrey-server-mysql-Linux-x86_64     
+.. _`Mongrey Server Sqlite`: http://download.mongrey.io/latest/mongrey-server-sqlite-Linux-x86_64     
+.. _`Mongrey Server All`: http://download.mongrey.io/latest/mongrey-server-Linux-x86_64     
 
-.. _`Mongrey Web MongoDB`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-mongo-Linux-x86_64     
-.. _`Mongrey Web PostgreSQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-postgresql-Linux-x86_64     
-.. _`Mongrey Web MySQL`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-mysql-Linux-x86_64     
-.. _`Mongrey Web Sqlite`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-sqlite-Linux-x86_64     
-.. _`Mongrey Web All`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-Linux-x86_64     
+.. _`Mongrey Web MongoDB`: http://download.mongrey.io/latest/mongrey-web-mongo-Linux-x86_64     
+.. _`Mongrey Web PostgreSQL`: http://download.mongrey.io/latest/mongrey-web-postgresql-Linux-x86_64     
+.. _`Mongrey Web MySQL`: http://download.mongrey.io/latest/mongrey-web-mysql-Linux-x86_64     
+.. _`Mongrey Web Sqlite`: http://download.mongrey.io/latest/mongrey-web-sqlite-Linux-x86_64     
+.. _`Mongrey Web All`: http://download.mongrey.io/latest/mongrey-web-Linux-x86_64     
 
-.. _`Mongrey All`: http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-Linux-x86_64     
+.. _`Mongrey All`: http://download.mongrey.io/latest/mongrey-Linux-x86_64     
 

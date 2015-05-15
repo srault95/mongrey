@@ -26,11 +26,11 @@ Version en cours: |release|
 
 *Remplacez [RELEASE] et [BACKEND] par la version et le backend souhaité.*
 
-- http://mongrey.radical-software.fr/download/mongrey/[RELEASE]/mongrey-server-[BACKEND]-Linux-x86_64
+- http://download.mongrey.io/[RELEASE]/mongrey-server-[BACKEND]-Linux-x86_64
 
 *Pour la version la plus récente avec un backend MongoDB, utilisez latest:*
 
-- http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-Linux-x86_64
+- http://download.mongrey.io/latest/mongrey-server-mongo-Linux-x86_64
 
 Mongrey Serveur
 ===============
@@ -42,7 +42,7 @@ MongoDB
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
     
     $ chmod +x /usr/local/bin/mongrey-server
     
@@ -55,7 +55,7 @@ PostgreSQL
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
     
     $ chmod +x /usr/local/bin/mongrey-server
     
@@ -68,7 +68,7 @@ MySQL
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-mysql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-mysql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
     
     $ chmod +x /usr/local/bin/mongrey-server
     
@@ -94,7 +94,7 @@ Exemple avec la version binaire de Mongrey Server PostgreSQL:
         apt-get install -y --no-install-recommends \
         ca-certificates git curl language-pack-en
     
-    RUN curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-server-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
+    RUN curl -L http://download.mongrey.io/latest/mongrey-server-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-server
     
     RUN chmod +x /usr/local/bin/mongrey-server
     
@@ -165,7 +165,7 @@ MongoDB
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-web
+    $ curl -L http://download.mongrey.io/latest/mongrey-web-mongo-`uname -s`-`uname -m` > /usr/local/bin/mongrey-web
     
     $ chmod +x /usr/local/bin/mongrey-web
     
@@ -180,7 +180,7 @@ PostgreSQL
 
 .. code:: bash
 
-    $ curl -L http://mongrey.radical-software.fr/download/mongrey/latest/mongrey-web-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-web
+    $ curl -L http://download.mongrey.io/latest/mongrey-web-postgresql-`uname -s`-`uname -m` > /usr/local/bin/mongrey-web
     
     $ chmod +x /usr/local/bin/mongrey-web
     
