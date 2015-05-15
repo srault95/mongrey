@@ -8,6 +8,14 @@ from .. import constants
 from .. import utils
 from .extensions import auth, babel, session_store
 
+def _configure_sentry(app):
+    try:
+        from raven.contrib.flask import Sentry
+        if app.config.get('SENTRY_DSN', None):
+            sentry = Sentry(app, logging=True, level=app.logger.level)
+    except ImportError:
+        app.logger.warning("Raven client for sentry is not installed")
+
 def _configure_session(app):
     """
     SESSION_SET_TTL
@@ -122,10 +130,22 @@ def create_app(config='mongrey.web.settings.Prod', force_storage=None):
     
     if app.config.get('STORAGE') == "mongo":
         _configure_storage_mongo(app)
+        if 'DEBUG_TB_PANELS' in app.config:
+            app.config['DEBUG_TB_PANELS'].append('flask.ext.mongoengine.panels.MongoDebugPanel')
+        
     elif app.config.get('STORAGE') == "sql":
         _configure_storage_sql(app)
         
     _configure_session(app)
+    
+    if app.debug:
+        try:
+            from flask_debugtoolbar import DebugToolbarExtension
+            DebugToolbarExtension(app)
+        except ImportError:
+            pass
+        
+    _configure_sentry(app)
     
     @app.context_processor
     def all_processors():
