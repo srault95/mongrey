@@ -88,10 +88,31 @@ class Domain(Model):
     class Meta: # noqa
         database = database_proxy
         order_by = ('name',)
+
+class Mailbox(Model):
+    
+    name = CharField(unique=True, index=True)
+
+    def _clean(self):
+        validators.clean_email(self.name, field_name="name", error_class=ValidationError)
+    
+    def save(self, force_insert=False, only=None, validate=True):
+        if validate:
+            self._clean()
+        return Model.save(self, force_insert=force_insert, only=only)
+
+    def __unicode__(self):
+        return self.name
+    
+    class Meta: # noqa
+        database = database_proxy
+        order_by = ('name',)
         
 class Mynetwork(Model):
     
     value = CharField(unique=True, index=True)
+
+    comments = CharField(max_length=100, null=True)
 
     def _clean(self):
         validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
@@ -422,6 +443,7 @@ def configure_peewee(db_name='sqlite:///:memory:', db_options=None, drop_before=
     database_proxy.initialize(database)
 
     tables = [Domain,
+              Mailbox,
               Mynetwork,
               Policy, 
               GreylistEntry, 
@@ -445,6 +467,7 @@ def import_fixtures(fixtures):
     
     fixtures_klass = (
         ('domain', Domain),
+        ('mailbox', Mailbox),
         ('mynetwork', Mynetwork),
         ('whitelist', WhiteList),
         ('blacklist', BlackList),
@@ -477,6 +500,7 @@ def export_fixtures():
 
     fixtures_klass = (
         ('domain', Domain),
+        ('mailbox', Mailbox),
         ('mynetwork', Mynetwork),
         ('whitelist', WhiteList),
         ('blacklist', BlackList),

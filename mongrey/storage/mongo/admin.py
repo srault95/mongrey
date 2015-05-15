@@ -51,11 +51,17 @@ class DomainView(ModelView):
 
     column_searchable_list = ('name',)
 
+class MailboxView(ModelView):
+    
+    column_list = ('name',)
+
+    column_searchable_list = ('name',)
+
 class MynetworkView(ModelView):
     
-    column_list = ('value',)
+    column_list = ('value', 'comments')
 
-    column_searchable_list = ('value',)
+    column_searchable_list = ('value', 'comments')
 
 class WhiteListView(ModelView):
     
@@ -189,7 +195,10 @@ def init_admin(app,
 
     admin.add_view(DomainView(models.Domain, 
                                  name=gettext(u"Domains")))
-
+    
+    admin.add_view(MailboxView(models.Mailbox, 
+                                 name=gettext(u"Mailboxs")))
+    
     admin.add_view(MynetworkView(models.Mynetwork, 
                                  name=gettext(u"Mynetworks")))
 

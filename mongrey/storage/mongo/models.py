@@ -50,9 +50,28 @@ class Domain(Document):
         'indexes': ['name'],
     }
 
+class Mailbox(Document):
+    
+    name = fields.StringField(unique=True, required=True)
+
+    def clean(self):
+        Document.clean(self)
+        validators.clean_email(self.name, field_name="name", error_class=ValidationError)
+
+    def __unicode__(self):
+        return self.name
+    
+    meta = {
+        'collection': 'mailbox',
+        'ordering': ['name'],        
+        'indexes': ['name'],
+    }
+
 class Mynetwork(Document):
     
     value = fields.StringField(unique=True, required=True)
+
+    comments = fields.StringField(max_length=100)
 
     def clean(self):
         Document.clean(self)
@@ -338,6 +357,7 @@ def import_fixtures(fixtures):
     
     fixtures_klass = (
         ('domain', Domain),
+        ('mailbox', Mailbox),
         ('mynetwork', Mynetwork),
         ('whitelist', WhiteList),
         ('blacklist', BlackList),
@@ -370,6 +390,7 @@ def export_fixtures():
 
     fixtures_klass = (
         ('domain', Domain),
+        ('mailbox', Mailbox),
         ('mynetwork', Mynetwork),
         ('whitelist', WhiteList),
         ('blacklist', BlackList),
@@ -386,7 +407,7 @@ def export_fixtures():
             
     #add comments fields beacause mongoengine not include empty field 
     for key, values in fixtures.iteritems():
-        if key in ['whitelist', 'blacklist', 'policy']:
+        if key in ['whitelist', 'blacklist', 'policy', 'mynetwork']:
             for entry in values:
                 if not 'comments' in entry:
                     entry['comments'] = None
