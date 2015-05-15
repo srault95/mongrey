@@ -52,7 +52,7 @@ DEFAULT_CONFIG = {
 
     'fixtures_path': env_config('MONGREY_SERVER_FIXTURES', None),             
     
-    'storage': env_config('MONGREY_STORAGE', 'mongo'),             
+    'storage': env_config('MONGREY_STORAGE', 'sql'),             
                       
     'host': env_config('MONGREY_HOST', '127.0.0.1', cast=str),
     
@@ -130,6 +130,15 @@ DEFAULT_CONFIG = {
     }
                   
 }
+"""
+TODO: policy_settings
+    rbl_enable=False,
+    rbl_hosts=None,
+    rwl_enable=False,
+    rwl_hosts=None,
+    rwbl_timeout=30,
+    rwbl_cache_timeout=3600,
+"""
 
 def stats(interval=60):
     
@@ -411,27 +420,8 @@ def daemonize(pid_file, callback=None, **config):
         callback(**config)
         
 def command_fixtures_import(option_fixtures_path=None, raise_error=False, **config):
-    """
-    domain:
-    - name: example.net
-    - name: example.org
-    mynetwork:
-    - value: 1.1.1.1
-    - value: 192.168.0.0/24
-    whitelist:
-    - field_name: recipient
-      value: rcpt@example.net
-    - field_name: client_address
-      value: 1.1.1.0/24
-    - field_name: sender
-      value: partner.org
-    blacklist:
-    - field_name: sender
-      value: spam.com
-    - field_name: client_address
-      value: 1.1.1.0/24
     
-    """
+    logger.info("start import fixtures...")
 
     fixtures_path = [
         option_fixtures_path,
@@ -444,7 +434,7 @@ def command_fixtures_import(option_fixtures_path=None, raise_error=False, **conf
         if fixtures and len(fixtures) > 0:
             valid_storage(**config)
             db, policy_klass, models = get_store(**config)
-            result = models.import_fixtures(**fixtures)
+            result = models.import_fixtures(fixtures)
             
             logger.info("IMPORT entries[%(entries)s] - success[%(success)s] - warn[%(warn_error)s] - error[%(fatal_error)s]" % result)
             
@@ -496,6 +486,16 @@ def valid_storage(storage=None, **config):
     if storage == "mongo" and not "mongodb_settings" in config:
         raise ConfigurationError("mongodb_settings not found in configuration")
 
+def valid_allow_hosts(*allow_hosts):
+    
+    if not allow_hosts or len(allow_hosts) == 0:
+        raise Exception("Empty allow_hosts")
+    
+    for ip in allow_hosts:
+        try:        
+            IPy.IP(ip)
+        except Exception:
+            return ip
 
 def get_store(storage=None, **config):
 
@@ -526,6 +526,9 @@ def command_start(**config):
     storage = config.pop('storage')
     
     valid_storage(storage=storage, **config)
+
+    if config.get('security_by_host', False):
+        valid_allow_hosts(*config.get('allow_hosts')) 
 
     stats_enable = config.pop('stats_enable')
     stats_interval = config.pop('stats_interval')
@@ -617,7 +620,9 @@ def main():
         
         try:
             if not sys.platform.startswith("win32") and daemon:
-                daemonize(pid_file, callback=command_start, **config)
+                sys.stderr.write("Daemon mode is not implemented\n")
+                sys.exit(1)
+                #daemonize(pid_file, callback=command_start, **config)
             else: 
                 command_start(**config)
                 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json
+import logging
 import datetime
 
 import arrow
@@ -13,7 +13,10 @@ from peewee import (Proxy,
                     FloatField, 
                     TextField, 
                     BooleanField,
-                    fn)
+                    fn,
+                    IntegrityError)
+
+from playhouse.kv import KeyStore
 
 try:
     from peewee import PostgresqlDatabase
@@ -39,6 +42,8 @@ from ... import constants
 from ...policy import generic_search, search_mynetwork
 
 database_proxy = Proxy()
+
+logger = logging.getLogger(__name__)
 
 class DateTimeFieldExtend(DateTimeField):
 
@@ -202,8 +207,7 @@ class GreylistEntry(Model):
     
     delay = FloatField(default=0.0)
     
-    #protocol = fields.DictField()
-    protocol = TextField()
+    protocol = KeyStore(TextField())
     
     policy = CharField(max_length=20, default='policy')
 
@@ -236,7 +240,6 @@ class GreylistEntry(Model):
     @classmethod
     def create_entry(cls, key=None, protocol=None, policy='default', timestamp=None, last_state=None, now=None, **kwargs):        
         now = now or utils.utcnow()
-        datas = json.dumps(protocol)
 
         with database_proxy.transaction():
             return cls.create(key=key, 
@@ -244,7 +247,7 @@ class GreylistEntry(Model):
                               timestamp=timestamp or now,
                               last_state=last_state or now,
                               policy=policy,
-                              protocol=datas,
+                              protocol=protocol,
                               **kwargs)
 
     @classmethod
@@ -429,3 +432,63 @@ def configure_peewee(db_name='sqlite:///:memory:', db_options=None, drop_before=
         drop_model_tables(tables, fail_silently=True)
 
     create_model_tables(tables, fail_silently=True)
+
+def import_fixtures(fixtures):
+
+    #TODO: supp id/_id field if exist ?
+    
+    entries = 0    
+    success = 0
+    warn_error = 0
+    fatal_error = 0
+    errors = []
+    
+    fixtures_klass = (
+        ('domain', Domain),
+        ('mynetwork', Mynetwork),
+        ('whitelist', WhiteList),
+        ('blacklist', BlackList),
+        ('policy', Policy),
+    )
+    
+    for key, klass in fixtures_klass:
+        values = fixtures.get(key, [])
+        for value in values:
+            entries += 1
+            try:
+                klass(**value).save()
+                success +=1
+            except IntegrityError:
+                warn_error += 1
+            except Exception, err:
+                logger.error(err)
+                fatal_error += 1
+                errors.append(str(err))
+
+    return {
+        'entries': entries,
+        'success': success,
+        'warn_error': warn_error,
+        'fatal_error': fatal_error,
+        'errors': errors
+    }
+
+def export_fixtures():
+
+    fixtures_klass = (
+        ('domain', Domain),
+        ('mynetwork', Mynetwork),
+        ('whitelist', WhiteList),
+        ('blacklist', BlackList),
+        ('policy', Policy),
+    )
+    
+    fixtures = {}
+    
+    for key, klass in fixtures_klass:
+        fixtures[key] = []
+        for d in list(klass.select().dicts()):
+            d.pop('id', None)
+            fixtures[key].append(d)
+    
+    return fixtures
