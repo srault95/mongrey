@@ -326,15 +326,9 @@ def query_for_purge():
     
     return GreylistEntry.objects(query)
         
-def import_fixtures(**fixtures):
-    
-    domains = fixtures.get('domain', [])
+def import_fixtures(fixtures):
 
-    mynetworks = fixtures.get('mynetwork', [])
-
-    whitelists = fixtures.get('whitelist', [])
-
-    blacklists = fixtures.get('blacklist', [])
+    #TODO: supp id/_id field if exist ?
 
     entries = 0    
     success = 0
@@ -342,53 +336,27 @@ def import_fixtures(**fixtures):
     fatal_error = 0
     errors = []
     
-    for value in domains:
-        entries += 1
-        try:
-            Domain(**value).save()
-            success +=1
-        except NotUniqueError:
-            warn_error += 1
-        except Exception, err:
-            logger.error(err)
-            fatal_error += 1
-            errors.append(str(err))
-
-    for value in mynetworks:
-        entries += 1
-        try:
-            Mynetwork(**value).save()
-            success +=1
-        except NotUniqueError:
-            warn_error += 1
-        except Exception, err:
-            logger.error(err)
-            fatal_error += 1
-            errors.append(str(err))
-
-    for value in whitelists:
-        entries += 1
-        try:
-            WhiteList(**value).save()
-            success +=1            
-        except NotUniqueError:
-            warn_error += 1
-        except Exception, err:
-            logger.error(err)
-            fatal_error += 1
-            errors.append(str(err))
-
-    for value in blacklists:
-        entries += 1
-        try:
-            BlackList(**value).save()
-            success +=1            
-        except NotUniqueError:
-            warn_error += 1
-        except Exception, err:
-            logger.error(err)
-            fatal_error += 1
-            errors.append(str(err))
+    fixtures_klass = (
+        ('domain', Domain),
+        ('mynetwork', Mynetwork),
+        ('whitelist', WhiteList),
+        ('blacklist', BlackList),
+        ('policy', Policy),
+    )
+    
+    for key, klass in fixtures_klass:
+        values = fixtures.get(key, [])
+        for value in values:
+            entries += 1
+            try:
+                klass(**value).save()
+                success +=1
+            except NotUniqueError:
+                warn_error += 1
+            except Exception, err:
+                logger.error(err)
+                fatal_error += 1
+                errors.append(str(err))
 
     return {
         'entries': entries,
@@ -400,30 +368,27 @@ def import_fixtures(**fixtures):
 
 def export_fixtures():
 
-    fixtures = {
-        'domain': [],
-        'mynetwork': [],
-        #'policy': [],
-        #'greylist_entry': [],
-        #'greylist_metric': [],
-        'whitelist': [],
-        'blacklist': [],
-    }
-  
-    for d in Domain.objects.as_pymongo():
-        d.pop('_id', None)
-        fixtures['domain'].append(d)
-
-    for d in Mynetwork.objects.as_pymongo():
-        d.pop('_id', None)
-        fixtures['mynetwork'].append(d)
-
-    for d in WhiteList.objects.as_pymongo():
-         d.pop('_id', None)
-         fixtures['whitelist'].append(d)
+    fixtures_klass = (
+        ('domain', Domain),
+        ('mynetwork', Mynetwork),
+        ('whitelist', WhiteList),
+        ('blacklist', BlackList),
+        ('policy', Policy),
+    )
     
-    for d in BlackList.objects.as_pymongo():
-         d.pop('_id', None)
-         fixtures['blacklist'].append(d)
+    fixtures = {}
+    
+    for key, klass in fixtures_klass:
+        fixtures[key] = []
+        for d in klass.objects.as_pymongo():
+            d.pop('_id', None)
+            fixtures[key].append(d)
+            
+    #add comments fields beacause mongoengine not include empty field 
+    for key, values in fixtures.iteritems():
+        if key in ['whitelist', 'blacklist', 'policy']:
+            for entry in values:
+                if not 'comments' in entry:
+                    entry['comments'] = None
 
     return fixtures
