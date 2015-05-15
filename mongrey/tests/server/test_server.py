@@ -15,6 +15,7 @@ from mongrey import constants
 from mongrey.server.core import PolicyServer, logger as server_logger
 from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
 from mongrey.server.core import options, main
+from mongrey.server.core import command_start
 from mongrey import utils
 
 from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port
@@ -26,8 +27,8 @@ _DEFAULT_CONFIG = {
     'storage': 'sql',             
     'host': '127.0.0.1',
     'port': 9999,
-    'allow_hosts': [],
-    'security_by_host': False,
+    'allow_hosts': ['127.0.0.1', '::1'],
+    'security_by_host': True,
     'spawn': 50,
     'backlog': 256,
     'connection_timeout': 10.0,
@@ -84,6 +85,24 @@ _DEFAULT_CONFIG = {
 
 class NoRunServerTestCase(BaseTestCase):
     
+    #TODO: command_fixtures_import
+    #TODO: command_fixtures_export
+    #TODO: command_load_settings
+    
+    def test_command_start(self):
+        config = _DEFAULT_CONFIG.copy()
+        config.pop('country_ipv4')
+        config.pop('country_ipv6')
+        t = gevent.Timeout(seconds=1.0)
+        t.start()
+        try:
+            green = gevent.spawn(command_start(**config))
+            gevent.kill(green)
+        except:
+            pass
+        finally:
+            t.cancel()
+    
     def test_default_config(self):
         self.maxDiff = None
         self.assertDictEqual(_DEFAULT_CONFIG, SERVER_CONFIG)
@@ -107,7 +126,7 @@ class NoRunServerTestCase(BaseTestCase):
     def test_security_disable(self):
         u"""Disable security by ip"""
         
-        server = PolicyServer(host="127.0.0.1", port=9999)
+        server = PolicyServer(host="127.0.0.1", port=9999, security_by_host=False)
         self.assertTrue(server._security_check(("2.2.2.2",)))
     
     def test_allow_deny(self):
