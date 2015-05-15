@@ -102,20 +102,15 @@ class NoRunServerTestCase(BaseTestCase):
         finally:
             t.cancel()
     
+    @unittest.skipIf('TRAVIS' in os.environ, "Skip Travis")        
     def test_default_config(self):
         self.maxDiff = None
         
         _default_config = _DEFAULT_CONFIG.copy()
-
-        if "MONGREY_STORAGE" in os.environ:
-            _default_config['storage'] = os.environ.get('MONGREY_STORAGE')            
-        
-        if "MONGREY_DB" in os.environ:
-            if _default_config['storage'] == "mongo":
-                _default_config['mongodb_settings']['host'] = os.environ.get('MONGREY_DB')
-            else:
-                _default_config['peewee_settings']['db_name'] = os.environ.get('MONGREY_DB')
-                
+        _default_config['storage'] = SERVER_CONFIG['storage']
+        _default_config['mongodb_settings'] = SERVER_CONFIG['mongodb_settings']
+        _default_config['peewee_settings'] = SERVER_CONFIG['peewee_settings']
+        _default_config['cache_settings'] = SERVER_CONFIG['cache_settings']        
         self.assertDictEqual(_default_config, SERVER_CONFIG)
 
     def test_configuration_from_yaml(self):
