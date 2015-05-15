@@ -105,7 +105,10 @@ class NoRunServerTestCase(BaseTestCase):
     
     def test_default_config(self):
         self.maxDiff = None
-        self.assertDictEqual(_DEFAULT_CONFIG, SERVER_CONFIG)
+        _default_config = _DEFAULT_CONFIG.copy()
+        if "MONGREY_STORAGE" in os.environ:
+            _default_config['storage'] = os.environ.get('MONGREY_STORAGE')            
+        self.assertDictEqual(_default_config, SERVER_CONFIG)
 
     def test_configuration_from_yaml(self):
         
@@ -274,8 +277,6 @@ class NoRunServerMixin:
         
         #TODO: test avec blacklist disable
         
-        reject_message = "554 5.7.1 blacklisted"
-
         protocol = {
             'instance': '123',
             'client_address': '1.1.1.1',
@@ -290,43 +291,43 @@ class NoRunServerMixin:
         
         models.BlackList(field_name='client_address', value='1.1.1.1').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [1.1.1.1]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [1.1.1.1] - %s#554" % constants.ERRORS_URL_BASE)
 
         self._drop_model(models.BlackList)
 
         models.BlackList(field_name='helo_name', value='mx1.example.net').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [mx1.example.net]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [mx1.example.net] - %s#554" % constants.ERRORS_URL_BASE)
 
         self._drop_model(models.BlackList)
 
         models.BlackList(field_name='country', value='fr').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [fr]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [fr] - %s#554" % constants.ERRORS_URL_BASE)
 
         self._drop_model(models.BlackList)
         
         models.BlackList(field_name='sender', value='.*@example.net').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [sender@example.net]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [sender@example.net] - %s#554" % constants.ERRORS_URL_BASE)
         
         self._drop_model(models.BlackList)
         
         models.BlackList(field_name='sender', value='sender@example.net').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [sender@example.net]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [sender@example.net] - %s#554" % constants.ERRORS_URL_BASE)
 
         self._drop_model(models.BlackList)
         
         models.BlackList(field_name='recipient', value='.*@example.org').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [rcpt@example.org]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [rcpt@example.org] - %s#554" % constants.ERRORS_URL_BASE)
         
         self._drop_model(models.BlackList)
         
         models.BlackList(field_name='recipient', value='rcpt@example.org').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "%s [rcpt@example.org]" % reject_message)
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [rcpt@example.org] - %s#554" % constants.ERRORS_URL_BASE)
         
         self._drop_model(models.BlackList)
 
@@ -347,7 +348,7 @@ class NoRunServerMixin:
         }
         
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "554 5.7.1 relay denied")
+        self.assertEquals(actions[0], "554 5.7.1 relay denied - %s#554" % constants.ERRORS_URL_BASE)
         
         models.Mynetwork(value="1.1.1.1").save()
         actions = policy.check_actions(protocol)
@@ -385,7 +386,7 @@ class NoRunServerMixin:
         
         models.Domain(name="example.net").save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "554 5.7.1 spoofing [sender@example.net]")
+        self.assertEquals(actions[0], "554 5.7.1 spoofing [sender@example.net] - %s#554" % constants.ERRORS_URL_BASE)
         
         self._drop_model(models.Domain)
 
@@ -414,7 +415,7 @@ class NoRunServerMixin:
 
         actions = policy.check_actions(protocol)
         self.assertTrue(actions[0].startswith('450 4.2.0 Greylisted for'))
-        self.assertTrue(actions[0].endswith("policy[country-fr]"))
+        self.assertTrue(actions[0].endswith("policy[country-fr] - %s#greylisted" % constants.ERRORS_URL_BASE))
         
         key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_VERY_LOW)
         greylist_entry = models.GreylistEntry.search_entry(key=key)
@@ -434,7 +435,7 @@ class NoRunServerMixin:
         
         actions = policy.check_actions(protocol)
         self.assertTrue(actions[0].startswith('450 4.2.0 Greylisted for'))
-        self.assertTrue(actions[0].endswith("policy[cloud-partner]"))
+        self.assertTrue(actions[0].endswith("policy[cloud-partner] - %s#greylisted" % constants.ERRORS_URL_BASE))
         
         key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_SPECIAL)
         greylist_entry = models.GreylistEntry.search_entry(key=key)
@@ -462,13 +463,13 @@ class NoRunServerWithCacheMixin:
         
         models.BlackList(field_name='client_address', value='1.1.1.1').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "554 5.7.1 blacklisted [1.1.1.1]")
+        self.assertEquals(actions[0], "554 5.7.1 blacklisted [1.1.1.1] - %s#554" % constants.ERRORS_URL_BASE)
         
         uid = utils.get_uid(protocol)
         cache_value = self._cache.get(uid)
         self.assertIsNotNone(cache_value)
         self.assertTrue(cache_value['is_blacklist'])
-        self.assertEquals(cache_value['action'], "554 5.7.1 blacklisted [1.1.1.1]")
+        self.assertEquals(cache_value['action'], "554 5.7.1 blacklisted [1.1.1.1] - %s#554" % constants.ERRORS_URL_BASE)
 
     def _test_cache_action_whitelisted(self, models):
         
@@ -519,13 +520,13 @@ class NoRunServerWithCacheMixin:
         }
         
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "554 5.7.1 relay denied")
+        self.assertEquals(actions[0], "554 5.7.1 relay denied - %s#554" % constants.ERRORS_URL_BASE)
         
         uid = utils.get_uid(protocol)
         cache_value = self._cache.get(uid)
         self.assertIsNotNone(cache_value)
         self.assertTrue(cache_value['is_relay_denied'])
-        self.assertEquals(cache_value['action'], "554 5.7.1 relay denied")
+        self.assertEquals(cache_value['action'], "554 5.7.1 relay denied - %s#554" % constants.ERRORS_URL_BASE)
 
     def _test_cache_action_outgoing(self, models):
 
@@ -579,7 +580,7 @@ class NoRunServerWithCacheMixin:
         
         models.Domain(name="example.net").save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "554 5.7.1 spoofing [sender@example.net]")
+        self.assertEquals(actions[0], "554 5.7.1 spoofing [sender@example.net] - %s#554" % constants.ERRORS_URL_BASE)
         
         self._drop_model(models.Domain)
         
@@ -587,7 +588,7 @@ class NoRunServerWithCacheMixin:
         cache_value = self._cache.get(uid)
         self.assertIsNotNone(cache_value)
         self.assertTrue(cache_value['is_spoofing'])
-        self.assertEquals(cache_value['action'], "554 5.7.1 spoofing [sender@example.net]")
+        self.assertEquals(cache_value['action'], "554 5.7.1 spoofing [sender@example.net] - %s#554" % constants.ERRORS_URL_BASE)
 
 
 
@@ -634,7 +635,7 @@ class ServerRequestMixin:
         actions = send_policy(protocol, host=self.host, port=self.port)
         self.assertEquals(len(actions), 1)
         self.assertTrue(actions[0].startswith('450 4.2.0 Greylisted for'))
-        self.assertTrue(actions[0].endswith("policy[default]"))
+        self.assertTrue(actions[0].endswith("policy[default] - %s#greylisted" % constants.ERRORS_URL_BASE))
 
         key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_MED)        
         entry = models.GreylistEntry.search_entry(key=key)
