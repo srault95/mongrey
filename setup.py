@@ -85,6 +85,7 @@ setup(
         'console_scripts': [
             'mongrey-server = mongrey.server.core:main [server_mongo, server_mysql, server_postgresql, server_sqlite, server, full]',
             'mongrey-web = mongrey.web.manager:main [web_mongo, web_mysql, web_postgresql, web_sqlite, web, full]',
+            'mongrey-migration = mongrey.migration.core:main',
         ],
     },    
     keywords=['postfix','policy','filter', 'smtp', 'greylist'],
