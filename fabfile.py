@@ -55,3 +55,25 @@ def rebuild_docs():
 def upload_to_pypi():
     local('python setup.py sdist --formats=zip,gztar bdist_wheel upload')
     
+@task
+def runtests_mongo():
+    with shell_env(MONGREY_STORAGE='mongo', MONGREY_DB='mongodb://localhost/mongrey_test'):
+        with settings(warn_only=True):
+            local('nosetests -s -v mongrey')
+
+@task
+def runtests_sql():
+    with shell_env(MONGREY_STORAGE='sql', MONGREY_DB='sqlite:///../mongrey_test.db'):
+        with settings(warn_only=True):
+            local('nosetests -s -v mongrey')
+        
+@task
+def runtests():
+    with settings(warn_only=True):
+        local('nosetests -s -v mongrey')
+        
+@task
+def run_web():
+    local('python -m mongrey.web.manager server')
+        
+                                

@@ -105,9 +105,18 @@ class NoRunServerTestCase(BaseTestCase):
     
     def test_default_config(self):
         self.maxDiff = None
+        
         _default_config = _DEFAULT_CONFIG.copy()
+
         if "MONGREY_STORAGE" in os.environ:
             _default_config['storage'] = os.environ.get('MONGREY_STORAGE')            
+        
+        if "MONGREY_DB" in os.environ:
+            if _default_config['storage'] == "mongo":
+                _default_config['mongodb_settings']['host'] = os.environ.get('MONGREY_DB')
+            else:
+                _default_config['peewee_settings']['db_name'] = os.environ.get('MONGREY_DB')
+                
         self.assertDictEqual(_default_config, SERVER_CONFIG)
 
     def test_configuration_from_yaml(self):
