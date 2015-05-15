@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from decouple import config
+from ..utils import to_list
 
 gettext = lambda s:s
 
 class Config(object):
+    
+    SECURITY_BY_HOST = config('MONGREY_WEB_SECURITY_BY_HOST', True, cast=bool)
+
+    ALLOW_HOSTS = config('MONGREY_WEB_ALLOW_HOSTS', ['127.0.0.1'], cast=to_list)
     
     STORAGE = config('MONGREY_STORAGE', 'sql')
 
@@ -52,6 +57,8 @@ class Config(object):
     SESSION_KEY_BITS = 64
     #TODO: PERMANENT_SESSION_LIFETIME
     
+    #---sentry
+    SENTRY_DSN = config('SENTRY_DSN', None)
 
 class Prod(Config):
     pass
@@ -63,6 +70,21 @@ class Dev(Config):
     SECRET_KEY = 'dev_key' # noqa
     
     MAIL_DEBUG = True
+
+    #---debugtoolbar
+    DEBUG_TB_ENABLED = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
+    DEBUG_TB_PANELS = [
+        'flask_debugtoolbar.panels.versions.VersionDebugPanel',
+        'flask_debugtoolbar.panels.timer.TimerDebugPanel',
+        'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
+        'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+        'flask_debugtoolbar.panels.template.TemplateDebugPanel',
+        'flask_debugtoolbar.panels.logger.LoggingPanel',
+        'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
+        #'flask.ext.mongoengine.panels.MongoDebugPanel',
+    ]
+    
     
 class Test(Config):
 
