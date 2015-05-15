@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
 
+import os
+import unittest
+
 from mongrey.storage.mongo import models
 
 from ...storage.mongo.base import MongreyBaseTestCase
 from ..test_migration_rs import RSMigrationTestCaseMixin
 
+@unittest.skipIf('TRAVIS' in os.environ, "Skip Travis - Bug: No module named _bsddb")
 class MongoRSMigrationTestCase(RSMigrationTestCaseMixin, MongreyBaseTestCase):
+    
+    def setUp(self):
+        MongreyBaseTestCase.setUp(self)
+        self._check_resources()
     
     def test_import_domains(self):
         self._test_import_domains(models)

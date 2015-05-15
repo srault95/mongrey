@@ -13,6 +13,24 @@ def get_resource_path(filename):
 
 class RSMigrationTestCaseMixin:
     
+    def _check_resources(self):
+
+        resources = [
+            'local-relays.dbhash',
+            'local-directory.dbhash',
+            'local-exceptions-directory.dbhash',
+            'local-mynetworks-lan.dbhash',
+            'local-mynetworks-wan.dbhash',
+            'local-blacklist-clients.dbhash',
+            'local-blacklist-senders.dbhash',
+            'local-blacklist-recipients.dbhash',
+        ]
+        
+        for r in resources:
+            filepath = get_resource_path(r)
+            if not os.path.exists(filepath):
+                self.fail("resource not found in tests : %s" % filepath)
+    
     def _test_import_domains(self, models):
         filepath = get_resource_path('local-relays.dbhash')
         result = radicalspam.import_domains(filepath=filepath, model_klass=models.Domain)

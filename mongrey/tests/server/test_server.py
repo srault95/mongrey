@@ -47,7 +47,6 @@ _DEFAULT_CONFIG = {
     
     'mongodb_settings': {
         'host': 'mongodb://localhost/mongrey',
-        'use_greenlets': True,
         'tz_aware': True,    
     },
                   
@@ -126,7 +125,6 @@ class NoRunServerTestCase(BaseTestCase):
         mongodb_settings:
           host: mongodb://host/db
           tz_aware: true
-          use_greenlets: true        
         """
         
         config = utils.load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG.copy())

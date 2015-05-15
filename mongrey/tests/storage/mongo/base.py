@@ -15,12 +15,14 @@ class MongreyBaseTestCase(BaseTestCase):
 
     mongodb_settings = {
         'host': 'mongodb://localhost/mongrey_test',
-        'use_greenlets': True,
         'tz_aware': True,    
     }
     
     def setUp(self):
-        BaseTestCase.setUp(self)        
+        BaseTestCase.setUp(self)
+        from mongrey.storage.mongo import PYMONGO2
+        if PYMONGO2:
+            self.mongodb_settings['use_greenlets'] = True                
         self._db = connect(**self.mongodb_settings)
         self._cache = cache.configure_cache(cache_url='simple')
         models.GreylistMetric.drop_collection()
