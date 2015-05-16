@@ -88,7 +88,7 @@ class NoRunServerTestCase(BaseTestCase):
     #TODO: command_fixtures_export
     #TODO: command_load_settings
     
-    def test_command_start(self):
+    def OLDtest_command_start(self):
         config = _DEFAULT_CONFIG.copy()
         config.pop('country_ipv4')
         config.pop('country_ipv6')

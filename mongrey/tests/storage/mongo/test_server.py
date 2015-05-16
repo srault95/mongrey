@@ -3,12 +3,14 @@
 from mongrey.storage.mongo import models
 from mongrey.storage.mongo.policy import MongoPolicy as Policy
 from mongrey.cache import remove_cache
+from mongrey.server.core import command_start, get_store
 
 from .base import MongreyBaseTestCase
 from ...server.test_server import (NoRunServerMixin, 
                                    NoRunServerWithCacheMixin, 
                                    BaseRunServerMixin, 
-                                   ServerRequestMixin)
+                                   ServerRequestMixin,
+                                   _DEFAULT_CONFIG)
 
 class NoRunServerTestCase(NoRunServerMixin, MongreyBaseTestCase):
     
@@ -24,6 +26,24 @@ class NoRunServerTestCase(NoRunServerMixin, MongreyBaseTestCase):
             
     def _get_policy(self, **kwargs):
         return Policy(**kwargs)
+
+    def test_get_store(self):
+        config = _DEFAULT_CONFIG.copy()
+        config['storage'] = "mongo"
+        config['mongodb_settings']['host'] = 'mongodb://localhost/mongrey_test'
+        db, policy_klass, _models = get_store(**config)
+        self.assertEquals(db, 'mongodb://localhost/mongrey_test')
+        self.assertTrue(issubclass(policy_klass, Policy))
+        self.assertEquals(models, _models)
+
+    def test_command_start(self):
+        config = _DEFAULT_CONFIG.copy()
+        config['storage'] = "mongo"
+        config['mongodb_settings']['host'] = 'mongodb://localhost/mongrey_test'
+        config.pop('country_ipv4')
+        config.pop('country_ipv6')
+        server = command_start(start_server=False, start_threads=False, **config)
+        self.assertIsInstance(server._policy, Policy)
     
     def test_purge_expire(self):
         self._test_purge_expire(models)
