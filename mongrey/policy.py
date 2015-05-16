@@ -308,7 +308,7 @@ class Policy(object):
         if not mynetwork_found and domain_vrfy:
             domain_found = self.search_domain(protocol)
             
-        if domain_vrfy and mynetwork_vrfy and not mynetwork_found and domain_found == constants.DOMAIN_NOT_FOUND:
+        if domain_vrfy and mynetwork_vrfy and not mynetwork_found and domain_found == constants.NOT_FOUND:
             msg = self.get_msg(action="reject", reason="relay-denied", protocol=protocol, policy_name=policy_name)
             action = "554 5.7.1 relay denied - %s#554" % constants.ERRORS_URL_BASE
             return self.return_cache_action(uid=uid, action=action, msg=msg, is_relay_denied=True)            
@@ -320,7 +320,7 @@ class Policy(object):
 
         #---Spoofing - not is_outgoing and sender is internal domain
         #TODO: spoofing helo
-        if domain_vrfy and mynetwork_vrfy and spoofing_enable and not is_outgoing and domain_found == constants.DOMAIN_SENDER_FOUND:
+        if domain_vrfy and mynetwork_vrfy and spoofing_enable and not is_outgoing and domain_found == constants.SENDER_FOUND:
             msg = self.get_msg(action="reject", reason="spoofing", protocol=protocol, policy_name=policy_name)
             action = "554 5.7.1 spoofing [%s] - %s#554" % (protocol['sender'], constants.ERRORS_URL_BASE)
             return self.return_cache_action(uid=uid, action=action, msg=msg, is_spoofing=True)
