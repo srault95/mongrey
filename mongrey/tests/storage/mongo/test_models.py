@@ -15,12 +15,42 @@ class ModelsTestCase(TestModelsMixin, MongreyBaseTestCase):
     
     def _drop_model(self, model):
         model.drop_collection()
+
+    def _model_count(self, model):
+        return model.objects.count()
+    
+    def _get_id(self, model):
+        return model.pk
+
+    def test_model_api(self):
+        self._test_model_api(models, ValidationError, NotUniqueError)
+
+    def test_domain(self):
+        self._test_domain(models, ValidationError, NotUniqueError)
         
+    def test_mailbox(self):
+        self._test_mailbox(models, ValidationError, NotUniqueError)
+
     def test_mynetwork(self):
         self._test_mynetwork(models, ValidationError, NotUniqueError)
             
-    def test_domain(self):
-        self._test_domain(models, ValidationError, NotUniqueError)
+    def test_domain_slug(self):
+        self._test_domain_slug(models)
+
+    def test_mailbox_slug(self):
+        self._test_mailbox_slug(models)
+        
+    def test_mynetwork_slug(self):
+        self._test_mynetwork_slug(models)
+        
+    def test_policy_slug(self):
+        self._test_policy_slug(models)
+        
+    def test_whitelist_slug(self):
+        self._test_wblist_slug(models.WhiteList)
+
+    def test_whitelist_slug(self):
+        self._test_wblist_slug(models.BlackList)
         
     def test_create_greylist_entry(self):
         self._test_create_greylist_entry(models)

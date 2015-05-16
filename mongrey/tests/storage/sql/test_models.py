@@ -16,12 +16,46 @@ class ModelsTestCase(TestModelsMixin, MongreyBaseTestCase):
 
     def _drop_model(self, model):
         return model.delete().execute()
-    
+
+    def _model_count(self, model):
+        return model.select().count()
+        
+    def _get_id(self, model):
+        from peewee import PrimaryKeyField
+        for n, f in model._meta.get_sorted_fields():
+            if type(f) == PrimaryKeyField or f.primary_key:
+                return n
+        #return model.id
+
+    def test_model_api(self):
+        self._test_model_api(models, ValidationError, IntegrityError)
+        
+    def test_domain(self):
+        self._test_domain(models, ValidationError, IntegrityError)
+
+    def test_mailbox(self):
+        self._test_mailbox(models, ValidationError, IntegrityError)
+
     def test_mynetwork(self):
         self._test_mynetwork(models, ValidationError, IntegrityError)
             
-    def test_domain(self):
-        self._test_domain(models, ValidationError, IntegrityError)
+    def test_domain_slug(self):
+        self._test_domain_slug(models)
+
+    def test_mailbox_slug(self):
+        self._test_mailbox_slug(models)
+        
+    def test_mynetwork_slug(self):
+        self._test_mynetwork_slug(models)
+    
+    def test_policy_slug(self):
+        self._test_policy_slug(models)
+        
+    def test_whitelist_slug(self):
+        self._test_wblist_slug(models.WhiteList)
+
+    def test_whitelist_slug(self):
+        self._test_wblist_slug(models.BlackList)
     
     def test_create_greylist_entry(self):
         self._test_create_greylist_entry(models)

@@ -9,10 +9,46 @@ class TestModelsMixin:
     def _drop_model(self, model):
         raise NotImplementedError()
 
+    def _model_count(self, model):
+        raise NotImplementedError()
+
+    def _get_id(self, model):
+        raise NotImplementedError()
+
+    def _test_model_api(self, models, validation_klass, unique_error_klass):
+        
+        #api_create        
+        doc = models.Domain.api_create(name="example.org")
+        self.assertIsNotNone(doc)
+        self.assertIsInstance(doc, models.Domain)
+
+        #api_find        
+        docs = models.Domain.api_find(name="example.org")
+        self.assertIsNotNone(docs)
+        self.assertEquals(self._model_count(models.Domain), 1)
+
+        #api_find_one        
+        doc = models.Domain.api_find_one(name="example.org")
+        self.assertIsNotNone(doc)
+        self.assertIsInstance(doc, models.Domain)
+        
+        #api_update        
+        doc = models.Domain.api_find_one(name="example.org")
+        result = models.Domain.api_update(doc=doc, name="example2.org")
+        self.assertEquals(result, 1)
+
+        #api_delete        
+        doc = models.Domain.api_find_one(name="example2.org")
+        models.Domain.api_delete(doc=doc)
+        self.assertEquals(self._model_count(models.Domain), 0)
+        
+        self._drop_model(models.Domain)
+
+
     def _test_domain(self, models, validation_klass, unique_error_klass):
         
         models.Domain(name="example.org").save()
-        
+                
         with self.assertRaises(validation_klass) as ex:
             models.Domain(name="badvalue").save()
             
@@ -26,17 +62,46 @@ class TestModelsMixin:
             'recipient': 'rcpt@example.org',
         }
         search = models.Domain.search(protocol)
-        self.assertEquals(search, constants.DOMAIN_NOT_FOUND)
+        self.assertEquals(search, constants.NOT_FOUND)
         
         models.Domain(name="example.net").save()
         search = models.Domain.search(protocol)
-        self.assertEquals(search, constants.DOMAIN_SENDER_FOUND)
+        self.assertEquals(search, constants.SENDER_FOUND)
         self._drop_model(models.Domain)
             
         models.Domain(name="example.org").save()
         search = models.Domain.search(protocol)
-        self.assertEquals(search, constants.DOMAIN_RECIPIENT_FOUND)
+        self.assertEquals(search, constants.RECIPIENT_FOUND)
         self._drop_model(models.Domain)
+
+    def _test_mailbox(self, models, validation_klass, unique_error_klass):
+        
+        models.Mailbox(name="email@example.org").save()
+        
+        with self.assertRaises(validation_klass) as ex:
+            models.Mailbox(name="badvalue").save()
+            
+        with self.assertRaises(unique_error_klass) as ex:
+            models.Mailbox(name="email@example.org").save()
+
+        self._drop_model(models.Mailbox)
+            
+        protocol = {
+            'sender': 'sender@example.net',
+            'recipient': 'rcpt@example.org',
+        }
+        search = models.Mailbox.search(protocol)
+        self.assertEquals(search, constants.NOT_FOUND)
+        
+        models.Mailbox(name="sender@example.net").save()
+        search = models.Mailbox.search(protocol)
+        self.assertEquals(search, constants.SENDER_FOUND)
+        self._drop_model(models.Mailbox)
+            
+        models.Mailbox(name="rcpt@example.org").save()
+        search = models.Mailbox.search(protocol)
+        self.assertEquals(search, constants.RECIPIENT_FOUND)
+        self._drop_model(models.Mailbox)
 
     def _test_mynetwork(self, models, validation_klass, unique_error_klass):
         
@@ -75,7 +140,68 @@ class TestModelsMixin:
         self.assertTrue(search)
             
         self._drop_model(models.Mynetwork)
+
+    def _test_domain_slug(self, models):
+        d = models.Domain(name="example.org").save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "example-org")
+
+        self._drop_model(models.Domain)
+
+    def _test_mailbox_slug(self, models):
+        d = models.Mailbox(name="email@example.org").save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "email-example-org")
+
+        self._drop_model(models.Mailbox)
     
+    def _test_mynetwork_slug(self, models):
+        
+        d1 = models.Mynetwork(value="1.1.1.1").save()
+        self.assertIsNotNone(d1.slug)
+        self.assertEquals(d1.slug, "1-1-1-1")
+
+        d2 = models.Mynetwork(value="1.1.1.0/24").save()
+        self.assertIsNotNone(d2.slug)
+        self.assertEquals(d2.slug, "1-1-1-0-24")
+
+        self._drop_model(models.Mynetwork)
+        
+    def _test_policy_slug(self, models):
+        
+        d = models.Policy(name="policytest", field_name='client_address', value='1.1.1.1').save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "policytest")
+
+        self._drop_model(models.Policy)
+
+    def _test_wblist_slug(self, model):
+
+        d = model(field_name="client_address", value='1.1.1.1').save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "1-1-1-1")
+        self._drop_model(model)
+
+        d = model(field_name="client_address", value="1.1.1.0/24").save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "1-1-1-0-24")
+        self._drop_model(model)
+
+        d = model(field_name="client_name", value=".*\.example.net").save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "example-net")
+        self._drop_model(model)
+
+        d = model(field_name="sender", value=".*@example.net").save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "example-net")
+        self._drop_model(model)
+
+        d = model(field_name="sender", value="sender@.*").save()
+        self.assertIsNotNone(d.slug)
+        self.assertEquals(d.slug, "sender")
+        self._drop_model(model)
+
     def _test_create_greylist_entry(self, models):
         
         doc = models.GreylistEntry.create_entry(key='key1', protocol={})
