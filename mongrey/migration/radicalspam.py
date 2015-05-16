@@ -94,3 +94,13 @@ def import_blacklist_senders(filepath="/var/rs/addons/postfix/etc/local-blacklis
 def import_blacklist_recipients(filepath="/var/rs/addons/postfix/etc/local-blacklist-recipients.db", model_klass=None):
     return _import_blacklist(filepath=filepath, field_name="recipient", model_klass=model_klass)
     
+RS_FILES = {
+    'local-relays.db': ('domain', import_domains),
+    'local-directory.db': ('mailbox', import_mailboxs),
+    'local-exceptions-directory.db': ('mailbox', import_mailboxs_exceptions),
+    'local-mynetworks-lan.db': ('mynetwork', import_mynetworks_lan),
+    'local-mynetworks-wan.db': ('mynetwork', import_mynetworks_wan),
+    'local-blacklist-clients.db': ('blacklist', import_blacklist_clients),
+    'local-blacklist-senders.db': ('blacklist', import_blacklist_senders),
+    'local-blacklist-recipients.db': ('blacklist', import_blacklist_recipients)
+}

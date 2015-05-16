@@ -39,6 +39,7 @@ DEFAULT_SETTINGS_PATH = [
     '/etc/mongrey/server.yml',
 ]
 
+#TODO: /var/lib/mongrey/fixtures.yml et/ou /opt/mongrey/fixtures.yml 
 DEFAULT_FIXTURES_PATH = [
     '~/mongrey/server-fixtures.yml',
     '~/mongrey-server-fixtures.yml',
@@ -100,7 +101,7 @@ DEFAULT_CONFIG = {
     },
                   
     'peewee_settings': {
-        'db_name': env_config('MONGREY_DB', 'sqlite:///mongrey.db'),
+        'db_name': env_config('MONGREY_DB', 'sqlite:///mongrey.db'), #TODO: /var/lib/mongrey/mongrey.db
         'db_options': {
             'threadlocals': True    #pour use with gevent patch
         }
