@@ -10,3 +10,4 @@ regex
 werkzeug
 PyYAML
 redis
+#wait for pull request: awesome-slugify

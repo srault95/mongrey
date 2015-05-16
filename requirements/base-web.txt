@@ -6,3 +6,4 @@ Flask-Script
 flask-admin
 flask-wtf
 Flask-KVSession
+#wait for pypi update: Flask-Login
