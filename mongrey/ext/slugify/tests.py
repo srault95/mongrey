@@ -2,12 +2,12 @@
 
 import unittest
 
-from slugify import Slugify, UniqueSlugify
-from slugify import slugify, slugify_unicode, unique_slugify
-from slugify import slugify_url, slugify_filename
-from slugify import slugify_ru, slugify_de, slugify_el
+from . import Slugify, UniqueSlugify
+from . import slugify, slugify_unicode, unique_slugify
+from . import slugify_url, slugify_filename
+from . import slugify_ru, slugify_de, slugify_el
 
-from slugify import get_slugify
+from . import get_slugify
 
 
 class SlugifyTestCase(unittest.TestCase):

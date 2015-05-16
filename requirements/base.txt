@@ -11,3 +11,4 @@ werkzeug
 PyYAML
 redis
 #wait for pull request: awesome-slugify
+Unidecode>=0.04.14,<0.05
