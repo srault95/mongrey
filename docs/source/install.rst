@@ -19,6 +19,8 @@ Les binaires sont des versions compilés à l'aide de l'outil PyInstaller et n'o
 - CentOS 7 - 64 bits
 - Python 2.7.6
 
+Le processus de génération des binaires est visible sur `Mongrey Build: <https://github.com/radical-software/mongrey-build>`_
+
 Exemples
 ========
 
