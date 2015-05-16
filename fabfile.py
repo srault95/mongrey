@@ -77,4 +77,12 @@ def runtests_skip_travis():
 def run_web():
     local('python -m mongrey.web.manager server')
         
-                                
+@task
+def shell_dev_mongo():
+    with shell_env(MONGREY_STORAGE="mongo"):
+        local('python -m mongrey.web.manager -c mongrey.web.settings.Dev shell')
+
+@task
+def shell_dev_sql():
+    with shell_env(MONGREY_STORAGE="sql"):
+        local('python -m mongrey.web.manager -c mongrey.web.settings.Dev shell')

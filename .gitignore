@@ -59,5 +59,6 @@ target/
 site/
 
 archives/
+internal/
 *.db
 TODO*.rst
