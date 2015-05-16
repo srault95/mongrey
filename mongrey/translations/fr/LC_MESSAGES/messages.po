@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  mongrey\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-12 10:45+0200\n"
+"POT-Creation-Date: 2015-05-16 16:29+0200\n"
 "PO-Revision-Date: 2015-05-12 10:03+0100\n"
 "Last-Translator: Stéphane RAULT <stephane.rault@radicalspam.org>\n"
 "Language-Team: French\n"
@@ -13,104 +13,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: mongrey/constants.py:15 mongrey/constants.py:22
+#: mongrey/constants.py:17 mongrey/constants.py:24
 msgid "IP Address"
 msgstr "Adresse IP"
 
-#: mongrey/constants.py:16
+#: mongrey/constants.py:18
 msgid "IP Address + Domain Recipient"
 msgstr "Adresse IP + Domaine Destinataire"
 
-#: mongrey/constants.py:17
+#: mongrey/constants.py:19
 msgid "IP Address + Email Recipient"
 msgstr "Adresse IP + Email Destinataire"
 
-#: mongrey/constants.py:18
+#: mongrey/constants.py:20
 msgid "IP Address + Email Sender + Email Recipient"
 msgstr "Adresse IP +  Email Expéditeur +  Email Destinataire"
 
-#: mongrey/constants.py:19
+#: mongrey/constants.py:21
 msgid "Email Sender + Email Recipient"
 msgstr "Email Expéditeur + Email Destinataire"
 
-#: mongrey/constants.py:23
+#: mongrey/constants.py:25
 msgid "Hostname"
 msgstr "Nom d'hôte"
 
-#: mongrey/constants.py:24
+#: mongrey/constants.py:26
 msgid "Email Sender"
 msgstr "Email Expéditeur"
 
-#: mongrey/constants.py:25
+#: mongrey/constants.py:27
 msgid "Email Recipient"
 msgstr "Email Destinataire"
 
-#: mongrey/constants.py:26
+#: mongrey/constants.py:28
 msgid "Country Code"
 msgstr "Code Pays"
 
-#: mongrey/constants.py:27
+#: mongrey/constants.py:29
 msgid "Helo Name"
 msgstr "Helo smtp"
 
-#: mongrey/validators.py:22
+#: mongrey/validators.py:23
 #, python-format
 msgid "Invalid Domain: %s"
 msgstr "Domaine non valide : %s"
 
-#: mongrey/validators.py:28
+#: mongrey/validators.py:29
 #, python-format
 msgid "Invalid Email: %s"
 msgstr "Email non valide : %s"
 
-#: mongrey/validators.py:49
+#: mongrey/validators.py:50
 #, python-format
 msgid "Invalid Email or Domain: %s"
 msgstr "Email ou Domaine non valide : %s"
 
-#: mongrey/validators.py:57 mongrey/validators.py:65
+#: mongrey/validators.py:58 mongrey/validators.py:66
 #, python-format
 msgid "Invalid IP Address: %s"
 msgstr "Adresse IP non valide : %s"
 
-#: mongrey/validators.py:89
+#: mongrey/validators.py:90
 #, python-format
 msgid "Invalid Hostname: %s"
 msgstr "Nom d'hôte non valide : %s"
 
-#: mongrey/storage/mongo/admin.py:193 mongrey/storage/sql/admin.py:202
+#: mongrey/storage/mongo/admin.py:197 mongrey/storage/sql/admin.py:206
 msgid "Domains"
 msgstr "Domaines"
 
-#: mongrey/storage/mongo/admin.py:196 mongrey/storage/sql/admin.py:205
+#: mongrey/storage/mongo/admin.py:200 mongrey/storage/sql/admin.py:209
+msgid "Mailboxs"
+msgstr ""
+
+#: mongrey/storage/mongo/admin.py:203 mongrey/storage/sql/admin.py:212
 msgid "Mynetworks"
 msgstr "Mes Réseaux"
 
-#: mongrey/storage/mongo/admin.py:199 mongrey/storage/sql/admin.py:208
+#: mongrey/storage/mongo/admin.py:206 mongrey/storage/sql/admin.py:215
 msgid "Policies"
 msgstr "Politiques"
 
-#: mongrey/storage/mongo/admin.py:202 mongrey/storage/sql/admin.py:211
+#: mongrey/storage/mongo/admin.py:209 mongrey/storage/sql/admin.py:218
 msgid "Greylists"
 msgstr "Listes Grises"
 
-#: mongrey/storage/mongo/admin.py:205 mongrey/storage/sql/admin.py:214
+#: mongrey/storage/mongo/admin.py:212 mongrey/storage/sql/admin.py:221
 msgid "Whitelists"
 msgstr "Listes Blanches"
 
-#: mongrey/storage/mongo/admin.py:208 mongrey/storage/sql/admin.py:217
+#: mongrey/storage/mongo/admin.py:215 mongrey/storage/sql/admin.py:224
 msgid "Blacklists"
 msgstr "Listes Noites"
 
-#: mongrey/storage/mongo/admin.py:211 mongrey/storage/sql/admin.py:220
+#: mongrey/storage/mongo/admin.py:218 mongrey/storage/sql/admin.py:227
 msgid "Metrics"
 msgstr "Métriques"
 
-#: mongrey/web/settings.py:18
+#: mongrey/web/settings.py:23
 msgid "English"
 msgstr "Anglais"
 
-#: mongrey/web/settings.py:19
+#: mongrey/web/settings.py:24
 msgid "French"
 msgstr "Français"
 
