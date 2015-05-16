@@ -6,7 +6,7 @@ import datetime
 import arrow
 
 from peewee import (Proxy, 
-                    Model,
+                    Model as BaseModel,
                     CharField, 
                     DateTimeField, 
                     IntegerField, 
@@ -35,6 +35,8 @@ except ImportError:
     except ImportError:
         HAVE_MYSQL = False
 
+from ...ext.slugify import UniqueSlugify
+
 from ...exceptions import ValidationError
 from ... import utils
 from ... import validators
@@ -50,18 +52,75 @@ class DateTimeFieldExtend(DateTimeField):
     def python_value(self, value):
         return arrow.get(value).datetime
 
+class ModelSlug(object):
+    
+    def __init__(self, model, slug_field='slug'):
+        self.model = model
+        self.slug_field = slug_field
+        
+    def __call__(self, text, uids):
+        if text in uids:
+            return False
+        #attr = getattr(self.model, self.slug_field)
+        #return not self.model.select().where(attr==text).first()
+        kwargs = {self.slug_field: text}
+        return self.model.filter(**kwargs).count() == 0
+    
+    @classmethod
+    def unique_slug(cls, model, slug_field='slug'):
+        return UniqueSlugify(unique_check=ModelSlug(model, slug_field='slug'))
+
+class Model(BaseModel):
+    
+    def save(self, return_instance=True, **kwargs):
+        with database_proxy.transaction():        
+            rows = BaseModel.save(self, **kwargs)                  
+            if return_instance:
+                pk = self._get_pk_value()
+                return self.get(id=pk)
+            return rows
+
+    @classmethod
+    def api_find(cls, **kwargs):
+        return cls.filter(**kwargs)
+
+    @classmethod
+    def api_find_one(cls, **kwargs):
+        return cls.api_find(**kwargs).first()
+
+    @classmethod
+    def api_create(cls, **kwargs):
+        with database_proxy.transaction():
+            id = cls(**kwargs).save(force_insert=True)
+            return cls.api_find_one(id=id)
+
+    @classmethod
+    def api_update(cls, doc=None, **kwargs):
+        #TODO: cls.select(id=doc.id).update(**kwargs) ?
+        with database_proxy.transaction():
+            for key, value in kwargs.items():
+                setattr(doc, key, value)
+            return doc.save(return_instance=False)
+
+    @classmethod
+    def api_delete(cls, doc=None):
+        with database_proxy.transaction():
+            return doc.delete_instance()
 
 class Domain(Model):
     
     name = CharField(unique=True, index=True)
 
+    slug = CharField(unique=True, index=True)
+    
     def _clean(self):
         validators.clean_domain(self.name, field_name="name", error_class=ValidationError)
     
-    def save(self, force_insert=False, only=None, validate=True):
+    def save(self, validate=True, **kwargs):
         if validate:
             self._clean()
-        return Model.save(self, force_insert=force_insert, only=only)
+        self.slug = ModelSlug.unique_slug(Domain)(self.name)            
+        return Model.save(self, **kwargs)
 
     @classmethod
     def search(cls, protocol):
@@ -73,13 +132,13 @@ class Domain(Model):
 
         if sender_domain:
             if cls.select().where(fn.Lower(cls.name)==sender_domain).first():
-                return constants.DOMAIN_SENDER_FOUND 
+                return constants.SENDER_FOUND 
 
         if recipient_domain:
             if cls.select().where(fn.Lower(cls.name)==recipient_domain).first():
-                return constants.DOMAIN_RECIPIENT_FOUND 
+                return constants.RECIPIENT_FOUND 
         
-        return constants.DOMAIN_NOT_FOUND
+        return constants.NOT_FOUND
 
 
     def __unicode__(self):
@@ -93,13 +152,32 @@ class Mailbox(Model):
     
     name = CharField(unique=True, index=True)
 
+    slug = CharField(unique=True, index=True)
+
+    @classmethod
+    def search(cls, protocol):
+        
+        sender = protocol.get('sender', None)
+        recipient = protocol.get('recipient')
+
+        if sender and sender != '<>':
+            if cls.select().where(fn.Lower(cls.name)==sender.lower()).first():
+                return constants.SENDER_FOUND 
+
+        if recipient:
+            if cls.select().where(fn.Lower(cls.name)==recipient.lower()).first():
+                return constants.RECIPIENT_FOUND 
+        
+        return constants.NOT_FOUND
+        
     def _clean(self):
         validators.clean_email(self.name, field_name="name", error_class=ValidationError)
     
-    def save(self, force_insert=False, only=None, validate=True):
+    def save(self, validate=True, **kwargs):
         if validate:
             self._clean()
-        return Model.save(self, force_insert=force_insert, only=only)
+        self.slug = ModelSlug.unique_slug(Mailbox)(self.name)            
+        return Model.save(self, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -112,15 +190,18 @@ class Mynetwork(Model):
     
     value = CharField(unique=True, index=True)
 
+    slug = CharField(unique=True, index=True)
+
     comments = CharField(max_length=100, null=True)
 
     def _clean(self):
         validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
     
-    def save(self, force_insert=False, only=None, validate=True):
+    def save(self, validate=True, **kwargs):
         if validate:
             self._clean()
-        return Model.save(self, force_insert=force_insert, only=only)
+        self.slug = ModelSlug.unique_slug(Mynetwork)(self.value)
+        return Model.save(self, **kwargs)
     
     @classmethod
     def search(cls, protocol):
@@ -168,10 +249,10 @@ class BaseSearchField(Model):
                 validators.clean_email_or_domain(self.value, field_name="value", error_class=ValidationError)
             pass
         
-    def save(self, force_insert=False, only=None, validate=True):
+    def save(self, validate=True, **kwargs):
         if validate:
             self._clean()
-        return Model.save(self, force_insert=force_insert, only=only)
+        return Model.save(self, **kwargs)
 
     class Meta: # noqa
         database = database_proxy
@@ -181,7 +262,9 @@ class Policy(BaseSearchField):
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
     _cache_key = 'greypolicy'
     
-    name = CharField(unique=True, max_length=20)
+    name = CharField(unique=True, max_length=20, index=True)
+
+    slug = CharField(unique=True, index=True)
     
     field_name = CharField(choices=constants.POLICY_FIELDS, default='client_address')
     
@@ -201,6 +284,10 @@ class Policy(BaseSearchField):
     greylist_expire = IntegerField(default=35*86400)#s, min_value=1)
     
     comments = CharField(max_length=100, null=True)
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(Policy)(self.name)            
+        return BaseSearchField.save(self, **kwargs)
     
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=True): # noqa
@@ -339,6 +426,12 @@ class WhiteList(BaseSearchField):
     _cache_key = 'wlist'
 
     field_name = CharField(choices=constants.WL_FIELDS, default='client_address')
+
+    slug = CharField(unique=True, index=True)
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(WhiteList)(self.value)        
+        return BaseSearchField.save(self, **kwargs)
     
     comments = CharField(max_length=100, null=True)
 
@@ -351,8 +444,14 @@ class BlackList(BaseSearchField):
     _cache_key = 'blist'
 
     field_name = CharField(choices=constants.BL_FIELDS, default='client_address')
+
+    slug = CharField(unique=True, index=True)
     
     comments = CharField(max_length=100, null=True)
+
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(BlackList)(self.value)        
+        return BaseSearchField.save(self, **kwargs)
 
     class Meta:
         order_by = ('value',)
@@ -513,6 +612,7 @@ def export_fixtures():
         fixtures[key] = []
         for d in list(klass.select().dicts()):
             d.pop('id', None)
+            d.pop('slug', None)
             fixtures[key].append(d)
     
     return fixtures

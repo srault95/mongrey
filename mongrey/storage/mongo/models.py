@@ -5,8 +5,11 @@ import datetime
 
 import arrow
 
-from mongoengine import Document, Q, fields
+from mongoengine import Document as BaseDocument
+from mongoengine import Q, fields
 from mongoengine import ValidationError, NotUniqueError
+
+from ...ext.slugify import UniqueSlugify
 
 from ... import utils
 from ... import validators
@@ -15,9 +18,58 @@ from ...policy import generic_search, search_mynetwork
 
 logger = logging.getLogger(__name__)
 
+class ModelSlug(object):
+    
+    def __init__(self, model, slug_field='slug'):
+        self.model = model
+        self.slug_field = slug_field
+        
+    def __call__(self, text, uids):
+        if text in uids:
+            return False
+        kwargs = {self.slug_field: text}
+        return not self.model.objects(**kwargs).first()
+    
+    @classmethod
+    def unique_slug(cls, model, slug_field='slug'):
+        return UniqueSlugify(unique_check=ModelSlug(model, slug_field='slug'))
+
+class Document(BaseDocument):
+
+    @classmethod
+    def api_find(cls, **kwargs):
+        return cls.objects(**kwargs)
+
+    @classmethod
+    def api_find_one(cls, **kwargs):
+        return cls.api_find(**kwargs).first()
+
+    @classmethod
+    def api_create(cls, **kwargs):
+        return cls(**kwargs).save()
+
+    @classmethod
+    def api_update(cls, doc=None, **kwargs):
+        return doc.update(**kwargs)
+        #return doc
+
+    @classmethod
+    def api_delete(cls, doc=None):
+        return doc.delete()
+
+    meta = {
+        'abstract': True,
+    }
+
 class Domain(Document):
     
     name = fields.StringField(unique=True, required=True)
+
+    slug = fields.StringField(unique=True, required=True)
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(Domain)(self.name)        
+        return Document.save(self, **kwargs)
 
     def clean(self):
         Document.clean(self)
@@ -36,27 +88,49 @@ class Domain(Document):
 
         if sender_domain:
             if cls.objects(name__iexact=sender_domain).first():
-                return constants.DOMAIN_SENDER_FOUND 
+                return constants.SENDER_FOUND 
 
         if recipient_domain:
             if cls.objects(name__iexact=recipient_domain).first():
-                return constants.DOMAIN_RECIPIENT_FOUND 
+                return constants.RECIPIENT_FOUND 
         
-        return constants.DOMAIN_NOT_FOUND
+        return constants.NOT_FOUND
         
     meta = {
         'collection': 'domain',
         'ordering': ['name'],        
-        'indexes': ['name'],
+        'indexes': ['name', 'slug'],
     }
 
 class Mailbox(Document):
     
     name = fields.StringField(unique=True, required=True)
 
+    slug = fields.StringField(unique=True, required=True)
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(Mailbox)(self.name)        
+        return Document.save(self, **kwargs)
+
     def clean(self):
         Document.clean(self)
         validators.clean_email(self.name, field_name="name", error_class=ValidationError)
+
+    @classmethod
+    def search(cls, protocol):
+        
+        sender = protocol.get('sender', None)
+        recipient = protocol.get('recipient')
+
+        if sender and sender != '<>':
+            if cls.objects(name__iexact=sender.lower()).first():
+                return constants.SENDER_FOUND 
+
+        if recipient:
+            if cls.objects(name__iexact=recipient.lower()).first():
+                return constants.RECIPIENT_FOUND 
+        
+        return constants.NOT_FOUND
 
     def __unicode__(self):
         return self.name
@@ -64,14 +138,20 @@ class Mailbox(Document):
     meta = {
         'collection': 'mailbox',
         'ordering': ['name'],        
-        'indexes': ['name'],
+        'indexes': ['name', 'slug'],
     }
 
 class Mynetwork(Document):
     
     value = fields.StringField(unique=True, required=True)
 
+    slug = fields.StringField(unique=True, required=True)
+    
     comments = fields.StringField(max_length=100)
+
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(Mynetwork)(self.value)        
+        return Document.save(self, **kwargs)
 
     def clean(self):
         Document.clean(self)
@@ -89,7 +169,7 @@ class Mynetwork(Document):
     meta = {
         'collection': 'mynetwork',
         'ordering': ['value'],        
-        'indexes': ['value'],
+        'indexes': ['value', 'slug'],
     }
 
 
@@ -138,6 +218,8 @@ class Policy(BaseSearchField):
     _cache_key = 'greypolicy'
     
     name = fields.StringField(unique=True, required=True, max_length=20)
+
+    slug = fields.StringField(unique=True, required=True)
     
     field_name = fields.StringField(required=True, choices=constants.POLICY_FIELDS, default='client_address')
     
@@ -159,6 +241,10 @@ class Policy(BaseSearchField):
     
     comments = fields.StringField(max_length=100)
 
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(Policy)(self.name)
+        return Document.save(self, **kwargs)
+
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=True): # noqa
         return super(Policy, cls).search(protocol, cache_enable=cache_enable, return_instance=return_instance)
@@ -169,7 +255,7 @@ class Policy(BaseSearchField):
     meta = {
         'collection': 'policy',
         'ordering': ['name'],        
-        'indexes': ['name', 'value', 'field_name'],
+        'indexes': ['name', 'value', 'field_name', 'slug'],
     }
 
 
@@ -306,12 +392,18 @@ class WhiteList(BaseSearchField):
     
     comments = fields.StringField(max_length=100)
 
+    slug = fields.StringField(unique=True, required=True)
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(WhiteList)(self.value)        
+        return Document.save(self, **kwargs)
+
     def __unicode__(self):
         return u"%s (%s)" % (self.value, self.get_field_name_display())
 
     meta = {
         'collection': 'whitelist',
-        'indexes': ['value', 'field_name'],
+        'indexes': ['value', 'field_name', 'slug'],
     }
     
 class BlackList(BaseSearchField):
@@ -321,14 +413,20 @@ class BlackList(BaseSearchField):
 
     field_name = fields.StringField(required=True, choices=constants.BL_FIELDS, default='client_address')
     
+    slug = fields.StringField(unique=True, required=True)
+    
     comments = fields.StringField(max_length=100)
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(BlackList)(self.value)        
+        return Document.save(self, **kwargs)
 
     def __unicode__(self):
         return u"%s (%s)" % (self.value, self.get_field_name_display())
 
     meta = {
         'collection': 'blacklist',
-        'indexes': ['value', 'field_name'],
+        'indexes': ['value', 'field_name', 'slug'],
     }
 
         
@@ -403,6 +501,7 @@ def export_fixtures():
         fixtures[key] = []
         for d in klass.objects.as_pymongo():
             d.pop('_id', None)
+            d.pop('slug', None)
             fixtures[key].append(d)
             
     #add comments fields beacause mongoengine not include empty field 
