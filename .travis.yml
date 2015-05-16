@@ -20,11 +20,12 @@ git:
   
 env:
   #- GEVENT_RESOLVER=ares GEVENTARES_SERVERS=8.8.8.8
-  - MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey_test MONGREY_CACHE=simple REDIS=0
+  - MONGOENGINE=PROD MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey_test MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=sqlite:////tmp/mongrey_test.db MONGREY_CACHE=simple REDIS=0
   #- MONGREY_STORAGE=sql MONGREY_DB=postgres://localhost/mongrey_test POSTGRESQL=1 MONGREY_CACHE=simple REDIS=0
   #- MONGREY_STORAGE=sql MONGREY_DB=mysql://localhost/mongrey_test MYSQL=1  MONGREY_CACHE=simple REDIS=0
   - MONGREY_STORAGE=sql MONGREY_DB=sqlite:////tmp/mongrey_test.db MONGREY_CACHE=redis://localhost REDIS=1
+  - MONGOENGINE=DEV MONGREY_STORAGE=mongo MONGREY_DB=mongodb://localhost/mongrey_test MONGREY_CACHE=simple REDIS=0
   
 before_install:
  - "sudo apt-get update -qq"
@@ -35,6 +36,7 @@ install:
   - pip install coveralls 
   - pip install -r requirements/tests.txt
   - pip install -e .[full]
+  - "if [[ $MONGOENGINE == 'DEV' ]]; then pip install -U pymongo https://github.com/MongoEngine/mongoengine/tarball/master; fi"
 
 before_script:
   - sleep 5
