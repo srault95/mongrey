@@ -515,7 +515,7 @@ def get_store(storage=None, **config):
     elif storage == "sql":
         from mongrey.storage.sql.models import configure_peewee
         from mongrey.storage.sql.policy import SqlPolicy
-        from mongrey.storage.mongo import models
+        from mongrey.storage.sql import models
         peewee_settings = config.pop('peewee_settings')
         configure_peewee(**peewee_settings)
         db = peewee_settings['db_name']
@@ -524,7 +524,7 @@ def get_store(storage=None, **config):
     
     return None, None, None
     
-def command_start(**config):
+def command_start(start_server=True, start_threads=True, **config):
     
     storage = config.pop('storage')
     
@@ -567,21 +567,26 @@ def command_start(**config):
     server = PolicyServer(policy=policy, **config)
     
     try:
-        if purge_enable and purge_interval > 0:
-            green_purge = gevent.spawn(policy.task_purge_expire)
-            atexit.register(gevent.kill, green_purge)
+        if start_threads:
             
-        if metrics_enable and metrics_interval > 0:
-            green_metrics = gevent.spawn(policy.task_metrics)
-            atexit.register(gevent.kill, green_metrics)
-            
-        if stats_enable and stats_interval > 0:
-            green_stats = gevent.spawn(stats, interval=stats_interval)
-            atexit.register(gevent.kill, green_stats)
-
+            if purge_enable and purge_interval > 0:
+                green_purge = gevent.spawn(policy.task_purge_expire)
+                atexit.register(gevent.kill, green_purge)
+                
+            if metrics_enable and metrics_interval > 0:
+                green_metrics = gevent.spawn(policy.task_metrics)
+                atexit.register(gevent.kill, green_metrics)
+                
+            if stats_enable and stats_interval > 0:
+                green_stats = gevent.spawn(stats, interval=stats_interval)
+                atexit.register(gevent.kill, green_stats)
+    
         logger.info("STORAGE[%s] - DB[%s]" % (storage, db))
-            
-        server.serve_forever()
+
+        if start_server:            
+            server.serve_forever()
+        else:
+            return server
         
     except Exception, err:
         sys.stderr.write("%s\n" % str(err))
