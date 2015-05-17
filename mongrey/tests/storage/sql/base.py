@@ -4,6 +4,7 @@ import unittest
 import os
 
 from mongrey.storage.sql import models
+from mongrey.utils import get_db_config
 from mongrey import cache
 
 from ...base import BaseTestCase
@@ -11,17 +12,18 @@ from ...base import BaseTestCase
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', 'sql') != "sql", "Skip no sql tests")
 class MongreyBaseTestCase(BaseTestCase):
     
-    peewee_settings = {
-        'db_name': 'sqlite:///../mongrey_test.db',
-        'db_options': {
+    db_settings = {
+        'host': 'sqlite:///../mongrey_test.db',
+        'options': {
             'threadlocals': True    #pour use with gevent patch
         }
     } 
     
     def setUp(self):
         BaseTestCase.setUp(self)
+        settings, storage = get_db_config(**self.db_settings)        
+        models.configure_peewee(drop_before=True, **settings)
         self._cache = cache.configure_cache(cache_url='simple')                
-        models.configure_peewee(drop_before=True, **self.peewee_settings)
 
     def tearDown(self):
         BaseTestCase.tearDown(self)

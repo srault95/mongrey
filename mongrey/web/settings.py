@@ -11,8 +11,6 @@ class Config(object):
 
     ALLOW_HOSTS = config('MONGREY_WEB_ALLOW_HOSTS', ['127.0.0.1'], cast=to_list)
     
-    STORAGE = config('MONGREY_STORAGE', 'sql')
-
     SECRET_KEY = config('MONGREY_SECRET_KEY', 'qwerty12345678')
 
     DEBUG = config('MONGREY_DEBUG', False, cast=bool)
@@ -35,16 +33,8 @@ class Config(object):
     BASIC_AUTH_REALM = '/'
     BASIC_AUTH_MAX_ATTEMPT = config('MONGREY_AUTH_MAX_ATTEMPT', 3, cast=int)
     
-    MONGODB_SETTINGS = {
-        'host': config('MONGREY_DB', 'mongodb://localhost/mongrey'),
-        'tz_aware': True,    
-    }   
-    
-    PEEWEE_SETTINGS = {
-        'db_name': config('MONGREY_DB', 'sqlite:///mongrey.db'),
-        'db_options': {
-            'threadlocals': True    #pour use with gevent patch
-        }
+    DB_SETTINGS = {
+        'host': config('MONGREY_DB', 'sqlite:///mongrey.db'),
     }        
     
     WEB_HOST = config('MONGREY_WEB_HOST', '127.0.0.1')
@@ -100,14 +90,7 @@ class Test(Config):
     BASIC_AUTH_USERNAME = 'radicalspamtest'
     BASIC_AUTH_PASSWORD = 'radicalspamtest' # noqa
 
-    MONGODB_SETTINGS = {
-        'host': config('MONGREY_DB', 'mongodb://localhost/mongrey_test'),
-        'tz_aware': True,    
-    }   
-
-    PEEWEE_SETTINGS = {
-        'db_name': config('MONGREY_DB', 'sqlite:///../mongrey_test.db'),
-        'db_options': {
-            'threadlocals': True    #pour use with gevent patch
-        }
+    DB_SETTINGS = {
+        'host': config('MONGREY_DB', 'sqlite:////tmp/mongrey_test.db'),
     }        
+

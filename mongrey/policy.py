@@ -220,7 +220,19 @@ class Policy(object):
         kwargs.update(protocol)
         return "action=%(action)s, reason=%(reason)s, client_name=%(client_name)s, client_address=%(client_address)s, sender=%(sender)s, recipient=%(recipient)s policy=%(policy_name)s" % kwargs
 
-    def check_actions(self, protocol):
+    def check_actions_one_request(self, request):        
+        
+        fields = dict(constants.ALL_FIELDS).keys()
+        
+        protocol = dict([a.strip(',').split('=') for a in request.split()])
+        
+        for key in fields:
+            if not key in protocol:
+                protocol[key] = None 
+        
+        return self.check_actions(protocol, one_request=True)
+
+    def check_actions(self, protocol, one_request=False):
         
         '''
         TODO: Séparer chaque check et utiliser Exception spécifique pour arrêter la procédure et renvoyer l'action

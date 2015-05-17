@@ -381,9 +381,9 @@ class GreylistEntry(Model):
         
         metrics = {
             'count': objects.count(),
-            'accepted': cls.select(fn.Sum(cls.accepts)).where(cls.timestamp >= last_24_hours),
-            'rejected': cls.select(fn.Sum(cls.rejects)).where(cls.timestamp >= last_24_hours),
-            'delay': cls.select(fn.Avg(cls.delay)).where(cls.timestamp >= last_24_hours, cls.accepts>=0, cls.delay>=0),
+            'accepted': cls.select(fn.Sum(cls.accepts)).where(cls.timestamp >= last_24_hours) or 0,
+            'rejected': cls.select(fn.Sum(cls.rejects)).where(cls.timestamp >= last_24_hours) or 0,
+            'delay': cls.select(fn.Avg(cls.delay)).where(cls.timestamp >= last_24_hours, cls.accepts>=0, cls.delay>=0) or 0.0,
             'abandoned': objects.filter(cls.accepts==0, cls.timestamp<=last_1_hour).count(),
             #'count_accepts': objects.filter(accepts__gte=1).count(),
         }

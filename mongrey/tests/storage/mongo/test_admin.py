@@ -37,10 +37,12 @@ from mongrey import constants
 
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', "mongo") != "mongo", "Skip no mongodb tests")
 class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
+
+    CONFIG = "mongrey.tests.storage.mongo.flask_settings.Test"
     
     def _create_app(self):
         from mongrey.web import create_app
-        app = create_app(config=self.CONFIG, force_storage="mongo")
+        app = create_app(config=self.CONFIG)
         return app
     
     def test_security(self):
@@ -57,10 +59,9 @@ class AdminTestCase(AdminTestCaseMixin, BaseFlaskTestCase):
         url = "%s?locale=fr" % url_for('admin.change_lang')
         with self.client as c:
             response = c.get(url, headers=headers_login, follow_redirects=True)
-            print response
-            
+            #print response
             current_lang = self.get_context_variable('current_lang')
-            print "current_lang : ", current_lang            
+            #print "current_lang : ", current_lang            
             
             #self.assertEquals(session.get(constants.SESSION_LANG_KEY, None), 'fr')
         

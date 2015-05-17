@@ -6,6 +6,7 @@ import os
 from mongoengine import connect
 
 from mongrey.storage.mongo import models
+from mongrey.utils import get_db_config
 from mongrey import cache
 
 from ...base import BaseTestCase
@@ -13,17 +14,14 @@ from ...base import BaseTestCase
 @unittest.skipIf(os.environ.get('MONGREY_STORAGE', 'mongo') != "mongo", "Skip no mongodb tests")
 class MongreyBaseTestCase(BaseTestCase):
 
-    mongodb_settings = {
+    db_settings = {
         'host': 'mongodb://localhost/mongrey_test',
-        'tz_aware': True,    
     }
     
     def setUp(self):
         BaseTestCase.setUp(self)
-        from mongrey.storage.mongo import PYMONGO2
-        if PYMONGO2:
-            self.mongodb_settings['use_greenlets'] = True                
-        self._db = connect(**self.mongodb_settings)
+        settings, storage = get_db_config(**self.db_settings)
+        self._db = connect(**settings)
         self._cache = cache.configure_cache(cache_url='simple')
         models.GreylistMetric.drop_collection()
         models.GreylistEntry.drop_collection()

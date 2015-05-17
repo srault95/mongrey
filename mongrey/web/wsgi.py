@@ -34,7 +34,7 @@ def _configure_session(app):
     
     elif SESSION_BACKEND.startswith('mongodb'):
         
-        if app.config.get('STORAGE') != "mongo":
+        if not app.config.get('DB_SETTINGS', {}).get('host', '').startswith("mongodb://"):
             raise Exception("Use mongodb for session storage only if app STORAGE is mongodb")
         
         from ..storage.mongo.models import Domain
@@ -91,16 +91,16 @@ def _configure_i18n(app):
 def _configure_storage_mongo(app):    
     from flask_mongoengine import MongoEngine
     from mongrey.storage.mongo.admin import init_admin
-    from mongrey.storage.mongo import PYMONGO2
-    if PYMONGO2:
-        app.config['MONGODB_SETTINGS']['use_greenlets'] = True                
+    settings, storage = utils.get_db_config(**app.config.get('DB_SETTINGS'))
+    app.config['MONGODB_SETTINGS'] = settings
     db = MongoEngine(app)
     init_admin(app=app, url='/')
 
 def _configure_storage_sql(app):
     from mongrey.storage.sql import models
     from mongrey.storage.sql.admin import init_admin
-    models.configure_peewee(**app.config.get('PEEWEE_SETTINGS'))
+    settings, storage = utils.get_db_config(**app.config.get('DB_SETTINGS'))
+    models.configure_peewee(**settings)
     init_admin(app=app, url='/')
     
     @app.before_request
@@ -112,7 +112,7 @@ def _configure_storage_sql(app):
         if not models.database_proxy.is_closed():
             models.database_proxy.close()            
 
-def create_app(config='mongrey.web.settings.Prod', force_storage=None):
+def create_app(config='mongrey.web.settings.Prod'):
 
     env_config = config_from_env('MONGREY_SETTINGS', config)
     
@@ -127,15 +127,14 @@ def create_app(config='mongrey.web.settings.Prod', force_storage=None):
     auth.init_app(app)
     _configure_i18n(app)
     
-    if force_storage:
-        app.config['STORAGE'] = force_storage
-    
-    if app.config.get('STORAGE') == "mongo":
+    settings, storage = utils.get_db_config(**app.config.get('DB_SETTINGS'))
+
+    if storage == "mongo":
         _configure_storage_mongo(app)
         if 'DEBUG_TB_PANELS' in app.config:
             app.config['DEBUG_TB_PANELS'].append('flask.ext.mongoengine.panels.MongoDebugPanel')
-        
-    elif app.config.get('STORAGE') == "sql":
+    
+    elif storage == "sql":
         _configure_storage_sql(app)
         
     _configure_session(app)

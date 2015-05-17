@@ -28,6 +28,15 @@ FIELD_RECIPIENT = ('recipient', _(u"Email Recipient"))
 FIELD_COUNTRY = ('country', _(u"Country Code"))
 FIELD_HELO_NAME = ('helo_name', _(u"Helo Name"))
 
+ALL_FIELDS = (
+    FIELD_CLIENT_ADDRESS,             
+    FIELD_CLIENT_NAME,
+    FIELD_SENDER,
+    FIELD_RECIPIENT,
+    FIELD_COUNTRY,
+    FIELD_HELO_NAME              
+) 
+
 WL_FIELDS = (
     FIELD_COUNTRY,
     FIELD_CLIENT_ADDRESS,             

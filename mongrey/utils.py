@@ -6,6 +6,7 @@ import logging
 import re
 import uuid
 import hashlib
+import urlparse
 
 from six import string_types
 
@@ -27,6 +28,7 @@ except ImportError:
     HAVE_GEOIP_DATA = False
 
 from . import constants
+from .exceptions import ConfigurationError
 
 geoip_country_v4 = None
 geoip_country_v6 = None
@@ -297,7 +299,8 @@ def build_key(protocol, greylist_key=constants.GREY_KEY_MED):
     return "-".join(build_key)
     
     
-def configure_logging(debug=False, 
+def configure_logging(daemon=False,
+                      debug=False, 
                       stdout_enable=True, 
                       syslog_enable=False,
                       prog_name=None,
@@ -311,6 +314,11 @@ def configure_logging(debug=False,
     if config_file:
         logging.config.fileConfig(config_file, disable_existing_loggers=True)
         return logging.getLogger(prog_name)
+    
+    if not IS_WINDOWS and daemon:
+        syslog_enable = True
+        stdout_enable = False
+         
     
     LOGGING = {
         'version': 1,
@@ -473,3 +481,48 @@ def confirm_with_exist(install_path, **data):
         return False
     
     return False
+
+def write_pid(pid_file):
+    dirpath = os.path.abspath(os.path.dirname(pid_file))
+    if not os.path.exists(dirpath):
+        os.makedirs(dirpath)
+        
+    with open(pid_file, 'w') as fp:
+        fp.write(str(os.getpid()))
+
+def get_db_config(**db_settings):
+    
+    host = db_settings.get('host', None) 
+    options = db_settings.get('options', {})
+    
+    if not host:
+        raise ConfigurationError("not host found in settings")
+
+    url = urlparse.urlparse(host)
+    
+    if url.scheme in ['sqlite', 'postgres', 'mysql']:
+        settings = {
+            'db_name': host,
+            'db_options': options
+        }
+        if not 'threadlocals' in options:
+            if url.scheme == 'sqlite':
+                settings['db_options']['threadlocals'] = True
+        else:
+            if not url.scheme == 'sqlite':
+                settings['db_options'].pop('threadlocals')
+    
+        return settings, 'sql'
+    
+    elif url.scheme == 'mongodb':
+        from mongrey.storage.mongo import PYMONGO2
+        settings = {
+            'host': host,
+            'tz_aware': True,
+        }
+        if PYMONGO2:
+            settings['use_greenlets'] = True
+        return settings, 'mongo'
+    else:
+        raise ConfigurationError("not valid scheme in db configuration")
+     

@@ -4,7 +4,7 @@ import unittest
 
 from mongrey import utils
 from mongrey import constants
-from mongrey.exceptions import InvalidProtocolError
+from mongrey.exceptions import InvalidProtocolError, ConfigurationError
 
 from .base import BaseTestCase
 from .utils import protocol_yaml_TO_dict
@@ -58,3 +58,26 @@ class UtilsTestCase(BaseTestCase):
         key = utils.build_key(protocol, greylist_key=constants.GREY_KEY_SPECIAL)
         self.assertEquals(key, '<>-test@example.org')
 
+    def test_get_db_config(self):
+        
+        with self.assertRaises(ConfigurationError) as ex:
+             utils.get_db_config()
+        
+        settings = {'host': 'badscheme://'}
+        with self.assertRaises(ConfigurationError) as ex:
+            utils.get_db_config(**settings)
+        
+        settings = {'host': 'badscheme://'}
+        with self.assertRaises(ConfigurationError) as ex:
+            utils.get_db_config(**settings)
+
+        settings = {'host': 'mongodb://'}
+        _settings, storage = utils.get_db_config(**settings)
+        self.assertEquals(storage, 'mongo')
+
+        settings = {'host': None}
+        for s in ['sqlite', 'postgres', 'mysql']:
+            settings['host'] = "%s://" % s
+            _settings, storage = utils.get_db_config(**settings)
+            self.assertEquals(storage, 'sql')
+            

@@ -17,6 +17,7 @@ from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
 from mongrey.server.core import options, main
 from mongrey.server.core import command_start
 from mongrey import utils
+from mongrey.exceptions import ConfigurationError
 
 from ..utils import protocol_yaml_TO_dict, send_policy, get_free_port
 from ..base import BaseTestCase
@@ -24,7 +25,6 @@ from ..base import BaseTestCase
 _DEFAULT_CONFIG = {
     'settings_path': None,
     'fixtures_path': None,
-    'storage': 'sql',             
     'host': '127.0.0.1',
     'port': 9999,
     'allow_hosts': ['127.0.0.1', '::1'],
@@ -45,17 +45,9 @@ _DEFAULT_CONFIG = {
     'verbose': 1,
     'no_verify_protocol': False,
     
-    'mongodb_settings': {
-        'host': 'mongodb://localhost/mongrey',
-        'tz_aware': True,    
+    'db_settings': {
+        'host': 'sqlite:///mongrey.db',
     },
-                  
-    'peewee_settings': {
-        'db_name': 'sqlite:///mongrey.db',
-        'db_options': {
-            'threadlocals': True
-        }
-    },        
 
     'cache_settings': {
         'cache_url': 'simple',
@@ -88,28 +80,13 @@ class NoRunServerTestCase(BaseTestCase):
     #TODO: command_fixtures_export
     #TODO: command_load_settings
     
-    def OLDtest_command_start(self):
-        config = _DEFAULT_CONFIG.copy()
-        config.pop('country_ipv4')
-        config.pop('country_ipv6')
-        t = gevent.Timeout(seconds=1.0)
-        t.start()
-        try:
-            green = gevent.spawn(command_start(**config))
-            gevent.kill(green)
-        except:
-            pass
-        finally:
-            t.cancel()
     
     @unittest.skipIf('TRAVIS' in os.environ, "Skip Travis")        
     def test_default_config(self):
         self.maxDiff = None
         
         _default_config = _DEFAULT_CONFIG.copy()
-        _default_config['storage'] = SERVER_CONFIG['storage']
-        _default_config['mongodb_settings'] = SERVER_CONFIG['mongodb_settings']
-        _default_config['peewee_settings'] = SERVER_CONFIG['peewee_settings']
+        _default_config['db_settings'] = SERVER_CONFIG['db_settings']
         _default_config['cache_settings'] = SERVER_CONFIG['cache_settings']        
         self.assertDictEqual(_default_config, SERVER_CONFIG)
 
@@ -117,15 +94,14 @@ class NoRunServerTestCase(BaseTestCase):
         
         change_config = """
         allow_hosts: ['1.1.1.1']
-        mongodb_settings:
+        db_settings:
           host: mongodb://host/db
-          tz_aware: true
         """
         
         config = utils.load_yaml_config(settings=StringIO(change_config), default_config=_DEFAULT_CONFIG.copy())
         
         self.assertEquals(config['allow_hosts'], ['1.1.1.1'])
-        self.assertEquals(config['mongodb_settings']['host'], 'mongodb://host/db')
+        self.assertEquals(config['db_settings']['host'], 'mongodb://host/db')
         self.assertEquals(config['port'], 9999)
                 
     def test_security_disable(self):

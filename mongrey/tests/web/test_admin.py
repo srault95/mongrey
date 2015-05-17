@@ -12,7 +12,7 @@ class AdminTestCaseMixin:
     def _test_security(self, models):
         
         url = url_for('greylistentry.index_view')
-        #url = url_for('admin.index')
+        #TODO: url = url_for('admin.index')
         self.assertIsNone(auth.current_user())
         
         response = self.client.get(url, follow_redirects=False)

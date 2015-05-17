@@ -13,19 +13,12 @@ DEFAULT_CONFIG = {
     
     'settings_path': env_config('MONGREY_SERVER_SETTINGS', None),             
 
-    'storage': env_config('MONGREY_STORAGE', 'sql'),             
-                      
-    'mongodb_settings': {
-        'host': env_config('MONGREY_DB', 'mongodb://localhost/mongrey'),
-        'tz_aware': True,    
+    'db_settings': {
+        'host': env_config('MONGREY_DB', 'sqlite:///mongrey.db'),
+        'options': {
+            'threadlocals': True
+        }    
     },
-                  
-    'peewee_settings': {
-        'db_name': env_config('MONGREY_DB', 'sqlite:///mongrey.db'),
-        'db_options': {
-            'threadlocals': True    #pour use with gevent patch
-        }
-    },        
                                        
 }
 
@@ -65,18 +58,14 @@ def radicalspam_migration(basepath=None, models=None, dry_run=False):
                 print("\t%s" % e) 
     print "-------------------------------------------------"
 
-def get_models(storage=None, **config):
+def get_models(**config):
     
-
+    settings, storage = utils.get_db_config(config.get('db_settings', {}))
     
     if storage == "mongo":
         from mongrey.storage.mongo.utils import create_mongo_connection
         from mongrey.storage.mongo import models
-        from mongrey.storage.mongo import PYMONGO2
-        mongodb_settings = config.pop('mongodb_settings')
-        if PYMONGO2:
-            mongodb_settings['use_greenlets'] = True
-        create_mongo_connection(mongodb_settings)
+        create_mongo_connection(**settings)
         _models = {
             'domain': models.Domain,
             'mynetwork': models.Mynetwork,
@@ -89,8 +78,7 @@ def get_models(storage=None, **config):
     elif storage == "sql":
         from mongrey.storage.sql.models import configure_peewee
         from mongrey.storage.sql import models
-        peewee_settings = config.pop('peewee_settings')
-        configure_peewee(**peewee_settings)
+        configure_peewee(**settings)
         _models = {
             'domain': models.Domain,
             'mynetwork': models.Mynetwork,
@@ -120,11 +108,6 @@ def options():
                         default=DEFAULT_CONFIG['settings_path'], 
                         help='load settings from YAML file')
 
-    parser.add_argument('--storage',
-                        dest="mongrey_storage",
-                        default=env_config('MONGREY_STORAGE', 'sql'), 
-                        help='Mongrey Storage. default: %(default)s')
-    
     parser.add_argument('--db',
                         dest="mongrey_db",
                         default=env_config('MONGREY_DB', 'sqlite:///mongrey.db'), 
@@ -156,23 +139,11 @@ def main():
     
     config = DEFAULT_CONFIG.copy()
 
-    config_loaded = False
     if settings_path:
         filepath = os.path.expanduser(settings_path)
         if os.path.exists(filepath):
             config = utils.load_yaml_config(settings=filepath, 
                                             default_config=DEFAULT_CONFIG)
-            config_loaded = True
-    
-    if not config_loaded:
-        mongrey_storage = opts.get('mongrey_storage')
-        mongrey_db = opts.get('mongrey_db')
-    
-        config['storage'] = mongrey_storage
-        if mongrey_storage == "mongo":
-            config['mongodb_settings']['host'] = mongrey_db
-        else:
-            config['peewee_settings']['db_name'] = mongrey_db
     
     models = get_models(**config)
     

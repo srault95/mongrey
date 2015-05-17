@@ -29,17 +29,14 @@ class NoRunServerTestCase(NoRunServerMixin, MongreyBaseTestCase):
 
     def test_get_store(self):
         config = _DEFAULT_CONFIG.copy()
-        config['storage'] = "sql"
-        config['peewee_settings']['db_name'] = 'sqlite:///mongrey.db'
-        db, policy_klass, _models = get_store(**config)
-        self.assertEquals(db, 'sqlite:///mongrey.db')
+        config['db_settings']['host'] = 'sqlite:///mongrey.db'
+        policy_klass, _models = get_store(**config)
         self.assertTrue(issubclass(policy_klass, Policy))
         self.assertEquals(models, _models)
 
     def test_command_start(self):
         config = _DEFAULT_CONFIG.copy()
-        config['storage'] = "sql"
-        config['peewee_settings']['db_name'] = 'sqlite:///mongrey.db'
+        config['db_settings']['host'] = 'sqlite:///mongrey.db'
         config.pop('country_ipv4')
         config.pop('country_ipv6')
         server = command_start(start_server=False, start_threads=False, **config)

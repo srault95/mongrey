@@ -2,6 +2,7 @@
 
 import unittest
 
+import sys
 from mongrey import cache
 
 try:
@@ -9,7 +10,12 @@ try:
     HAVE_REDIS = True
 except ImportError:
     HAVE_REDIS = False
-    pass    
+    pass
+
+REDIS_TEST = HAVE_REDIS
+if sys.platform.startswith("win32"):
+    REDIS_TEST = False
+    
 
 class CacheTestCase(unittest.TestCase):
     
@@ -35,7 +41,7 @@ class CacheTestCase(unittest.TestCase):
         
         self.assertIsNone(cache.cache)
 
-    @unittest.skipUnless(HAVE_REDIS, "Skip redis tests")    
+    @unittest.skipUnless(REDIS_TEST, "Skip redis tests")    
     def test_redis_cache(self):
 
         self.assertIsNone(cache.cache)

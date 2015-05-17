@@ -34,16 +34,12 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_SETTINGS_PATH = [
     '~/mongrey/server.yml',
-    '~/mongrey-server.yml',
-    '/etc/mongrey-server.yml',
     '/etc/mongrey/server.yml',
 ]
 
 #TODO: /var/lib/mongrey/fixtures.yml et/ou /opt/mongrey/fixtures.yml 
 DEFAULT_FIXTURES_PATH = [
     '~/mongrey/server-fixtures.yml',
-    '~/mongrey-server-fixtures.yml',
-    '/etc/mongrey-server-fixtures.yml',
     '/etc/mongrey/server-fixtures.yml',
 ]
 
@@ -53,8 +49,6 @@ DEFAULT_CONFIG = {
 
     'fixtures_path': env_config('MONGREY_SERVER_FIXTURES', None),             
     
-    'storage': env_config('MONGREY_STORAGE', 'sql'),             
-                      
     'host': env_config('MONGREY_HOST', '127.0.0.1', cast=str),
     
     'port': env_config('MONGREY_PORT', 9999, cast=int),
@@ -94,19 +88,11 @@ DEFAULT_CONFIG = {
     'verbose': env_config('MONGREY_VERBOSE', 1, cast=int),
     
     'no_verify_protocol': env_config('MONGREY_NO_VERIFY_PROTOCOL', False, cast=bool),
-    
-    'mongodb_settings': {
-        'host': env_config('MONGREY_DB', 'mongodb://localhost/mongrey'),
-        'tz_aware': True,    
-    },
-                  
-    'peewee_settings': {
-        'db_name': env_config('MONGREY_DB', 'sqlite:///mongrey.db'), #TODO: /var/lib/mongrey/mongrey.db
-        'db_options': {
-            'threadlocals': True    #pour use with gevent patch
-        }
-    },        
 
+    'db_settings': {
+        'host': env_config('MONGREY_DB', 'sqlite:///mongrey.db'),
+    },
+    
     'cache_settings': {
         'cache_url': env_config('MONGREY_CACHE', 'simple'),
         'cache_timeout': env_config('MONGREY_CACHE_TIMEOUT', 300, cast=int),    
@@ -379,7 +365,7 @@ def options():
 
     parser.add_argument('--quiet', 
                         action="store_true",
-                        help="Silent mode (install command only)")
+                        help="Silent mode (config-install command only)")
 
     parser.add_argument('--log-config',
                         dest="log_config", 
@@ -394,13 +380,18 @@ def options():
                         help='Enable write pid file')
     
     parser.add_argument(choices=['start',                                  
+                                 'check',
                                  'config',
                                  'config-install',
                                  'fixtures-import',
-                                 'fixtures-export'
+                                 'fixtures-export',
                                  ],
                         dest='command',
                         help="Run command.")
+
+    parser.add_argument('--request',
+                        dest="request", 
+                        help='Request policy for check command')
     
     return dict(parser.parse_args()._get_kwargs())
 
@@ -432,8 +423,7 @@ def command_fixtures_import(option_fixtures_path=None, raise_error=False, **conf
         fixtures = utils.load_yaml_config(settings=fixtures_path, default_config={})
         
         if fixtures and len(fixtures) > 0:
-            valid_storage(**config)
-            db, policy_klass, models = get_store(**config)
+            policy_klass, models = get_store(**config)
             result = models.import_fixtures(fixtures)
             
             logger.info("IMPORT entries[%(entries)s] - success[%(success)s] - warn[%(warn_error)s] - error[%(fatal_error)s]" % result)
@@ -450,8 +440,7 @@ def command_fixtures_import(option_fixtures_path=None, raise_error=False, **conf
 def command_fixtures_export(filepath=None, raise_error=False, **config):
 
     try:
-        valid_storage(**config)
-        db, policy_klass, models = get_store(**config)
+        policy_klass, models = get_store(**config)
 
         fixtures = models.export_fixtures()
         return utils.dump_dict_to_yaml_file(filepath, data=fixtures, replace=True, createdir=True)
@@ -475,16 +464,6 @@ def command_load_settings(default_config=None, option_settings_path=None, raise_
         if raise_error:
             raise
 
-def valid_storage(storage=None, **config):
-    
-    if not storage in ["mongo", "sql"]:
-        raise ConfigurationError("storage not available: %s\n" % storage)
-    
-    if storage == "sql" and not "peewee_settings" in config:
-        raise ConfigurationError("peewee_settings not found in configuration")
-
-    if storage == "mongo" and not "mongodb_settings" in config:
-        raise ConfigurationError("mongodb_settings not found in configuration")
 
 def valid_allow_hosts(*allow_hosts):
     
@@ -498,39 +477,74 @@ def valid_allow_hosts(*allow_hosts):
             return ip
     
 
-def get_store(storage=None, **config):
 
+def get_store(**config):
+
+    settings, storage = utils.get_db_config(**config.get('db_settings', {}))    
+    
     if storage == "mongo":
         from mongrey.storage.mongo.utils import create_mongo_connection
         from mongrey.storage.mongo.policy import MongoPolicy
         from mongrey.storage.mongo import models
-        mongodb_settings = config.pop('mongodb_settings')
-        from mongrey.storage.mongo import PYMONGO2
-        if PYMONGO2:
-            mongodb_settings['use_greenlets'] = True
-        create_mongo_connection(mongodb_settings)
-        db = mongodb_settings['host']
+        create_mongo_connection(settings)
         policy_klass = MongoPolicy
-        return db, policy_klass, models
+        return policy_klass, models
 
     elif storage == "sql":
         from mongrey.storage.sql.models import configure_peewee
         from mongrey.storage.sql.policy import SqlPolicy
         from mongrey.storage.sql import models
-        peewee_settings = config.pop('peewee_settings')
-        configure_peewee(**peewee_settings)
-        db = peewee_settings['db_name']
+        configure_peewee(**settings)
         policy_klass = SqlPolicy
-        return db, policy_klass, models
+        return policy_klass, models
     
-    return None, None, None
+    return None, None
+
+def command_check(request=None, request_file=None, **config):
+    """
+    > Le sender peut être absent
+    cat /var/log/maillog-07052015.log | grep postgrey | grep ']: action' | awk -F ']: ' '{ print $2}'
+    
+    May 16 01:40:07 ns339295 postgrey[2429]: action=greylist, reason=new, client_name=unknown, client_address=177.125.127.151, recipient=carole.lemoing@csem.fr
+    May 16 01:45:16 ns339295 postgrey[2429]: action=pass, reason=triplet found, delay=309, client_name=unknown, client_address=177.125.127.151, recipient=carole.lemoing@csem.fr
+    """
+    
+    cache_settings = config.pop('cache_settings')
+    policy_settings = config.pop('policy_settings')
+    
+    from .. import cache
+    cache.configure_cache(**cache_settings)
+
+    policy_klass, models = get_store(**config)
+
+    kwargs = policy_settings.copy()
+    kwargs['purge_interval'] = purge_interval
+    kwargs['metrics_interval'] = metrics_interval
+
+    policy = policy_klass(**kwargs)
+    
+    
+    result = {}
+    try:
+        if request:
+            policy.check_actions_one_request(request.strip())
+        
+        elif request_file:
+            
+            with open(request_file, 'r') as fp:
+                for request in fp.readlines():
+                    
+                    if not request:
+                        continue
+                    
+                    request = request.strip()
+                    
+                    policy.check_actions_one_request(request)
+    except Exception, err:
+        pass
     
 def command_start(start_server=True, start_threads=True, **config):
     
-    storage = config.pop('storage')
-    
-    valid_storage(storage=storage, **config)
-
     if config.get('security_by_host', False):
         ip_error = valid_allow_hosts(*config.get('allow_hosts'))
         if ip_error:
@@ -552,10 +566,9 @@ def command_start(start_server=True, start_threads=True, **config):
     from .. import cache
     cache.configure_cache(**cache_settings)
 
-    db, policy_klass, models = get_store(storage=storage, **config)
+    policy_klass, models = get_store(**config)
 
-    config.pop('mongodb_settings', None)
-    config.pop('peewee_settings', None)
+    config.pop('db_settings', None)
     config.pop('settings_path', None)
     config.pop('fixtures_path', None)
 
@@ -582,8 +595,6 @@ def command_start(start_server=True, start_threads=True, **config):
                 green_stats = gevent.spawn(stats, interval=stats_interval)
                 atexit.register(gevent.kill, green_stats)
     
-        logger.info("STORAGE[%s] - DB[%s]" % (storage, db))
-
         if start_server:            
             server.serve_forever()
         else:
@@ -607,7 +618,8 @@ def main():
     
     config['debug'] = debug
     
-    utils.configure_logging(debug=debug, 
+    utils.configure_logging(daemon=daemon,
+                            debug=debug,                             
                             stdout_enable=opts.get('console'), 
                             syslog_enable=opts.get('syslog'), 
                             prog_name="mongrey", 
@@ -631,17 +643,30 @@ def main():
                               **config)
         
         try:
-            if not sys.platform.startswith("win32") and daemon:
+            if sys.platform.startswith("win32"):
+                command_start(**config)
+            elif daemon:
                 sys.stderr.write("Daemon mode is not implemented\n")
                 sys.exit(1)
                 #daemonize(pid_file, callback=command_start, **config)
-            else: 
+            else:
+                if pid_file:
+                    utils.write_pid(pid_file) 
                 command_start(**config)
                 
             sys.exit(0)
         except Exception, err:
             sys.stderr.write("%s\n" % str(err))
             sys.exit(1)
+
+    elif command == 'check':
+        """
+        
+        """
+        request = opts.get('request')
+        utils.configure_geoip(country_ipv4=config.pop('country_ipv4'), 
+                              country_ipv6=config.pop('country_ipv6'))
+        command_check(request=request, **config)
         
     elif command == 'config-install':
         filepath = opts.get('settings_path', None) or config.get('settings_path', None) or DEFAULT_SETTINGS_PATH[0]
