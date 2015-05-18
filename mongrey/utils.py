@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import traceback
 import os
 import sys
 import logging
@@ -7,6 +8,11 @@ import re
 import uuid
 import hashlib
 import urlparse
+
+try:
+    from cStringIO import StringIO
+except ImportError:    
+    from StringIO import StringIO
 
 from six import string_types
 
@@ -27,11 +33,19 @@ try:
 except ImportError:
     HAVE_GEOIP_DATA = False
 
+try:    
+    from passlib.context import CryptContext
+    ctx = CryptContext(schemes=['sha512_crypt'])
+except ImportError:
+    ctx = None
+
 from . import constants
 from .exceptions import ConfigurationError
 
 geoip_country_v4 = None
 geoip_country_v6 = None
+
+SECRET_KEY = os.environ.get('MONGREY_SECRET_KEY', None)
 
 logger = logging.getLogger(__name__)
 
@@ -313,7 +327,7 @@ def configure_logging(daemon=False,
     
     if config_file:
         logging.config.fileConfig(config_file, disable_existing_loggers=True)
-        return logging.getLogger(prog_name)
+        return logging.getLogger('')
     
     if not IS_WINDOWS and daemon:
         syslog_enable = True
@@ -325,13 +339,16 @@ def configure_logging(daemon=False,
         'disable_existing_loggers': False,
         'formatters': {
             'debug': {
-                'format': 'line:%(lineno)d - %(asctime)s %(name)s: [%(levelname)s] - [%(process)d] - [%(module)s] - %(message)s',
+                'format': '%(asctime)s %(name)s: [%(levelname)s] - [%(process)d] - [%(module)s] - %(message)s',
                 'datefmt': '%Y-%m-%d %H:%M:%S',
             },
             'simple': {
                 'format': '%(asctime)s %(name)s: [%(levelname)s] - %(message)s',
                 'datefmt': '%Y-%m-%d %H:%M:%S',
             },
+            'syslog': {
+                'format': '%(process)d] %(message)s'
+            }
         },    
         'handlers': {
             'null': {
@@ -366,7 +383,7 @@ def configure_logging(daemon=False,
                 'class':'logging.handlers.SysLogHandler',
                 'address' : '/dev/log',
                 'facility': 'daemon',
-                'formatter': 'simple'    
+                'formatter': 'syslog'    
         }       
         LOGGING['loggers']['']['handlers'].append('syslog')
         
@@ -388,13 +405,13 @@ def configure_logging(daemon=False,
         
     if debug:
         LOGGING['loggers']['']['level'] = 'DEBUG'
-        #LOGGING['loggers'][prog_name]['level'] = 'DEBUG'
         for handler in LOGGING['handlers'].keys():
+            if handler == 'syslog':
+                continue
             LOGGING['handlers'][handler]['formatter'] = 'debug'
             LOGGING['handlers'][handler]['level'] = 'DEBUG' 
 
     logging.config.dictConfig(LOGGING)
-    #logger = logging.getLogger(prog_name)
     logger = logging.getLogger()
     
     return logger
@@ -454,7 +471,6 @@ def load_yaml_config(settings=None, default_config=None):
     if isinstance(settings, string_types):
     
         with open(settings) as fp:
-            from StringIO import StringIO
             stream = StringIO(fp.read())
             
     yaml_config = yaml_load(stream)
@@ -525,4 +541,34 @@ def get_db_config(**db_settings):
         return settings, 'mongo'
     else:
         raise ConfigurationError("not valid scheme in db configuration")
+
+def crypt_password(password):    
+    return ctx.encrypt(password)
+    
+def verify_password(password, password_hashed):
+    return ctx.verify(password, password_hashed)
      
+def load_module(name):
+    """Load module by name string
+    
+    >>> mod = load_module("rs_common.tools.python_tools")
+    >>> hasattr(mod, 'load_module')
+    True 
+    """
+    
+    if not name:
+        return None
+
+    module_name = name
+    
+    if not module_name in sys.modules:
+        __import__(module_name)
+        
+    mod = sys.modules[module_name]
+    
+    return mod
+    
+def last_error():
+    f = StringIO() 
+    traceback.print_exc(file=f)
+    return f.getvalue()

@@ -15,6 +15,7 @@ from ... import utils
 from ... import validators
 from ... import constants
 from ...policy import generic_search, search_mynetwork
+from ..base import UserMixin
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,62 @@ class Document(BaseDocument):
 
     meta = {
         'abstract': True,
+    }
+
+class User(UserMixin, Document):
+
+    username = fields.StringField(unique=True, required=True)
+    
+    email = fields.EmailField(required=False)
+    
+    password = fields.StringField(required=True)
+    
+    api_key = fields.StringField()
+    
+    active = fields.BooleanField(default=True)
+
+    slug = fields.StringField(unique=True, required=True)
+    
+    @classmethod    
+    def create_user(cls, 
+                    username=None, password=None,
+                    api_key=None, 
+                    update_if_exist=False):
+        user = cls.objects(username__exact=username).first()
+
+        if user:
+            if not update_if_exist:
+                return user
+
+        user = user or cls(username=username)
+        user.set_password(password)
+        user.api_key = api_key
+        return user.save()
+    
+    def _clean_api_key(self):
+        if self.api_key:
+            exist = User.objects(api_key=self.api_key, username__ne=self.username).first()
+            if exist:
+                message = _(u"Conflict with api_key[%s]. Already exist") % value
+                raise NotUniqueError(message)        
+
+    def clean(self):
+        Document.clean(self)
+        validators.clean_email_or_username(self.username, field_name="username", error_class=ValidationError)
+        if self.api_key:
+            self._clean_api_key()
+    
+    def save(self, **kwargs):
+        self.slug = ModelSlug.unique_slug(User)(self.username)        
+        return Document.save(self, **kwargs)
+
+    def __unicode__(self):
+        return self.username
+
+    meta = {
+        'collection': 'user',
+        'ordering': ['username'],        
+        'indexes': ['username', 'slug'],
     }
 
 class Domain(Document):
@@ -215,7 +272,7 @@ class BaseSearchField(Document):
 class Policy(BaseSearchField):
     
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
-    _cache_key = 'greypolicy'
+    _cache_key = 'cachepolicy'
     
     name = fields.StringField(unique=True, required=True, max_length=20)
 
@@ -228,6 +285,20 @@ class Policy(BaseSearchField):
     domain_vrfy = fields.BooleanField(default=True)
 
     spoofing_enable = fields.BooleanField(default=True)
+    
+    rbl_enable = fields.BooleanField(default=False)
+    
+    rbl_hosts = fields.SortedListField(fields.StringField(), default=[])
+    
+    rwl_enable = fields.BooleanField(default=False)
+
+    rwl_hosts = fields.SortedListField(fields.StringField(), default=[])
+
+    rwbl_timeout = fields.IntField(default=30, min_value=5)
+
+    rwbl_cache_timeout = fields.IntField(default=3600, min_value=30)
+    
+    spf_enable = fields.BooleanField(default=False)
 
     greylist_enable = fields.BooleanField(default=True)
     
@@ -244,6 +315,12 @@ class Policy(BaseSearchField):
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(Policy)(self.name)
         return Document.save(self, **kwargs)
+
+    def get_rbl_hosts(self):
+        return self.rbl_hosts
+
+    def get_rwl_hosts(self):
+        return self.rwl_hosts
 
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=True): # noqa
@@ -336,11 +413,14 @@ class GreylistEntry(Document):
     def last_metrics(cls):
         last_24_hours = arrow.utcnow().replace(hours=-24).datetime
         objects = cls.objects(timestamp__gte=last_24_hours)
+        count = objects.count()
+        if count == 0:
+            return
 
         last_1_hour = arrow.utcnow().replace(hours=-1).datetime
         
         metrics = {
-            'count': objects.count(),
+            'count': count,
             'accepted': int(objects.sum('accepts')),
             'rejected': int(objects.sum('rejects')),
             'delay': objects.filter(accepts__gt=0, delay__gt=0).average('delay'),

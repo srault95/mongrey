@@ -1,1 +1,1 @@
-.. include:: ../../source/errors.rst
+.. include:: ../fr/errors.rst

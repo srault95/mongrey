@@ -1,1 +1,1 @@
-.. include:: ../../source/integration.rst
+.. include:: ../fr/integration.rst

@@ -1,1 +1,1 @@
-.. include:: ../../source/security.rst
+.. include:: ../fr/security.rst

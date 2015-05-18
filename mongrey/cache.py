@@ -63,15 +63,18 @@ class Cache(object):
                                 )
     
     
-    #def __getattr__(self, method):
-    #    return lambda *args, **kargs: self.cache(*args, **kargs)
     def get(self, *args, **kwargs):
         "Proxy function for internal cache object."
         return self.cache.get(*args, **kwargs)
 
-    def set(self, *args, **kwargs):
+    def set(self, key, value, timeout=None):
         "Proxy function for internal cache object."
-        self.cache.set(*args, **kwargs)
+        if not key:
+            raise Exception("Not valid key")
+        
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug("set cache key[%s]" % key)
+        self.cache.set(key, value, timeout=timeout)
 
     def add(self, *args, **kwargs):
         "Proxy function for internal cache object."

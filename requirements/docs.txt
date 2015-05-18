@@ -12,3 +12,5 @@ sphinx-git
 releases
 #sphinx-intl
 #transifex-client
+sphinxcontrib-httpdomain
+sphinxcontrib-autoprogram

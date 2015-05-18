@@ -1,1 +1,1 @@
-.. include:: ../../source/migration.rst
+.. include:: ../fr/migration.rst

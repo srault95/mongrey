@@ -1,31 +1,69 @@
 ===================================
-Serveur de liste grise pour Postfix
+Serveur de GreyListing pour Postfix
 ===================================
 
-|Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+|Build Status| |health| |docs| |translation| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
-Documentations
-==============
-
-* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
-* `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
+.. image:: mongrey.png
+   :align: center
+   :scale: 50 %
+   :alt: logo
+   
+Résumé
+======
+   
+:Licence: BSD
+:Code: https://github.com/radical-software/mongrey
+:Tickets: https://github.com/radical-software/mongrey/issues
+:Doc EN: http://mongrey.readthedocs.org/en/latest/
+:Doc FR: http://mongrey.readthedocs.org/fr/latest/
+:Builder: https://github.com/radical-software/mongrey-build   
 
 Fonctionnalités
 ===============
 
 - Serveur de liste grise haute performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
-- Configuration par adresse ip & cidr, expéditeur, destinataire, ... (+expression régulières)
-- Listes blanches & noires
-- Contrôles anti-relais, anti-spoofing
+- Pas de dépendance (en dehors du backend)
+- Configuration par Pays, IP, Network, Email, Domain, Expression régulière:
+    - Pour chaque politique de filtrage
+    - Pour les listes noires et blanches
+- Filtrages facultatifs:     
+    - Contrôles anti-relais
+    - Anti-spoofing
+    - Contrôle d'annuaire DB, (SMTP, LDAP en cours..)
+    - RBL
+    - SPF
 - Application Web (facultative)
-- Api REST (en cours de développement)
-- Cache en Mémoire ou avec Redis
+- Api REST (en cours...)
+- Cache RAM ou Redis    
+
+Exemple d'installation avec la version Serveur - Backend Sqlite
+===============================================================
+
+::
+
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-sqlite > /usr/local/bin/mongrey-server
+    
+    $ chmod +x /usr/local/bin/mongrey-server
+    
+    $ /usr/local/bin/mongrey-server --version
+
+Compatibilité OS - 64 bits (seulement)
+======================================
+
+- Ubuntu 14.04 (Trusty) 
+- Debian 8 (jessie)
+- CentOS 7
+- Fedora 20
+- OpenSuse 13.1 (bottle)
 
 Contribution
 ============
 
-Pour contribuer à ce projet, créer un fork et dans la mesure du possible, effectuer les modifications dans une nouvelle branche puis envoyez un "pull request". Toutes les contributions et suggestions sont les bienvenues. 
+Pour contribuer à ce projet, créez un fork et dans la mesure du possible, effectuez les modifications dans une nouvelle branche puis envoyez un "pull request". 
+
+Toutes les contributions et suggestions sont les bienvenues. 
 
 .. _MongoDB: http://mongodb.org/
 .. _Docker: https://www.docker.com/
@@ -68,3 +106,7 @@ Pour contribuer à ce projet, créer un fork et dans la mesure du possible, effe
 .. |health| image:: https://landscape.io/github/radical-software/mongrey/master/landscape.svg?style=flat
    :target: https://landscape.io/github/radical-software/mongrey/master
    :alt: Code Health
+
+.. |translation| image:: https://d322cqt584bo4o.cloudfront.net/mongrey/localized.png
+   :target: https://crowdin.com/project/mongrey
+   :alt: Translation

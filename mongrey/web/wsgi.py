@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, session
+from flask import Flask, session, request
 from werkzeug.contrib.fixers import ProxyFix
 from decouple import config as config_from_env
 
 from .. import constants
 from .. import utils
-from .extensions import auth, babel, session_store
+from .extensions import session_store, login_manager
+from .login import UserLogin
+from . import forms
 
 def _configure_sentry(app):
     try:
@@ -61,11 +63,19 @@ def _configure_session(app):
     )
     """
     
-    session_store.init_app(app, store)    
-
+    session_store.init_app(app, store)
+    
+    
 def _configure_i18n(app):
-
-    babel.init_app(app)
+    
+    import os
+    from flask_babelex import Domain
+    from flask_babelex import Babel
+    from .. import translations
+    TRANSLATIONS_DIR = os.path.abspath(os.path.dirname(translations.__file__))
+    domain = Domain(dirname=TRANSLATIONS_DIR)#, domain)
+    babel = Babel(app, default_domain=domain, 
+          default_locale=app.config.get('BABEL_DEFAULT_LOCALE'))
     
     @app.before_request
     def set_locales():
@@ -77,12 +87,12 @@ def _configure_i18n(app):
         if not current_tz:
             session[constants.SESSION_TIMEZONE_KEY] = app.config.get('BABEL_DEFAULT_TIMEZONE')
     
-    if babel.locale_selector_func is None:
+    if not babel.locale_selector_func:
         @babel.localeselector
         def get_locale():
-            current_lang  = session.get(constants.SESSION_LANG_KEY, app.config.get('BABEL_DEFAULT_LOCALE'))
-            return current_lang
-    
+            default_lang = request.accept_languages.best_match(dict(app.config.get('ACCEPT_LANGUAGES_CHOICES')).keys())
+            return session.get(constants.SESSION_LANG_KEY, default_lang)
+
     if babel.timezone_selector_func is None:
         @babel.timezoneselector
         def get_timezone():
@@ -91,17 +101,35 @@ def _configure_i18n(app):
 def _configure_storage_mongo(app):    
     from flask_mongoengine import MongoEngine
     from mongrey.storage.mongo.admin import init_admin
+    from mongrey.storage.mongo.models import User
     settings, storage = utils.get_db_config(**app.config.get('DB_SETTINGS'))
     app.config['MONGODB_SETTINGS'] = settings
     db = MongoEngine(app)
     init_admin(app=app, url='/')
-
+    
+    def load_user(userid):
+        return User.objects(pk=userid).first()
+    
+    app.login_app = UserLogin(model=User, 
+                              app=app, 
+                              load_user_func=load_user)
+    
 def _configure_storage_sql(app):
     from mongrey.storage.sql import models
     from mongrey.storage.sql.admin import init_admin
     settings, storage = utils.get_db_config(**app.config.get('DB_SETTINGS'))
     models.configure_peewee(**settings)
     init_admin(app=app, url='/')
+
+    def load_user(userid):
+        try:
+            return models.User.get(id=userid)
+        except Exception, err:
+            app.logger.warning(str(err))            
+
+    app.login_app = UserLogin(model=models.User, 
+              app=app, 
+              load_user_func=load_user)
     
     @app.before_request
     def _db_connect():
@@ -123,21 +151,28 @@ def create_app(config='mongrey.web.settings.Prod'):
         app.config['LOGGER_NAME'] = 'mongrey'
         app._logger = utils.configure_logging(debug=app.debug, 
                                               prog_name='mongrey')    
-    
-    auth.init_app(app)
+
+    utils.SECRET_KEY = app.config.get('SECRET_KEY')
+
     _configure_i18n(app)
     
+    login_manager.init_app(app)
+
     settings, storage = utils.get_db_config(**app.config.get('DB_SETTINGS'))
 
     if storage == "mongo":
         _configure_storage_mongo(app)
+        app.config['STORAGE'] = "mongo"
         if 'DEBUG_TB_PANELS' in app.config:
             app.config['DEBUG_TB_PANELS'].append('flask.ext.mongoengine.panels.MongoDebugPanel')
     
     elif storage == "sql":
         _configure_storage_sql(app)
+        app.config['STORAGE'] = "sql"
         
     _configure_session(app)
+
+    _configure_sentry(app)
     
     if app.debug:
         try:
@@ -145,15 +180,17 @@ def create_app(config='mongrey.web.settings.Prod'):
             DebugToolbarExtension(app)
         except ImportError:
             pass
-        
-    _configure_sentry(app)
     
     @app.context_processor
     def all_processors():
+        current_lang = session.get(constants.SESSION_LANG_KEY, app.config.get('BABEL_DEFAULT_LOCALE'))
         return dict(current_theme=app.config.get('DEFAULT_THEME', 'slate'),
-                    current_user=auth.current_user(),
-                    current_lang=app.config.get('BABEL_DEFAULT_LOCALE'),
-                    langs=app.config.get('ACCEPT_LANGUAGES_CHOICES'))
+                    current_lang=current_lang,
+                    langs=app.config.get('ACCEPT_LANGUAGES_CHOICES'),
+                    url_for_security=app.login_app.url_for_security,
+                    is_hidden=forms._is_hidden, 
+                    is_required=forms._is_required,
+                    )
     
     app.wsgi_app = ProxyFix(app.wsgi_app)
     

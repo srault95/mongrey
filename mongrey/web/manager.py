@@ -66,6 +66,19 @@ def _show_urls():
         #rule.rule = str passé au début de route()
         print "%-30s" % rule.rule, rule.endpoint, methods
 
+def _create_default_user(update_if_exist=False):
+    storage = current_app.config.get('STORAGE')
+    username = current_app.config.get('DEFAULT_AUTH_USERNAME')
+    password = current_app.config.get('DEFAULT_AUTH_PASSWORD')
+    
+    if storage == "mongo":
+        from mongrey.storage.mongo.models import User
+        User.create_user(username=username, password=password, 
+                         update_if_exist=update_if_exist)
+    elif storage == "sql":
+        from mongrey.storage.sql.models import User
+        User.create_user(username=username, password=password, 
+                         update_if_exist=update_if_exist)
 
 class ImportWhiteList(Command):
     u"""Import whitelist file"""
@@ -99,6 +112,19 @@ class ShowConfigCommand(Command):
     def run(self, **kwargs):
         _show_config()        
 
+class CreateDefaultUserCommand(Command):
+    u"""Create or reinit default User"""
+
+    option_list = (
+        Option('--reset', 
+               action="store_true", 
+               dest='update_if_exist', 
+               default=False),
+    )
+    
+    def run(self, update_if_exist=False, **kwargs):
+        _create_default_user(update_if_exist=False)  
+
 def main(create_app_func=None):
     
     if not create_app_func:
@@ -125,7 +151,8 @@ def main(create_app_func=None):
             server = SecureWSGIServer((host, port), application=app,
                                       security_by_host=security_by_host,
                                       allow_hosts=allow_hosts,
-                                      log=GeventAccessLogger(logger))
+                                      #log=GeventAccessLogger(logger)
+                                      )
             try:
                 logger.info('Listening on http://%s:%s' % (host, port))
                 server.serve_forever()
@@ -145,6 +172,8 @@ def main(create_app_func=None):
 
     manager.add_command("config", ShowConfigCommand())
     manager.add_command("urls", ShowUrlsCommand())
+    
+    manager.add_command("default-user", CreateDefaultUserCommand())    
     
     manager.add_command("import-whitelist", ImportWhiteList())
     

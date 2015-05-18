@@ -1,14 +1,29 @@
 # -*- coding: utf-8 -*-
 
+"""
+<a class="navbar-brand" href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>
+
+{%- block sidebarlogo %}
+    {%- if logo %}
+    <p class="logo"><a href="{{ pathto(master_doc) }}">
+      <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+    </a></p>
+    {%- endif %}
+{%- endblock %}
+"""
+
 import os, sys
 import datetime
 
 CURRENT = os.path.abspath(os.path.dirname(__file__))
 PACKAGE_DIR = os.path.abspath(os.path.join(CURRENT, '..', '..'))
 STATIC_DIR = os.path.abspath(os.path.join(CURRENT, '_static'))
+TEMPLATES_DIR = os.path.abspath(os.path.join(CURRENT, '_templates'))
 EXT_DIR = os.path.abspath(os.path.join(CURRENT, '_ext'))
 sys.path.insert(0, PACKAGE_DIR)
 sys.path.append(EXT_DIR)
+
+templates_path = [TEMPLATES_DIR]
 
 needs_sphinx = "1.3"
 
@@ -16,7 +31,9 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 from mongrey.version import __VERSION__
 
-exclude_patterns = ['_build', '_draft', '_ext']
+exclude_patterns = ['_build', 
+                    '_draft', 
+                    '_ext']
 
 extensions = ['sphinx.ext.autodoc', 
               'sphinx.ext.todo',
@@ -33,7 +50,9 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx_git',
               'releases',
               'sphinxjp.themes.basicstrap',
-              'contrib.email'
+              'contrib.email',
+              'sphinxcontrib.autohttp.flask',
+              'sphinxcontrib.autoprogram', #.. autoprogram:: mongrey.web.manager:main()
               ]
 
 project = u'Mongrey'
@@ -59,20 +78,21 @@ autoclass_content = "both"
 exclude_trees = []
 """
 
-#html_logo
 #html_favicon
 #html_extra_path
 html_static_path = [STATIC_DIR] #'_static']
+#html_static_path = ['_static']
 html_title = u"%s - %s" % (project, release)
 html_short_title = project
 html_last_updated = datetime.datetime.utcnow()
 html_copy_source = True
 html_show_sourcelink = True
 html_show_copyright = False
+html_logo = '_static/logo2-30.png'
 
 #TODO: A surveiller
 #html_compact_lists = False
-html_scaled_image_link = False
+#html_scaled_image_link = False
 
 """
 if on_rtd:    

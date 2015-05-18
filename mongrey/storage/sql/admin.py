@@ -2,6 +2,7 @@
 
 import datetime
 import json
+from wtforms import fields
 
 from flask import abort, redirect, url_for, request, session, current_app
 
@@ -15,9 +16,10 @@ from playhouse import shortcuts
 
 import arrow
 
+from ...ext.flask_login import current_user, logout_user
 from ... import constants
-from ...web.extensions import auth
-from ...web.extensions import gettext
+from ...web.extensions import gettext, lazy_gettext
+
 from ...web.admin import (moment_format,
                              key_format,
                              SecureView)
@@ -29,11 +31,19 @@ class CustomFilterConverter(FilterConverter):
     def conv_datetime(self, column, name):
         return [f(column, name) for f in self.datetime_filters]
 
+    #@filters.convert('ListCharField')
+    #def conv_datetime(self, column, name):
+    #    return [f(column, name) for f in self.datetime_filters]
+
 class ModelConverter(CustomModelConverter):
+
+    def handle_list(self, model, field, **kwargs):
+        return field.name, fields.FieldList(**kwargs)
     
     def __init__(self, view, additional=None):
         CustomModelConverter.__init__(self, view, additional=additional)
-        self.converters[models.DateTimeFieldExtend] = self.handle_datetime
+        self.converters[models.DateTimeFieldExtend] = self.handle_datetime        
+        self.converters[models.ListCharField] = self.handle_list       
 
 def json_convert(obj):
     
@@ -52,6 +62,12 @@ class ModelView(SecureView, BaseModelView):
     model_form_converter = ModelConverter
     
     filter_converter = CustomFilterConverter()
+
+class UserView(ModelView):
+    
+    column_list = ('username',)
+
+    column_searchable_list = ('username',)
 
 class DomainView(ModelView):
     
@@ -161,7 +177,7 @@ class AdminIndexView(SecureView, BaseAdminIndexView):
     
     @expose('/logout')
     def logout(self):
-        auth.logout()
+        logout_user()
         return redirect(url_for('admin.index'))
     
     @expose('/change-lang', methods=('GET',))
@@ -185,13 +201,13 @@ class AdminIndexView(SecureView, BaseAdminIndexView):
 def init_admin(app, 
                admin_app=None, 
                url='/admin',
-               name=u"Greylist",
+               name=u"Greylist",               
                base_template='mongrey/layout.html',
                index_template=None,
                index_view=None,
                ):
     
-    index_view = index_view or AdminIndexView(template=index_template, 
+    index_view = index_view or AdminIndexView(template=index_template,                                               
                                               url=url,
                                               name="home")
     
@@ -200,8 +216,12 @@ def init_admin(app,
                                name=name,
                                index_view=index_view, 
                                base_template=base_template, 
-                               template_mode='bootstrap3')
+                               template_mode='bootstrap3'
+                               )
     
+    admin.add_view(UserView(models.User, 
+                                 name=gettext(u"Users")))
+
     admin.add_view(DomainView(models.Domain, 
                                  name=gettext(u"Domains")))
 

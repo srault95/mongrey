@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mongrey VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-16 16:29+0200\n"
+"POT-Creation-Date: 2015-05-18 09:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,51 +67,78 @@ msgstr ""
 msgid "Invalid Email: %s"
 msgstr ""
 
-#: mongrey/validators.py:50
+#: mongrey/validators.py:54
+#, python-format
+msgid "Invalid Username: %s"
+msgstr ""
+
+#: mongrey/validators.py:75
 #, python-format
 msgid "Invalid Email or Domain: %s"
 msgstr ""
 
-#: mongrey/validators.py:58 mongrey/validators.py:66
+#: mongrey/validators.py:83 mongrey/validators.py:91
 #, python-format
 msgid "Invalid IP Address: %s"
 msgstr ""
 
-#: mongrey/validators.py:90
+#: mongrey/validators.py:115
 #, python-format
 msgid "Invalid Hostname: %s"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:197 mongrey/storage/sql/admin.py:206
+#: mongrey/storage/mongo/admin.py:202 mongrey/storage/sql/admin.py:222
+msgid "Users"
+msgstr ""
+
+#: mongrey/storage/mongo/admin.py:205 mongrey/storage/sql/admin.py:225
 msgid "Domains"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:200 mongrey/storage/sql/admin.py:209
+#: mongrey/storage/mongo/admin.py:208 mongrey/storage/sql/admin.py:228
 msgid "Mailboxs"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:203 mongrey/storage/sql/admin.py:212
+#: mongrey/storage/mongo/admin.py:211 mongrey/storage/sql/admin.py:231
 msgid "Mynetworks"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:206 mongrey/storage/sql/admin.py:215
+#: mongrey/storage/mongo/admin.py:214 mongrey/storage/sql/admin.py:234
 msgid "Policies"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:209 mongrey/storage/sql/admin.py:218
+#: mongrey/storage/mongo/admin.py:217 mongrey/storage/sql/admin.py:237
 msgid "Greylists"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:212 mongrey/storage/sql/admin.py:221
+#: mongrey/storage/mongo/admin.py:220 mongrey/storage/sql/admin.py:240
 msgid "Whitelists"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:215 mongrey/storage/sql/admin.py:224
+#: mongrey/storage/mongo/admin.py:223 mongrey/storage/sql/admin.py:243
 msgid "Blacklists"
 msgstr ""
 
-#: mongrey/storage/mongo/admin.py:218 mongrey/storage/sql/admin.py:227
+#: mongrey/storage/mongo/admin.py:226 mongrey/storage/sql/admin.py:246
 msgid "Metrics"
+msgstr ""
+
+#: mongrey/storage/mongo/models.py:99
+#, python-format
+msgid "Conflict with api_key[%s]. Already exist"
+msgstr ""
+
+#: mongrey/web/login.py:73
+#, python-format
+msgid "bad password for [%s]"
+msgstr ""
+
+#: mongrey/web/login.py:133
+msgid "Logged in successfully."
+msgstr ""
+
+#: mongrey/web/login.py:137
+msgid "login fail. bad password or username"
 msgstr ""
 
 #: mongrey/web/settings.py:23
@@ -120,6 +147,10 @@ msgstr ""
 
 #: mongrey/web/settings.py:24
 msgid "French"
+msgstr ""
+
+#: mongrey/web/templates/mongrey/base_login.html:10
+msgid "Mongrey Authentication"
 msgstr ""
 
 #: mongrey/web/templates/mongrey/greylistentry_show.html:4
@@ -132,5 +163,9 @@ msgstr ""
 
 #: mongrey/web/templates/mongrey/layout.html:41
 msgid "Logout"
+msgstr ""
+
+#: mongrey/web/templates/mongrey/login_user.html:38
+msgid "Please authenticate"
 msgstr ""
 

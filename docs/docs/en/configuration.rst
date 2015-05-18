@@ -1,1 +1,1 @@
-.. include:: ../../source/configuration.rst
+.. include:: ../fr/configuration.rst

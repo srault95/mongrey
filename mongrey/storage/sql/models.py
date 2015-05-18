@@ -42,6 +42,7 @@ from ... import utils
 from ... import validators
 from ... import constants
 from ...policy import generic_search, search_mynetwork
+from ..base import UserMixin
 
 database_proxy = Proxy()
 
@@ -51,6 +52,13 @@ class DateTimeFieldExtend(DateTimeField):
 
     def python_value(self, value):
         return arrow.get(value).datetime
+    
+class ListCharField(CharField):
+    
+    def python_value(self, value):
+        if value:
+            return value.split(',')
+        return []     
 
 class ModelSlug(object):
     
@@ -82,16 +90,22 @@ class Model(BaseModel):
 
     @classmethod
     def api_find(cls, **kwargs):
+        if not kwargs or len(kwargs) == 0:
+            return cls.select()
         return cls.filter(**kwargs)
 
     @classmethod
     def api_find_one(cls, **kwargs):
-        return cls.api_find(**kwargs).first()
+        try:
+            return cls.get(**kwargs)
+        except Exception:
+            pass
 
     @classmethod
     def api_create(cls, **kwargs):
         with database_proxy.transaction():
-            id = cls(**kwargs).save(force_insert=True)
+            id = cls.create(**kwargs)
+            #id = cls(**kwargs).save(force_insert=True)
             return cls.api_find_one(id=id)
 
     @classmethod
@@ -106,6 +120,57 @@ class Model(BaseModel):
     def api_delete(cls, doc=None):
         with database_proxy.transaction():
             return doc.delete_instance()
+
+class User(UserMixin, Model):
+    
+    username = CharField(unique=True, index=True)
+
+    email = CharField(null=True)
+    
+    password = CharField(null=False)
+    
+    api_key = CharField(null=True)
+
+    active = BooleanField(default=True)
+
+    slug = CharField(unique=True, index=True)
+    
+    def _clean_api_key(self):
+        return
+        #FIXME:
+
+    def _clean(self):
+        validators.clean_email_or_username(self.username, field_name="username", error_class=ValidationError)
+        self._clean_api_key()
+
+    @classmethod    
+    def create_user(cls, 
+                    username=None, password=None,
+                    api_key=None, 
+                    update_if_exist=False):
+
+        user = cls.select().where(cls.username==username).first()
+        if user:
+            if not update_if_exist:
+                return user
+        
+        user = user or cls(username=username)
+        user.set_password(password)
+        user.api_key = api_key
+        return user.save()
+        
+    def save(self, validate=True, **kwargs):
+        if validate:
+            self._clean()
+        self.slug = ModelSlug.unique_slug(User)(self.username)            
+        return Model.save(self, **kwargs)
+
+    def __unicode__(self):
+        return self.username
+    
+    class Meta: # noqa
+        database = database_proxy
+        order_by = ('username',)
 
 class Domain(Model):
     
@@ -139,7 +204,6 @@ class Domain(Model):
                 return constants.RECIPIENT_FOUND 
         
         return constants.NOT_FOUND
-
 
     def __unicode__(self):
         return self.name
@@ -273,6 +337,20 @@ class Policy(BaseSearchField):
     domain_vrfy = BooleanField(default=True)
 
     spoofing_enable = BooleanField(default=True)
+    
+    rbl_enable = BooleanField(default=False)
+    
+    rbl_hosts = ListCharField(null=True)
+    
+    rwl_enable = BooleanField(default=False)
+
+    rwl_hosts = ListCharField(null=True)
+
+    rwbl_timeout = IntegerField(default=30)#, min_value=5)
+
+    rwbl_cache_timeout = IntegerField(default=3600)#, min_value=30)
+    
+    spf_enable = BooleanField(default=False)
 
     greylist_enable = BooleanField(default=True)
     
@@ -288,6 +366,18 @@ class Policy(BaseSearchField):
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(Policy)(self.name)            
         return BaseSearchField.save(self, **kwargs)
+
+    def get_rbl_hosts(self):
+        return self.rbl_hosts
+        if self.rbl_hosts:
+            return self.rbl_hosts.split(',')
+        return []
+
+    def get_rwl_hosts(self):
+        return self.rwl_hosts
+        if self.rwl_hosts:
+            return self.rwl_hosts.split(',')
+        return []
     
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=True): # noqa
@@ -376,14 +466,21 @@ class GreylistEntry(Model):
         last_24_hours = arrow.utcnow().replace(hours=-24).datetime
         
         objects = cls.select().where(cls.timestamp >= last_24_hours)
+        count = objects.count()
+        if count == 0:
+            return
 
         last_1_hour = arrow.utcnow().replace(hours=-1).datetime
         
+        accepted = cls.select(fn.Sum(cls.accepts)).where(cls.timestamp >= last_24_hours)
+        rejected = cls.select(fn.Sum(cls.rejects)).where(cls.timestamp >= last_24_hours)
+        delay = cls.select(fn.Avg(cls.delay)).where(cls.timestamp >= last_24_hours, cls.accepts>=0, cls.delay>=0)
+        
         metrics = {
-            'count': objects.count(),
-            'accepted': cls.select(fn.Sum(cls.accepts)).where(cls.timestamp >= last_24_hours) or 0,
-            'rejected': cls.select(fn.Sum(cls.rejects)).where(cls.timestamp >= last_24_hours) or 0,
-            'delay': cls.select(fn.Avg(cls.delay)).where(cls.timestamp >= last_24_hours, cls.accepts>=0, cls.delay>=0) or 0.0,
+            'count': count,
+            'accepted': accepted or 0,
+            'rejected': rejected or 0,
+            'delay': delay or 0.0,
             'abandoned': objects.filter(cls.accepts==0, cls.timestamp<=last_1_hour).count(),
             #'count_accepts': objects.filter(accepts__gte=1).count(),
         }
@@ -403,17 +500,17 @@ class GreylistMetric(Model):
 
     timestamp = DateTimeFieldExtend(default=utils.utcnow)
     
-    count = IntegerField(default=0)
+    count = IntegerField(default=0, null=True)
 
-    accepted = IntegerField(default=0)
+    accepted = IntegerField(default=0, null=True)
 
-    rejected = IntegerField(default=0)
+    rejected = IntegerField(default=0, null=True)
 
-    requests = IntegerField(default=0)
+    requests = IntegerField(default=0, null=True)
 
-    abandoned = IntegerField(default=0)
+    abandoned = IntegerField(default=0, null=True)
 
-    delay = FloatField(default=0.0)
+    delay = FloatField(default=0.0, null=True)
 
     class Meta: # noqa
         database = database_proxy
@@ -541,7 +638,8 @@ def configure_peewee(db_name='sqlite:///:memory:', db_options=None, drop_before=
     database = connect(db_name, **db_options)
     database_proxy.initialize(database)
 
-    tables = [Domain,
+    tables = [User,
+              Domain,
               Mailbox,
               Mynetwork,
               Policy, 

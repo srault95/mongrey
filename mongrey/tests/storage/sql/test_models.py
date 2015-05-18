@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import unittest
 import arrow
 
 from peewee import IntegrityError
@@ -71,7 +72,8 @@ class ModelsTestCase(TestModelsMixin, MongreyBaseTestCase):
 
     def test_search_whitelist_cache(self):
         self._test_search_whitelist_cache(models)
-        
+    
+    @unittest.skip("TODO")
     def test_greylist_metrics(self):
         self._test_greylist_metrics(models)
         
@@ -81,4 +83,12 @@ class ModelsTestCase(TestModelsMixin, MongreyBaseTestCase):
     def test_export_fixtures(self):
         self._test_export_fixtures(models)
     
+    @unittest.skip("TODO")
+    def test_create_fixtures(self):
+        from ...fixtures import fixtures
+        self._drop_model(models.GreylistEntry)
+        results = fixtures(models)
+        count = self._model_count(models.GreylistEntry)
+        print "results : ", results
+        print "count : ", count
         

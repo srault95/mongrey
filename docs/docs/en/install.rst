@@ -1,1 +1,1 @@
-.. include:: ../../source/install.rst
+.. include:: ../fr/install.rst

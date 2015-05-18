@@ -7,6 +7,13 @@ import logging
 import unittest
 from StringIO import StringIO
 
+try:
+    from flask import json, url_for, template_rendered
+    from mongrey.ext.flask_login import user_logged_in, user_logged_out, user_unauthorized
+    HAVE_FLASK_LOGIN = True
+except ImportError:
+    HAVE_FLASK_LOGIN = False
+
 logging.basicConfig(level=logging.DEBUG)
 
 JSON_HEADERS = {
@@ -37,6 +44,13 @@ class BaseFlaskTestCase(BaseTestCase):
     
     def _create_app(self):
         raise NotImplementedError
+    
+    def _views(self, app):
+        from mongrey.ext.flask_login import login_required        
+        @app.route('/test/require_login')
+        @login_required
+        def require_login_view():
+            return ""    
         
     def setUp(self):
         BaseTestCase.setUp(self)
@@ -46,28 +60,44 @@ class BaseFlaskTestCase(BaseTestCase):
         self._ctx = self.flask_app.test_request_context()
         self._ctx.push()
 
-        from flask import json
-        from flask import template_rendered
         self.json_mod = json
         self.templates = []
+        self.current_user = None
         template_rendered.connect(self._add_template)
+        user_logged_in.connect(self._signal_login)
+        user_logged_out.connect(self._signal_logout)
 
     def tearDown(self):
         BaseTestCase.tearDown(self)
-        from flask import template_rendered
         template_rendered.disconnect(self._add_template)
+        user_logged_in.disconnect(self._signal_login)
+        user_logged_out.disconnect(self._signal_logout)        
         _ctx = getattr(self, '_ctx', None)
         if self._ctx:
             self._ctx.pop()
 
+    def _signal_login(self, sender, user=None):
+        self.current_user = user
+
+    def _signal_logout(self, sender, user=None):
+        self.current_user = None
+
     def login_basic_headers(self, username=None, password=None):
         headers = {}
-        #'Authorization': 'Basic ' + b64encode("{0}:{1}".format(username, password))
         headers['Authorization'] = 'Basic ' + base64.b64encode(('%s:%s' % (username, password)).encode('latin1')).strip().decode('latin1')
         return headers
-
+    
+    def login(self, username=None, password=None, url=None, follow_redirects=True):
+        url = url or url_for('login')
+        data = {
+            'username': username, 
+            'password': password
+        }
+        return self.client.post(url, data=data, follow_redirects=follow_redirects)
+    
     def logout(self, url=None):
-        url = '/logout'
+        #FIXME:
+        url = url or url_for('logout')
         return self.client.get(url)
 
     def get_context_variable(self, name):
@@ -180,5 +210,23 @@ class BaseFlaskTestCase(BaseTestCase):
         """
         return self.assertBadRequest(self.assertJson(response))
         
-    
-            
+    def get_current_user(self):
+        #from flask_security import current_user
+        #return current_user
+        return self.current_user
+
+    def assertIsAuthenticated(self, username=None):
+        
+        user = self.get_current_user()
+
+        self.assertIsNotNone(user)
+        
+        if username:
+            self.assertEqual(getattr(user, 'username'), username)
+
+    def assertIsNotAuthenticated(self):
+        
+        #TODO: vérifier si Anonymous ?
+        
+        self.assertIsNone(self.get_current_user())
+        

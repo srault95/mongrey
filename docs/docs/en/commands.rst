@@ -1,0 +1,1 @@
+.. include:: ../fr/commands.rst

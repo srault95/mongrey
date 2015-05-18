@@ -1,1 +1,4 @@
-.. include:: ../../source/references.rst
+**********
+Références
+**********
+

@@ -2,47 +2,78 @@
 Greylist Server for Postfix
 ===========================
 
+|Build Status| |health| |docs| |translation| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+
+Resume
+======
+
 :Version: |release|
-:License: BSD
-:Code: `github.com project <https://github.com/radical-software/mongrey>`_
-:Issues: `github.com issues <https://github.com/radical-software/mongrey/issues>`_
 :Author: :email:`Stephane RAULT <stephane.rault@radical-software.fr>`
 :Last updated: |today|
-:Doc EN: `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
-:Doc FR: `French Documentation <http://mongrey.readthedocs.org/fr/latest/>`_
-
-|Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+:License: BSD
+:Code: https://github.com/radical-software/mongrey
+:Issues: https://github.com/radical-software/mongrey/issues
+:Doc EN: http://mongrey.readthedocs.org/en/latest/
+:Doc FR: http://mongrey.readthedocs.org/fr/latest/
 
 Features
 ========
 
 - Greylist Server high performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
-- Configuration by ip address & cidr, sender, recipient, ... (and by regex)
+- No software dependencies (except Backend);
+- Configuration by Country, IP address, Network address, Email, Domain, Regex
+    - For every policy filter
+    - For black and white lists
+- Optional filters:     
+    - Relay deny control
+    - Spoofing
+    - Directory control DB, (SMTP, LDAP en cours..)
+    - RBL
+    - SPF
 - WebUI (optional)
-- White and Black lists
-- Anti-relaying and anti-spoofing controls
-- REST Api (in progress)
+- REST API (in progress...)
 - Cache with Memory or Redis
+
+Installation sample - Mongrey Serveur - Backend Sqlite
+======================================================
+
+.. code:: bash
+
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-sqlite > /usr/local/bin/mongrey-server
+    
+    $ chmod +x /usr/local/bin/mongrey-server
+    
+    $ /usr/local/bin/mongrey-server --version
+
+OS Compatibility - 64 bits (only)
+=================================
+
+- Ubuntu 14.04 (Trusty) 
+- Debian 8 (jessie)
+- CentOS 7
+- Fedora 20
+- OpenSuse 13.1 (bottle)
 
 Table of Contents
 =================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     download
     install
     integration
     configuration
+    commands
     security
     migration
     screenshots
     tips
+    web-routes
     errors
     otherprojects
     references
-    changelog
     glossary
     todo
 
@@ -93,3 +124,9 @@ Indices and tables
 .. |health| image:: https://landscape.io/github/radical-software/mongrey/master/landscape.svg?style=flat
    :target: https://landscape.io/github/radical-software/mongrey/master
    :alt: Code Health
+
+.. |translation| image:: https://d322cqt584bo4o.cloudfront.net/mongrey/localized.png
+   :target: https://crowdin.com/project/mongrey
+   :alt: Translation
+
+   

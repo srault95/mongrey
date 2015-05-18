@@ -1,5 +1,1 @@
-**********
-Change Log
-**********
-
-.. git_changelog::
+.. include:: ../fr/changelog.rst

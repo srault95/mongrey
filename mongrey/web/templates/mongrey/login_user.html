@@ -1,0 +1,93 @@
+{% extends 'mongrey/base_login.html' %}
+{% import "mongrey/macro.html" as wtf with context %}
+
+{% macro render_field_with_errors(field) %}
+    {# original macro without <p> #}
+    
+    {{ field(**kwargs)|safe }}
+    {% if field.errors %}
+      <ul>
+      {% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+
+{% endmacro %}
+
+{% macro render_field(field) %}
+  {{ field(**kwargs)|safe }}
+{% endmacro %}
+
+{# for remember field #}
+{% macro render_field_checkbox(field) %}
+    <label class="checkbox">
+        {{ field(**kwargs)|safe }} {{ field.label }}
+    </label>
+{% endmacro %}
+
+{#http://www.bootply.com/render/101498#}
+
+{% block main %}
+
+<div id="responsive" class="modal show" tabindex="-1" data-width="760" role="dialog" aria-hidden="true">
+	<div class="modal-dialog ">
+    	<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="modal-title text-center">{{_("Please authenticate")}}</h3>
+			</div>
+			
+		    <div class="modal-body">
+                <div class="contenair">
+                    <div class="row">
+			            <div class="col-md-12">
+			                {#% include "security/_messages.html" %#}
+			                <form class="form-horizontal" role="form" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+			
+			                  {{ login_user_form.hidden_tag() }}
+			                  
+			                  {% set field_opts = {
+			                         'email':{'placeholder':"Email address", 'autofocus':"true", 'class':"form-control input-lg"}, 
+			                         'password':{'placeholder':"Password", 'class':"form-control input-lg"} } 
+			                  %}
+			                  
+								{%- for field in login_user_form %}
+								  {% if not is_hidden(field) -%}
+								    {% set opt = field_opts.get(field.name, {}) %}
+								    {{ wtf.form_field(field,
+								                  form_type='horizontal',
+								                  horizontal_columns=('md', 2, 10),
+								                  button_map={},
+								                  **opt) }}
+								  {%- endif %}
+								{%- endfor %}
+			                  
+			                </form>
+			                
+			            </div>
+                    
+                    </div>
+                    {#% if security.registerable or security.recoverable or security.confirmable %#}
+                    <div class="row">
+		                <div class="col-lg-offset-2 col-lg-10">
+		                      <ul class="nav nav-pills" style="display: inline-block;">
+		                      {#
+						      {% if security.recoverable %}
+                                <li><a href="{{ url_for_security('forgot_password') }}">{{_("Forgot password")}}</a></li>
+						      {% endif %}
+						      {% if security.confirmable %}
+						         <li><a href="{{ url_for_security('send_confirmation') }}">{{_("Confirm account")}}</a></li>
+						      {% endif %}
+						      #}
+						      </ul>
+		                </div>
+                    </div>
+                    {#% endif %#}
+		                  
+		    </div>
+        </div>
+    </div>    		    
+</div>
+
+{% endblock %}

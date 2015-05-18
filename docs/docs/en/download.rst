@@ -1,1 +1,1 @@
-.. include:: ../../source/download.rst
+.. include:: ../fr/download.rst

@@ -28,6 +28,31 @@ def clean_email(value, field_name=None, error_class=ValidationError):
     if not EMAIL_REGEX.match(value):
         message = _(u"Invalid Email: %s") % value
         raise error_class(message, field_name=field_name)
+
+def clean_username(value, field_name=None, error_class=ValidationError):
+    #TODO:
+    pass
+
+def clean_email_or_username(value, field_name=None, error_class=ValidationError):
+
+    valid_email = False
+    valid_username = False
+    try:
+        clean_email(value, field_name, error_class)
+        valid_email = True
+    except:
+        pass
+
+    if not valid_email:
+        try:
+            clean_username(value, field_name, error_class)
+            valid_username = True
+        except:
+            pass
+    
+    if not valid_email and not valid_username:
+        message = _(u"Invalid Username: %s") % value
+        raise error_class(message, field_name=field_name)
     
 def clean_email_or_domain(value, field_name=None, error_class=ValidationError):
     

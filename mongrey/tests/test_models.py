@@ -409,9 +409,27 @@ class TestModelsMixin:
         self.assertIsNotNone(self._cache.get(cache_key))
         
     def _test_greylist_metrics(self, models):
+
+        metrics = models.GreylistEntry.last_metrics()
+        self.assertIsNone(metrics)
+        """
+        self.assertEquals(metrics['count'], 0)
+        self.assertEquals(metrics['rejected'], 0)
+        self.assertEquals(metrics['accepted'], 0)
+        self.assertEquals(metrics['requests'], 0)
+        self.assertEquals(metrics['delay'], 0)
+        self.assertEquals(metrics['abandoned'], 0)
+        models.GreylistMetric(**metrics).save()
+        """
+        
+        metric = models.GreylistMetric.api_find_one()
+        self.assertIsNotNone(metric)
+        self.assertEquals(metric.accepted, 0)
+                
+        self._drop_model(models.GreylistEntry)
         
         doc = models.GreylistEntry.create_entry(key='key1', protocol={})
-        metrics = models.GreylistEntry.last_metrics()
+        metrics = models.GreylistEntry.last_metrics()        
         self.assertEquals(metrics['count'], 1)
         self.assertEquals(metrics['rejected'], 1)
         self.assertEquals(metrics['accepted'], 0)
@@ -443,6 +461,7 @@ class TestModelsMixin:
         self._drop_model(models.GreylistEntry)
         
     def _test_import_fixtures(self, models):
+        self.maxDiff = None
 
         fixtures = {
             'domain': [{
@@ -507,6 +526,7 @@ class TestModelsMixin:
         self.assertEquals(len(result['errors']), 1)
         
     def _test_export_fixtures(self, models):
+        self.maxDiff = None
 
         fixtures = {
             'domain': [{
@@ -534,11 +554,19 @@ class TestModelsMixin:
                 'value': '1.1.1.0/24',
                 'field_name': 'client_address',
                 'domain_vrfy': True,
+                'mynetwork_vrfy': True,
+                'spoofing_enable': True,
+                'rbl_enable': False,
+                'rbl_hosts': [],
+                'rwl_enable': False,
+                'rwl_hosts': [],
+                'rwbl_timeout': 30,
+                'rwbl_cache_timeout': 3600,                
+                'spf_enable': False,
                 'greylist_enable': True,
                 'greylist_expire': 100,
                 'greylist_key': 'med',
                 'greylist_remaining': 20,
-                'mynetwork_vrfy': True,
                 'spoofing_enable': True,
                 'comments': None
             }],

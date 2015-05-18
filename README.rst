@@ -2,30 +2,58 @@
 Greylist Server for Postfix
 ===========================
 
-|Build Status| |health| |docs| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
+|Build Status| |health| |docs| |translation| |pypi downloads| |pypi version| |pypi licence| |pypi wheel| |requires status|
 
-Documentations
-==============
+.. image:: mongrey.png
+   :align: center
+   :scale: 50 %
+   :alt: logo
 
-* `English Documentation <http://mongrey.readthedocs.org/en/latest/>`_
-* `Documentation Française <http://mongrey.readthedocs.org/fr/latest/>`_
+Resume
+======
+
+:License: BSD
+:Code: https://github.com/radical-software/mongrey
+:Issues: https://github.com/radical-software/mongrey/issues
+:Doc EN: http://mongrey.readthedocs.org/en/latest/
+:Doc FR: http://mongrey.readthedocs.org/fr/latest/
 
 Features
 ========
 
 - Greylist Server high performance
 - Backends: MongoDB, PostgreSQL, MySQL, Sqlite
-- Configuration by ip address & cidr, sender, recipient, ... (and by regex)
+- No software dependencies (except Backend);
+- Configuration by Country, IP address, Network address, Email, Domain, Regex
+    - For every policy filter
+    - For black and white lists
+- Optional filters:     
+    - Relay deny control
+    - Spoofing
+    - Directory control DB, (SMTP, LDAP en cours..)
+    - RBL
+    - SPF
 - WebUI (optional)
-- White and Black lists
-- Anti-relaying and anti-spoofing controls
-- REST Api (in progress)
+- REST API (in progress...)
 - Cache with Memory or Redis
+
+Sample installation for Mongrey Server - Sqlite Backend
+=======================================================
+
+::
+
+    $ curl -L http://download.mongrey.io/latest/mongrey-server-sqlite > /usr/local/bin/mongrey-server
+    
+    $ chmod +x /usr/local/bin/mongrey-server
+    
+    $ /usr/local/bin/mongrey-server --version
 
 Contributing
 ============
 
-To contribute to the project, fork it on GitHub and send a pull request, all contributions and suggestions are welcome.
+To contribute to the project, fork it on GitHub and send a pull request.
+
+All contributions and suggestions are welcome.
 
 .. _MongoDB: http://mongodb.org/
 .. _Docker: https://www.docker.com/
@@ -68,3 +96,9 @@ To contribute to the project, fork it on GitHub and send a pull request, all con
 .. |health| image:: https://landscape.io/github/radical-software/mongrey/master/landscape.svg?style=flat
    :target: https://landscape.io/github/radical-software/mongrey/master
    :alt: Code Health
+
+.. |translation| image:: https://d322cqt584bo4o.cloudfront.net/mongrey/localized.png
+   :target: https://crowdin.com/project/mongrey
+   :alt: Translation
+
+ 

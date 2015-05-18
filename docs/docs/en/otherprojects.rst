@@ -1,1 +1,1 @@
-.. include:: ../../source/otherprojects.rst
+.. include:: ../fr/otherprojects.rst

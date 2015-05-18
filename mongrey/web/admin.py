@@ -4,8 +4,8 @@ from jinja2 import Markup
 
 from flask import abort, redirect, url_for, request, session, current_app
 
-from .extensions import auth
-from .extensions import gettext
+from ..ext.flask_login import current_user
+
 from .. import constants
 
 def moment_format(value):
@@ -24,10 +24,10 @@ def key_format(_id, value):
 class SecureView(object):
 
     def is_accessible(self):
-        return auth.authenticate()
+        return current_user.is_authenticated
     
     def inaccessible_callback(self, name, **kwargs):
-        if not auth.authenticate():
+        if not current_user.is_authenticated:
             return abort(401)
         
         return abort(403)

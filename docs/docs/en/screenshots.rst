@@ -1,1 +1,1 @@
-.. include:: ../../source/screenshots.rst
+.. include:: ../fr/screenshots.rst

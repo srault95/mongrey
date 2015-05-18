@@ -3,7 +3,7 @@
 import datetime
 import json
 
-from flask import abort, redirect, url_for, request, session, current_app
+from flask import abort, redirect, url_for, request, session, current_app, flash
 
 from flask_admin import Admin, AdminIndexView as BaseAdminIndexView, expose
 from flask_admin.contrib.mongoengine.view import ModelView as BaseModelView
@@ -14,8 +14,8 @@ SORTABLE_FIELDS.add(mongoengine_fields.LongField)
 
 import arrow
 
+from ...ext.flask_login import current_user, logout_user
 from ... import constants
-from ...web.extensions import auth
 from ...web.extensions import gettext
 from ...web.admin import (moment_format,
                              key_format,
@@ -44,6 +44,12 @@ def jsonify(obj):
 
 class ModelView(SecureView, BaseModelView):
     pass
+
+class UserView(ModelView):
+    
+    column_list = ('username',)
+
+    column_searchable_list = ('username',)
 
 class DomainView(ModelView):
     
@@ -150,7 +156,7 @@ class AdminIndexView(SecureView, BaseAdminIndexView):
     
     @expose('/logout')
     def logout(self):
-        auth.logout()
+        logout_user()
         return redirect(url_for('admin.index'))
     
     @expose('/change-lang', methods=('GET',))
@@ -158,12 +164,12 @@ class AdminIndexView(SecureView, BaseAdminIndexView):
         """
         {{ url_for('user_menu.change_lang') }}?locale=fr
         """
-
         from flask_babelex import refresh
         locale = request.args.get("locale", None)
         current_lang = session.get(constants.SESSION_LANG_KEY, None)
 
         if locale and current_lang and locale != current_lang and locale in dict(current_app.config.get('ACCEPT_LANGUAGES_CHOICES')).keys():
+            flash(gettext(u"The language has been updated"))
             session[constants.SESSION_LANG_KEY] = locale
             refresh()
 
@@ -192,6 +198,8 @@ def init_admin(app,
                                base_template=base_template, 
                                template_mode='bootstrap3')
 
+    admin.add_view(UserView(models.User, 
+                                 name=gettext(u"Users")))
 
     admin.add_view(DomainView(models.Domain, 
                                  name=gettext(u"Domains")))

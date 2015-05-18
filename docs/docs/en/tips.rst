@@ -1,1 +1,1 @@
-.. include:: ../../source/tips.rst
+.. include:: ../fr/tips.rst

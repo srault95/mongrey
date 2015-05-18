@@ -61,14 +61,21 @@ _DEFAULT_CONFIG = {
         'blacklist_enable': True,
         'domain_vrfy': False,       
         'mynetwork_vrfy': False,       
-        'spoofing_enable': False,       
+        'spoofing_enable': False,
+        'ip_excludes': [],                       
+        'private_bypass': True,
+        'outgoing_bypass': True,
         'greylist_enable': True,                        
         'greylist_key': constants.GREY_KEY_MED,
         'greylist_remaining': 20,
         'greylist_expire': 35*86400,
-        'greylist_excludes': [],
-        'greylist_private_bypass': True
-        
+        'rbl_enable': False,
+        'rbl_hosts': [],
+        'rwl_enable': False,
+        'rwl_hosts': [],
+        'rwbl_timeout': 30,
+        'rwbl_cache_timeout': 3600,
+        'spf_enable': False,
     }
                   
 }
@@ -175,7 +182,7 @@ class NoRunServerMixin:
             'recipient': 'rcpt@example.org',
         }
         
-        policy = self._get_policy(greylist_excludes=['1.1.1.1'])
+        policy = self._get_policy(ip_excludes=['1.1.1.1'])
         
         actions = policy.check_actions(protocol)
         
@@ -191,7 +198,7 @@ class NoRunServerMixin:
             'recipient': 'rcpt@example.org',
         }
 
-        policy = self._get_policy(greylist_private_bypass=True)
+        policy = self._get_policy(private_bypass=True)
         
         actions = policy.check_actions(protocol)
         
@@ -456,7 +463,7 @@ class NoRunServerWithCacheMixin:
         
         protocol = {
             'instance': '123',
-            'client_address': '1.1.1.1',
+            'client_address': '2.2.2.2',
             'client_name': 'unknow',
             'sender': 'sender@example.net',
             'recipient': 'rcpt@example.org',
@@ -466,9 +473,9 @@ class NoRunServerWithCacheMixin:
 
         policy = self._get_policy()
         
-        models.WhiteList(field_name='client_address', value='1.1.1.1').save()
+        models.WhiteList(field_name='client_address', value='2.2.2.2').save()
         actions = policy.check_actions(protocol)
-        self.assertEquals(actions[0], "DUNNO whitelisted [1.1.1.1]")
+        self.assertEquals(actions[0], "DUNNO whitelisted [2.2.2.2]")
 
         self._drop_model(models.WhiteList)
         
@@ -476,7 +483,7 @@ class NoRunServerWithCacheMixin:
         cache_value = self._cache.get(uid)
         self.assertIsNotNone(cache_value)
         self.assertTrue(cache_value['is_whitelist'])
-        self.assertEquals(cache_value['action'], "DUNNO whitelisted [1.1.1.1]")
+        self.assertEquals(cache_value['action'], "DUNNO whitelisted [2.2.2.2]")
         
     def _test_cache_action_relay_denied(self, models):
 
@@ -581,8 +588,8 @@ class BaseRunServerMixin:
             'greylist_key': constants.GREY_KEY_MED,       
             'greylist_remaining': 1,
             'greylist_expire': 3600,
-            'greylist_excludes': [],
-            'greylist_private_bypass': False,                         
+            'ip_excludes': [],
+            'private_bypass': False,                         
         }
 
         policy = self._get_policy(**policy_settings)

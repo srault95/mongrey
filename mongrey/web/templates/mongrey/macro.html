@@ -1,0 +1,335 @@
+
+{% macro field_datetime(field) %}
+	<div class="input-group" id="datetimepicker">
+	    <span class="input-group-addon"><i class="fa fa-calendar cursor-hand"></i></span>
+	    <input class="form-control" data-format="yyyy-MM-dd hh:mm:ss"/>
+	</div>
+{%- endmacro %}
+
+
+{#
+https://raw.githubusercontent.com/mbr/flask-bootstrap/master/flask_bootstrap/templates/bootstrap/wtf.html
+#}
+{% macro form_errors(form, hiddens=True) %}
+  {%- if form.errors %}
+    {%- for fieldname, errors in form.errors.items() %}
+      {%- if is_hidden(form[fieldname]) and hiddens or
+             not is_hidden(form[fieldname]) and hiddens != 'only' %}
+        {%- for error in errors %}
+          <p class="error">{{error}}</p>
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+{%- endmacro %}
+
+{% macro _hz_form_wrap(horizontal_columns, form_type, add_group=False, required=False) %}
+	{% if form_type == "horizontal" %}
+	  {% if add_group %}<div class="form-group{% if required %} required{% endif %}">{% endif %}
+	  <div class="col-{{horizontal_columns[0]}}-offset-{{horizontal_columns[1]}}
+	              col-{{horizontal_columns[0]}}-{{horizontal_columns[2]}}
+	             ">
+	{% endif %}
+	{{caller()}}
+	
+	{% if form_type == "horizontal" %}
+	  {% if add_group %}</div>{% endif %}
+	  </div>
+	{% endif %}
+{% endmacro %}
+
+{% macro required_label(field) %}
+	{%- if is_required(field) -%}
+	<strong style="color: red">&#42;</strong>
+	{%- endif %}
+{% endmacro %}
+
+{% macro form_field(field,
+                    form_type="basic",
+                    field_opts={},
+                    horizontal_columns=('lg', 2, 10),
+                    button_map={}) %}
+
+	{% if field.flags.required and not required in kwargs %}
+    	{% set kwargs = dict(required=True, **kwargs) %}
+	{% endif %}
+
+	{% if field.widget.input_type == 'checkbox' %}
+	  {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %}
+	    <div class="checkbox">
+	      <label>
+	        {{field()|safe}} {{field.label.text|safe}}
+	      </label>
+	    </div>
+	  {% endcall %}
+	
+	{%- elif field.type == 'RadioField' -%}
+	
+	  {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %}
+	    
+	    {% if 'radio-inline' in field_opts.get('class', {}) %}
+	        {# Affiche les champs radio l'un a cote de l'autre #}
+	        <div class="radio">
+	        {% for item in field -%}
+		        <label class="{{ field_opts.class|default('') }}">
+	                {{item|safe}} {{item.label.text|safe}}
+		        </label>
+	        {% endfor %}
+	        </div>
+	    
+	    {% else %}
+	
+		    {% for item in field -%}
+		      <div class="radio">
+		        <label class="{{ field_opts.class|default('') }}">
+		          {{item|safe}} {{item.label.text|safe}}
+		        </label>
+		      </div>
+		    {% endfor %}
+	
+	    {% endif %}
+	  
+	    
+	  {% endcall %}
+	  
+	{%- elif field.type == 'SubmitField' -%}
+	
+	  {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %}
+	  
+	    {{field(class='btn btn-%s' % button_map.get(field.name, 'default'), **kwargs)}}
+	  
+	  {% endcall %}
+	
+	{%- elif field.type == 'FormField' -%}
+	
+	  <fieldset>
+	    <legend>{{field.label}}</legend>
+	
+	    {%- for subfield in field %}
+	    
+	      {% if not is_hidden(subfield) -%}
+	        
+	        {{ form_field(subfield,
+	                      form_type=form_type,
+	                      field_opts=field_opts,
+	                      horizontal_columns=horizontal_columns,
+	                      button_map=button_map) }}
+	      {%- endif %}
+	    
+	    {%- endfor %}
+	  </fieldset>
+	{% else -%}
+	  <div class="form-group {% if field.errors %} has-error{% endif -%}
+	                         {%- if field.flags.required %} required{% endif -%}
+	  ">
+	      {%- if form_type == "inline" %}
+	      
+	        {{ field.label(class="sr-only")|safe }}
+	      
+	        {% if field.type == 'FileField' %}
+	        
+	          {{field(**kwargs)|safe}}
+	        
+	        {% else %}
+	        
+	          {{field(class="form-control", **kwargs)|safe}}
+	        
+	        {% endif %}
+	      
+	      {% elif form_type == "horizontal" %}
+	
+	      <label for="{{ field.id }}" class="{{"col-%s-%s" % horizontal_columns[0:2]}} control-label">{{ field.label.text }} {{ required_label(field) }}</label>
+	
+	        <div class=" col-{{horizontal_columns[0]}}-{{horizontal_columns[2]}}">
+	          {% if field.type == 'FileField' %}
+	            {{field(**kwargs)|safe}}
+	          {% else %}
+	            {{field(class="form-control", **kwargs)|safe}}
+	          {% endif %}
+	        </div>
+	        {%- if field.errors %}
+	          {%- for error in field.errors %}
+	            
+	            {% call _hz_form_wrap(horizontal_columns, form_type, required=required) %}
+	              <p class="help-block">{{error}}</p>
+	            {% endcall %}
+	            
+	          {%- endfor %}
+	        {%- elif field.description -%}
+	          {% call _hz_form_wrap(horizontal_columns, form_type, required=required) %}
+	            <p class="help-block">{{field.description|safe}}</p>
+	          {% endcall %}
+	        {%- endif %}
+	      {%- else -%}
+	        {{field.label(class="control-label")|safe}}
+	        {{field(class="form-control", **kwargs)|safe}}
+	
+	        {%- if field.errors %}
+	          {%- for error in field.errors %}
+	            <p class="help-block">{{error}}</p>
+	          {%- endfor %}
+	        {%- elif field.description -%}
+	          <p class="help-block">{{field.description|safe}}</p>
+	        {%- endif %}
+	      {%- endif %}
+	  </div>
+	{% endif %}
+{% endmacro %}
+
+{# valid form types are "basic", "inline" and "horizontal" #}
+{% macro quick_form(form,
+                    action="",
+                    method="post",
+                    extra_classes=None,
+                    role="form",
+                    form_type="basic",
+                    horizontal_columns=('lg', 2, 10),
+                    enctype=None,
+                    button_map={},
+                    id="") %}
+
+<form
+  {%- if action %} action="{{action}}"{% endif -%}
+  {%- if id %} id="{{id}}"{% endif -%}
+  {%- if method %} method="{{method}}"{% endif %}
+  class="form
+    {%- if extra_classes %} {{extra_classes}}{% endif -%}
+    {%- if form_type == "horizontal" %} form-horizontal
+    {%- elif form_type == "inline" %} form-inline
+    {%- endif -%}
+  "
+  {%- if enctype %} enctype="{{enctype}}"{% endif -%}
+  {%- if role %} role="{{role}}"{% endif -%}
+  >
+  {{ form.hidden_tag() }}
+  {{ form_errors(form, hiddens='only') }}
+  {#% set form_opts = attr(form, '_form_opts') or {} %#}
+
+  {%- for field in form %}
+    {% if not is_hidden(field) -%}
+      {{ form_field(field,
+                    form_type=form_type,
+                    field_opts={},                    
+                    horizontal_columns=horizontal_columns,
+                    button_map=button_map) }}
+                    {#field_opts=form_opts.get(field.name, {}),#}
+    {%- endif %}
+  {%- endfor %}
+
+</form>
+{%- endmacro %}
+
+{% macro flashed_messages(messages=None, container=True) -%}
+{% with messages = messages or get_flashed_messages(with_categories=True) -%}
+{% if messages -%} {# don't output anything if there are no messages #}
+
+{% if container -%}
+<!-- begin message block -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+{% endif -%}
+
+{% for cat, msg in messages %}      <div class="alert alert-{{cat}}" role="alert">{{msg|safe}}</div>{% endfor -%}
+
+{% if container %}
+    </div>
+  </div>
+</div>
+<!-- end message block -->
+{% endif -%}
+
+{% endif -%}
+{% endwith -%}
+{% endmacro -%}
+
+
+{% macro icon(type=None, extra_classes=[]) -%}
+<span{{ ({'class': (['glyphicon', 'glyphicon-' + type] + extra_classes)|join(' ')})|xmlattr}}{{kwargs|xmlattr}}></span>
+{%- endmacro %}
+
+
+{% macro form_button(url, content, method='post', class='btn-link') -%}
+<form style="display: inline;" action='{{url}}' method='{{method}}'><button class="{{class|safe}}">{{content}}</button></form>
+{%- endmacro %}
+
+
+{% macro render_pagination(pagination,
+                           endpoint=None,
+                           prev=('&laquo;')|safe,
+                           next=('&raquo;')|safe,
+                           size=None,
+                           ellipses='…')
+-%}
+{% with endpoint = endpoint or request.endpoint %}
+<nav>
+  <ul class="pagination{% if size %} pagination-{{size}}{% endif %}"{{kwargs|xmlattr}}>
+  {# prev and next are only show if a symbol has been passed. #}
+  {% if prev != None -%}
+    <li {% if not pagination.has_prev %}class="disabled"{% endif %}><a href="{% if pagination.has_prev %}{{url_for(endpoint, page=pagination.prev_num)}}{% else %}#{% endif %}">{{prev}}</li></a>
+  {%- endif -%}
+
+  {%- for page in pagination.iter_pages() %}
+    {% if page %}
+      {% if page != pagination.page %}
+        <li><a href="{{url_for(endpoint, page=page)}}">{{page}}</a></li>
+      {% else %}
+        <li class="active"><a href="#">{{page}} <span class="sr-only">(current)</span></a></li>
+      {% endif %}
+    {% elif ellipses != None %}
+      <li class="disabled"><a href="#">{{ellipses}}</a></li>
+    {% endif %}
+  {%- endfor %}
+
+  {% if next != None -%}
+    <li {% if not pagination.has_next %}class="disabled"{% endif %}><a href="{% if pagination.has_next %}{{url_for(endpoint, page=pagination.next_num)}}{% else %}#{% endif %}">{{next}}</li></a>
+  {%- endif -%}
+  </ul>
+</nav>
+{% endwith %}
+{% endmacro %}
+
+{% macro panel_begin(title) %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+    <h4 class="panel-title">{{title}}</h4>
+    </div>
+{% endmacro %}
+
+{% macro panel_end() %}
+</div>
+{% endmacro %}
+
+{% macro panel_caller(title, panel_id) %}
+<div class="panel panel-default"{% if panel_id %} id="{{ panel_id }}"{% endif %}>
+    <div class="panel-heading">
+        <h3 class="panel-title">{{title}}</h4>
+    </div>
+    <div class="panel-body">
+        {{ caller() }}
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro accordion_tag(id, label, open) %}
+<div class="panel-group" id="{{id}}">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#{{id}}"
+                   href="#{{id}}_href">{{label}}</a><span class="caret"></span>
+            </h4>
+        </div>
+        {% if open %}
+        <div id="{{id}}_href" class="panel-collapse collapse in">
+            {% else %}
+            <div id="{{id}}_href" class="panel-collapse collapse">
+                {% endif %}
+                <div class="panel-body">
+                    {{ caller() }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

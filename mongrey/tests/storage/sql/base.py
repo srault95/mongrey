@@ -14,9 +14,6 @@ class MongreyBaseTestCase(BaseTestCase):
     
     db_settings = {
         'host': 'sqlite:///../mongrey_test.db',
-        'options': {
-            'threadlocals': True    #pour use with gevent patch
-        }
     } 
     
     def setUp(self):

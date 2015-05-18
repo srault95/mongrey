@@ -1,1 +1,7 @@
-.. include:: ../../source/screenshots.rst
+.. _screenshots:
+
+Copies d'Ecran
+==============
+
+.. todo::
+

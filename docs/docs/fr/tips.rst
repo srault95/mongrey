@@ -1,1 +1,8 @@
-.. include:: ../../source/tips.rst
+.. _tips:
+
+*******
+Astuces
+*******
+
+Adresses IP variables
+*********************

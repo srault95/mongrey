@@ -1,1 +1,1 @@
-.. include:: ../../source/references.rst
+.. include:: ../fr/references.rst

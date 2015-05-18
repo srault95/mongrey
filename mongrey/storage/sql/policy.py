@@ -59,7 +59,8 @@ class SqlPolicy(Policy):
         while True:
             gevent.sleep(self.metrics_interval)
             try:
-                metrics = models.GreylistEntry.last_metrics()
-                models.GreylistMetric(**metrics).save()
+                metric = models.GreylistEntry.last_metrics()
+                if metric:
+                    models.GreylistMetric(**metric).save()
             except Exception, err:
                 logger.error(str(err))

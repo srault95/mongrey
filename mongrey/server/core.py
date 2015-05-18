@@ -106,25 +106,28 @@ DEFAULT_CONFIG = {
         'blacklist_enable': env_config('MONGREY_BLACKLIST_ENABLE', True, cast=bool),       
         'domain_vrfy': env_config('MONGREY_DOMAIN_ENABLE', False, cast=bool),       
         'mynetwork_vrfy': env_config('MONGREY_MYNETWORK_ENABLE', False, cast=bool),       
-        'spoofing_enable': env_config('MONGREY_SPOOFING_ENABLE', False, cast=bool),       
+        'spoofing_enable': env_config('MONGREY_SPOOFING_ENABLE', False, cast=bool),
+
+        'rbl_enable': env_config('MONGREY_RBL_ENABLE', False, cast=bool),
+        'rbl_hosts': env_config('MONGREY_RBL_HOSTS', [], cast=utils.to_list),
+        'rwl_enable': env_config('MONGREY_RWL_ENABLE', False, cast=bool),
+        'rwl_hosts': env_config('MONGREY_RWL_HOSTS', [], cast=utils.to_list),
+        'rwbl_timeout': env_config('MONGREY_RWBL_TIMEOUT', 30, cast=int),    # 30 second
+        'rwbl_cache_timeout': env_config('MONGREY_RWBL_CACHE_TIMEOUT', 3600, cast=int),    # 1 hour
+
+        'spf_enable': env_config('MONGREY_SPF_ENABLE', False, cast=bool),
+               
+        'ip_excludes': env_config('MONGREY_EXCLUDES', '', cast=utils.to_list),
+        'private_bypass': env_config('MONGREY_PRIVATE_BYPASS', True, cast=bool),
+        'outgoing_bypass': env_config('MONGREY_OUTGOING_BYPASS', True, cast=bool),
+
         'greylist_enable': env_config('MONGREY_GREYLIST_ENABLE', True, cast=bool),       
         'greylist_key': env_config('MONGREY_POLICY', constants.GREY_KEY_MED),       
         'greylist_remaining': env_config('MONGREY_REMAINING', 20, cast=int),    # 60 second
         'greylist_expire': env_config('MONGREY_EXPIRE', 35*86400, cast=int), # 35 days
-        'greylist_excludes': env_config('MONGREY_EXCLUDES', '', cast=utils.to_list),
-        'greylist_private_bypass': env_config('MONGREY_PRIVATE_BYPASS', True, cast=bool),
     }
                   
 }
-"""
-TODO: policy_settings
-    rbl_enable=False,
-    rbl_hosts=None,
-    rwl_enable=False,
-    rwl_hosts=None,
-    rwbl_timeout=30,
-    rwbl_cache_timeout=3600,
-"""
 
 def stats(interval=60):
     
@@ -239,11 +242,15 @@ class PolicyServer(StreamServer):
         return False
         
     def handler(self, sock, address):
-        """
-        #('::1', 56483, 0, 0) <type 'tuple'>
-        #Valable en ipv4 et v6
-        host = address[0] 
-        """
+        '''
+        Main handler - run by policy request
+
+        :param sock: Client socket
+        :type sock: socket
+        :param address: IPv4 or IPv6 address from client
+        :type address: tuple
+        :raises TimeoutError: if timeout
+        '''
         
         if self._security_by_host and not self._security_check(address):                
             sock.close()
@@ -337,7 +344,7 @@ class PolicyServer(StreamServer):
         StreamServer.stop(self, timeout=timeout)
 
 
-def options():
+def options(return_parser=True):
 
     parser = argparse.ArgumentParser(description='Mongrey Server',
                                      prog=os.path.basename(sys.argv[0]),
@@ -392,6 +399,9 @@ def options():
     parser.add_argument('--request',
                         dest="request", 
                         help='Request policy for check command')
+    
+    if return_parser:
+        return parser
     
     return dict(parser.parse_args()._get_kwargs())
 
@@ -607,7 +617,7 @@ def command_start(start_server=True, start_threads=True, **config):
         sys.exit(0)
 
 def main():
-    opts = options()
+    opts = options(return_parser=False)
 
     config = DEFAULT_CONFIG.copy()
 
@@ -660,9 +670,6 @@ def main():
             sys.exit(1)
 
     elif command == 'check':
-        """
-        
-        """
         request = opts.get('request')
         utils.configure_geoip(country_ipv4=config.pop('country_ipv4'), 
                               country_ipv6=config.pop('country_ipv6'))
