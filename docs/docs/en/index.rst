@@ -70,7 +70,6 @@ Table of Contents
     migration
     screenshots
     tips
-    web-routes
     errors
     otherprojects
     references

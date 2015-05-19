@@ -71,7 +71,6 @@ Table des matières
     migration
     screenshots
     tips
-    web-routes
     errors
     otherprojects
     references
