@@ -65,7 +65,6 @@ Table of Contents
     install
     integration
     configuration
-    commands
     security
     migration
     screenshots
