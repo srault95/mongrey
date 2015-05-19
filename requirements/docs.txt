@@ -1,4 +1,5 @@
 -r web.txt
+flask
 mock
 docutils
 Pygments
