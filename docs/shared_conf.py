@@ -25,6 +25,20 @@ sys.path.append(EXT_DIR)
 
 templates_path = [TEMPLATES_DIR]
 
+from mock import Mock as MagicMock
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+            return Mock()
+
+MOCK_MODULES = ['greenlet',
+                'gevent', 
+                'gevent.server',
+                'gevent.core',
+                'gevent.wsgi',
+                'gevent.socket']
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
 needs_sphinx = "1.3"
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
