@@ -36,8 +36,7 @@ MOCK_MODULES = ['greenlet',
                 'gevent.server',
                 'gevent.core',
                 'gevent.wsgi',
-                'gevent.socket',
-                'flask']
+                'gevent.socket']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 needs_sphinx = "1.3"
