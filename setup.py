@@ -40,8 +40,6 @@ web_postgresql_req = pip('web-postgresql.txt')
 web_sqlite_req = pip('web-sqlite.txt')
 web_req = web_mongo_req + web_mysql_req + web_postgresql_req + web_sqlite_req
 
-mongrey_full = set(server_req + web_req)
-
 def get_readme():
     readme_path = os.path.abspath(os.path.join(CURRENT_DIR, 'README.rst'))
     if os.path.exists(readme_path):
