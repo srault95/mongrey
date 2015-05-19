@@ -1,3 +1,4 @@
+-r web.txt
 mock
 docutils
 Pygments
