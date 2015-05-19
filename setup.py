@@ -28,6 +28,8 @@ def pip(filename):
     return requirements
 
 
+base_req = pip('base.txt')
+
 server_mongo_req = pip('server-mongo.txt')
 server_mysql_req = pip('server-mysql.txt')
 server_postgresql_req = pip('server-postgresql.txt')
@@ -59,7 +61,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     packages=find_packages(),
-    install_requires=[],
+    install_requires=base_req,
     extras_require = {
         'server_mongo': set(server_mongo_req),
         'server_mysql': set(server_mysql_req),

@@ -1,17 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-<a class="navbar-brand" href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>
-
-{%- block sidebarlogo %}
-    {%- if logo %}
-    <p class="logo"><a href="{{ pathto(master_doc) }}">
-      <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
-    </a></p>
-    {%- endif %}
-{%- endblock %}
-"""
-
 import os, sys
 import datetime
 
@@ -65,8 +53,8 @@ extensions = ['sphinx.ext.autodoc',
               'releases',
               'sphinxjp.themes.basicstrap',
               'contrib.email',
-              'sphinxcontrib.autohttp.flask',
-              'sphinxcontrib.autoprogram', #.. autoprogram:: mongrey.web.manager:main()
+              #'sphinxcontrib.autohttp.flask',
+              #'sphinxcontrib.autoprogram', #.. autoprogram:: mongrey.web.manager:main()
               ]
 
 project = u'Mongrey'
@@ -211,21 +199,3 @@ blockdiag_antialias = True
 
 releases_github_path = "radical-software/mongrey"
 
-#from sphinx.highlighting import lexers
-#from pygments.lexers.python import PythonLexer
-#lexers['python'] = PhpLexer(startinline=True)
-
-"""
-def setup(app):
-    from sphinx.ext.autodoc import cut_lines
-    from sphinx.util.docfields import GroupedField
-    #app.connect('autodoc-process-docstring', cut_lines(4, what=['module']))
-    app.add_object_type('confval', 'confval',
-                        objname='configuration value',
-                        indextemplate='pair: %s; configuration value')
-    #fdesc = GroupedField('parameter', label='Parameters',
-    #                     names=['param'], can_collapse=True)
-    #app.add_object_type('event', 'event', 'pair: %s; event', parse_event,
-    #                    doc_field_types=[fdesc])
-
-"""
