@@ -2,27 +2,23 @@
 
 import datetime
 import json
+
+from flask import abort, request, current_app
 from wtforms import fields
 
-from flask import abort, redirect, url_for, request, session, current_app
-
-from flask_admin import Admin, AdminIndexView as BaseAdminIndexView, expose
+from flask_admin import Admin, expose
 from flask_admin.model import filters
+from flask_admin.contrib.peewee.filters import FilterConverter 
 from flask_admin.contrib.peewee.view import ModelView as BaseModelView
 from flask_admin.contrib.peewee.form import CustomModelConverter
-from flask_admin.contrib.peewee.filters import FilterConverter 
 
 from playhouse import shortcuts
 
 import arrow
 
-from ...ext.flask_login import current_user, logout_user
-from ... import constants
-from ...web.extensions import gettext, lazy_gettext
+from ...web.extensions import gettext
 
-from ...web.admin import (moment_format,
-                             key_format,
-                             SecureView)
+from ...web import admin as share_admin
 from . import models
 
 class CustomFilterConverter(FilterConverter):
@@ -57,79 +53,46 @@ def jsonify(obj):
     return current_app.response_class(content, mimetype='application/json')
 
 
-class ModelView(SecureView, BaseModelView):
+class ModelView(share_admin.SecureView, BaseModelView):
     
     model_form_converter = ModelConverter
     
     filter_converter = CustomFilterConverter()
 
-class UserView(ModelView):
-    
-    column_list = ('username',)
 
-    column_searchable_list = ('username',)
+class UserView(share_admin.UserViewMixin, ModelView):
+    pass
 
-class DomainView(ModelView):
-    
-    column_list = ('name',)
 
-    column_searchable_list = ('name',)
+class DomainView(share_admin.DomainViewMixin, ModelView):
+    pass
 
-class MailboxView(ModelView):
-    
-    column_list = ('name',)
 
-    column_searchable_list = ('name',)
+class MailboxView(share_admin.MailboxViewMixin, ModelView):
+    pass
 
-class MynetworkView(ModelView):
-    
-    column_list = ('value', 'comments')
 
-    column_searchable_list = ('value', 'comments')
+class MynetworkView(share_admin.MynetworkViewMixin, ModelView):
+    pass
 
-class WhiteListView(ModelView):
-    
-    column_list = ('value', 'field_name', 'comments')
 
-    column_formatters = {
-        #"field_name": lambda v, c, m, n: m.get_field_name_display(),
-    }
+class WhiteListView(share_admin.WhiteListViewMixin, ModelView):
+    pass
 
-    column_searchable_list = ('value', 'comments')
 
-class BlackListView(ModelView):
-    
-    column_list = ('value', 'field_name', 'comments')
+class BlackListView(share_admin.BlackListViewMixin, ModelView):
+    pass
 
-    column_formatters = {
-        #"field_name": lambda v, c, m, n: m.get_field_name_display(),
-    }
 
-    column_searchable_list = ('value', 'comments')
-
-class PolicyView(ModelView):
-    
-    column_list = ('name', 'value', 'field_name', 'greylist_key', 'greylist_remaining', 'greylist_expire', 'comments')
-    
-    column_formatters = {
-        #"field_name": lambda v, c, m, n: m.get_field_name_display(),
-    }
+class PolicyView(share_admin.PolicyViewMixin, ModelView):
+    pass
     
     
-class GreylistMetricView(ModelView):
-    
-    can_edit = False
-
-    can_create = False
-    
-    column_list = ('timestamp', 'count', 'accepted', 'rejected', 'requests', 'abandoned', 'delay')
-    
-    column_formatters = {
-        "timestamp": lambda v, c, m, n: moment_format(m.timestamp),
-    }
+class GreylistMetricView(share_admin.GreylistMetricViewMixin, ModelView):
+    pass
 
 
-class GreylistEntryView(ModelView):
+class GreylistEntryView(share_admin.GreylistEntryViewMixin, ModelView):
     """
     TODO: Actions
         add whitelist ip
@@ -139,23 +102,6 @@ class GreylistEntryView(ModelView):
         add whitelist recipient domain
     """
 
-    list_template = "mongrey/greylistentry_list.html"
-
-    column_list = ('key', 'timestamp', 'delay', 'expire_time', 'rejects', 'accepts', 'policy')
-
-    can_edit = False
-    can_create = False
-
-    column_formatters = {
-        "key": lambda v, c, m, n: key_format(m.id, m.key),
-        "timestamp": lambda v, c, m, n: moment_format(m.timestamp),
-        "expire_time": lambda v, c, m, n: moment_format(m.expire_time),
-    }
-
-    column_filters = ['key', 'timestamp', 'expire_time']
-
-    column_searchable_list = ['key']
-
     @expose('/show')
     def show(self):
         _id = request.args.get('id')
@@ -163,39 +109,11 @@ class GreylistEntryView(ModelView):
         if not model:
             abort(404)
 
-        kwargs = shortcuts.model_to_dict(model, exclude=['protocol'])#, recurse, backrefs, only, exclude, seen)
-        kwargs['protocol'] = json.loads(model.protocol)
+        kwargs = shortcuts.model_to_dict(model, exclude=['protocol'])
+        print "model.protocol : ", model.protocol, type(model.protocol), model.protocol.items()
+        kwargs['protocol'] = model.protocol
 
         return self.render('mongrey/greylistentry_show.html', **kwargs)
-
-
-class AdminIndexView(SecureView, BaseAdminIndexView):
-
-    @expose()
-    def index(self):
-        return redirect(url_for('greylistentry.index_view'))
-    
-    @expose('/logout')
-    def logout(self):
-        logout_user()
-        return redirect(url_for('admin.index'))
-    
-    @expose('/change-lang', methods=('GET',))
-    def change_lang(self):
-        """
-        {{ url_for('user_menu.change_lang') }}?locale=fr
-        """
-        
-        from flask_babelex import refresh
-        locale = request.args.get("locale", None)
-        current_lang = session.get(constants.SESSION_LANG_KEY, None)
-
-        if locale and current_lang and locale != current_lang and locale in dict(current_app.config.get('ACCEPT_LANGUAGES_CHOICES')).keys():
-            session[constants.SESSION_LANG_KEY] = locale
-            refresh()
-
-        _next = request.args.get("next") or request.referrer or request.url
-        return redirect(_next)
 
 
 def init_admin(app, 
@@ -207,9 +125,9 @@ def init_admin(app,
                index_view=None,
                ):
     
-    index_view = index_view or AdminIndexView(template=index_template,                                               
-                                              url=url,
-                                              name="home")
+    index_view = index_view or share_admin.AdminIndexView(template=index_template, 
+                                                          url=url,
+                                                          name="home")
     
     admin = admin_app or Admin(app,
                                url=url,
@@ -220,7 +138,7 @@ def init_admin(app,
                                )
     
     admin.add_view(UserView(models.User, 
-                                 name=gettext(u"Users")))
+                            name=gettext(u"Users")))
 
     admin.add_view(DomainView(models.Domain, 
                                  name=gettext(u"Domains")))

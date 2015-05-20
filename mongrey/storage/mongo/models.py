@@ -75,6 +75,13 @@ class User(UserMixin, Document):
     active = fields.BooleanField(default=True)
 
     slug = fields.StringField(unique=True, required=True)
+
+    def _clean_api_key(self):
+        if self.api_key:
+            exist = User.objects(api_key=self.api_key, username__ne=self.username).first()
+            if exist:
+                message = _(u"Conflict with api_key[%s]. Already exist") % value
+                raise NotUniqueError(message)        
     
     @classmethod    
     def create_user(cls, 
@@ -92,13 +99,6 @@ class User(UserMixin, Document):
         user.api_key = api_key
         return user.save()
     
-    def _clean_api_key(self):
-        if self.api_key:
-            exist = User.objects(api_key=self.api_key, username__ne=self.username).first()
-            if exist:
-                message = _(u"Conflict with api_key[%s]. Already exist") % value
-                raise NotUniqueError(message)        
-
     def clean(self):
         Document.clean(self)
         validators.clean_email_or_username(self.username, field_name="username", error_class=ValidationError)

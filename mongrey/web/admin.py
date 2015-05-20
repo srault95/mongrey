@@ -2,11 +2,12 @@
 
 from jinja2 import Markup
 
-from flask import abort, redirect, url_for, request, session, current_app
+from flask import abort, redirect, url_for, request, session, current_app, flash
+from flask_admin import AdminIndexView as BaseAdminIndexView, expose
 
-from ..ext.flask_login import current_user
-
+from ..ext.flask_login import current_user, logout_user
 from .. import constants
+from .extensions import gettext
 
 def moment_format(value):
     """
@@ -31,3 +32,139 @@ class SecureView(object):
             return abort(401)
         
         return abort(403)
+
+
+class UserViewMixin:
+    
+    column_list = ('username',)
+
+    column_searchable_list = ('username',)
+
+    form_excluded_columns = ('slug',)
+
+
+class DomainViewMixin:
+    
+    column_list = ('name',)
+
+    column_searchable_list = ('name',)
+
+    form_excluded_columns = ('slug',)
+
+
+class MailboxViewMixin:
+    
+    column_list = ('name',)
+
+    column_searchable_list = ('name',)
+
+    form_excluded_columns = ('slug',)
+
+
+class MynetworkViewMixin:
+    
+    column_list = ('value', 'comments')
+
+    column_searchable_list = ('value', 'comments')
+
+    form_excluded_columns = ('slug',)
+
+
+class WhiteListViewMixin:
+    
+    column_list = ('value', 'field_name', 'comments')
+
+    column_searchable_list = ('value', 'comments')
+    
+    #column_editable_list = ('value', 'field_name', 'comments')    
+
+    form_excluded_columns = ('slug',)
+    
+class BlackListViewMixin:
+    
+    column_list = ('value', 'field_name', 'comments')
+
+    column_searchable_list = ('value', 'comments')
+
+    form_excluded_columns = ('slug',)
+
+
+class PolicyViewMixin:
+    pass
+    
+    #column_list = ('name', 'value', 'mynetwork_vrfy', 'field_name', 'greylist_key', 'greylist_remaining', 'greylist_expire', 'comments')
+
+    form_excluded_columns = ('slug',)
+
+    
+class GreylistMetricViewMixin:
+    
+    can_edit = False
+
+    can_create = False
+    
+    column_list = ('timestamp', 'count', 'accepted', 'rejected', 'requests', 'abandoned', 'delay')
+    
+    form_excluded_columns = ('slug',)
+    
+    column_formatters = {
+        "timestamp": lambda v, c, m, n: moment_format(m.timestamp),
+    }
+    
+class GreylistEntryViewMixin:
+    """
+    TODO: Actions
+        add whitelist ip
+        add whitelist sender email
+        add whitelist sender domain
+        add whitelist recipient email
+        add whitelist recipient domain
+    """
+    
+    list_template = "mongrey/greylistentry_list.html"
+    
+    column_list = ('key', 'timestamp', 'delay', 'expire_time', 'rejects', 'accepts', 'policy')
+
+    can_edit = False
+    can_create = False
+
+    column_formatters = {
+        "key": lambda v, c, m, n: key_format(m.id, m.key),
+        "timestamp": lambda v, c, m, n: moment_format(m.timestamp),
+        "expire_time": lambda v, c, m, n: moment_format(m.expire_time),
+    }
+
+    column_filters = ['key', 'timestamp', 'expire_time']
+    
+    column_searchable_list = ['key']
+    
+    
+class AdminIndexView(SecureView, BaseAdminIndexView):
+    
+    @expose()
+    def index(self):
+        return redirect(url_for('greylistentry.index_view'))
+    
+    @expose('/logout')
+    def logout(self):
+        logout_user()
+        return redirect(url_for('admin.index'))
+    
+    @expose('/change-lang', methods=('GET',))
+    def change_lang(self):
+        """
+        {{ url_for('user_menu.change_lang') }}?locale=fr
+        """
+        from flask_babelex import refresh
+        locale = request.args.get("locale", None)
+        current_lang = session.get(constants.SESSION_LANG_KEY, None)
+
+        if locale and current_lang and locale != current_lang and locale in dict(current_app.config.get('ACCEPT_LANGUAGES_CHOICES')).keys():
+            flash(gettext(u"The language has been updated"))
+            session[constants.SESSION_LANG_KEY] = locale
+            refresh()
+
+        _next = request.args.get("next") or request.referrer or request.url
+        return redirect(_next)
+
+    
