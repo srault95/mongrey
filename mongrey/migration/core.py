@@ -161,6 +161,6 @@ def main():
         
 if __name__ == "__main__":
     """
-    python -m mongrey.migration.core -n -P C:/temp/postfix-abakus-db radicalspam    
+    python -m mongrey.migration.core -n -P C:/temp/postfix-db radicalspam    
     """
     main()

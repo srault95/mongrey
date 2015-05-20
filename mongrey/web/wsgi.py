@@ -73,7 +73,7 @@ def _configure_i18n(app):
     from flask_babelex import Babel
     from .. import translations
     TRANSLATIONS_DIR = os.path.abspath(os.path.dirname(translations.__file__))
-    domain = Domain(dirname=TRANSLATIONS_DIR)#, domain)
+    domain = Domain(dirname=TRANSLATIONS_DIR)#, domain="mongrey")
     babel = Babel(app, default_domain=domain, 
           default_locale=app.config.get('BABEL_DEFAULT_LOCALE'))
     
@@ -128,8 +128,8 @@ def _configure_storage_sql(app):
             app.logger.warning(str(err))            
 
     app.login_app = UserLogin(model=models.User, 
-              app=app, 
-              load_user_func=load_user)
+                              app=app, 
+                              load_user_func=load_user)
     
     @app.before_request
     def _db_connect():

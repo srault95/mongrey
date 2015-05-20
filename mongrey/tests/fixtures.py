@@ -81,7 +81,7 @@ def fixtures(models):
         #print date_debut, msg
         #print date_debut, greylist_key, key, kwargs['policy'], kwargs['delay'], kwargs['expire_time']
         try:
-            models.GreylistEntry(**kwargs).save()
+            models.GreylistEntry.api_create(**kwargs)
             doc_created += 1
         except Exception, err:
             print str(err)

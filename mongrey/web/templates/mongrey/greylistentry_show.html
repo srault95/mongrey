@@ -39,6 +39,16 @@
 	            <td>Rejected</td>
 	            <td>{{ rejects }}</td>
 	        </tr>
+            <tr>
+                <td>{{ _("Last state") }}</td>
+                <td>
+                    {% if last_state %}
+                        <span class="moment" data-format='LLLL' data-value="{{ timestamp }}">{{ last_state }}</span>
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+            </tr>
 	        {% for key, value in protocol.items() %}
 		        <tr>
 		            <td>{{ key }}</td>

@@ -5,6 +5,8 @@ from flask_wtf import Form
 
 from flask_wtf.form import _is_hidden
 
+from .extensions import gettext
+
 def _is_required(field):
     for validator in field.validators:
         if isinstance(validator, (validators.DataRequired, validators.InputRequired)):
@@ -17,4 +19,5 @@ class LoginForm(Form):
     
     password = PasswordField('Password', validators=[validators.DataRequired()])
     
-    submit = SubmitField('Login')
+    submit = SubmitField(gettext(u"Login"))
+                         

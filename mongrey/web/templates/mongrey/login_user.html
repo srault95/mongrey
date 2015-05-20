@@ -34,12 +34,20 @@
 	<div class="modal-dialog ">
     	<div class="modal-content">
 
-			<div class="modal-header">
-				<h3 class="modal-title text-center">{{_("Please authenticate")}}</h3>
-			</div>
-			
 		    <div class="modal-body">
                 <div class="contenair">
+                    
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-9">
+                            <img class="logo" src="{{ url_for('static', filename='mongrey-50.png')}}" alt="logo"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-9">
+                            <h3 class="">{{_("Please authenticate")}}</h3>
+                        </div>
+                    </div>
+                
                     <div class="row">
 			            <div class="col-md-12">
 			                {#% include "security/_messages.html" %#}
@@ -48,8 +56,9 @@
 			                  {{ login_user_form.hidden_tag() }}
 			                  
 			                  {% set field_opts = {
-			                         'email':{'placeholder':"Email address", 'autofocus':"true", 'class':"form-control input-lg"}, 
-			                         'password':{'placeholder':"Password", 'class':"form-control input-lg"} } 
+			                         'username':{'placeholder':"Login name or email address", 'autofocus':"true", 'class':"form-control input-lg"}, 
+			                         'password':{'placeholder':"Password", 'class':"form-control input-lg"}, 
+                                     } 
 			                  %}
 			                  
 								{%- for field in login_user_form %}
@@ -57,8 +66,8 @@
 								    {% set opt = field_opts.get(field.name, {}) %}
 								    {{ wtf.form_field(field,
 								                  form_type='horizontal',
-								                  horizontal_columns=('md', 2, 10),
-								                  button_map={},
+								                  horizontal_columns=('md', 3, 9),
+								                  button_map={'submit': "default btn-lg"},
 								                  **opt) }}
 								  {%- endif %}
 								{%- endfor %}

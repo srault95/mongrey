@@ -95,7 +95,7 @@ https://raw.githubusercontent.com/mbr/flask-bootstrap/master/flask_bootstrap/tem
 	{%- elif field.type == 'SubmitField' -%}
 	
 	  {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %}
-	  
+	    
 	    {{field(class='btn btn-%s' % button_map.get(field.name, 'default'), **kwargs)}}
 	  
 	  {% endcall %}

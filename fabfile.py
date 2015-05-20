@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from pprint import pprint as pp
 import os, sys
 
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -144,17 +145,23 @@ def runtests_skip_travis():
             local('nosetests -s -v mongrey')
         
 @task
-def run_web():
-    local('python -m mongrey.web.manager server')
+def run_web_mongo():
+    with shell_env(MONGREY_STORAGE="mongo", MONGREY_DB='mongodb://localhost/mongrey_test'):
+        local('python -m mongrey.web.manager server')
+
+@task
+def run_web_sql():
+    with shell_env(MONGREY_STORAGE="mongo", MONGREY_DB='sqlite:////../mongrey_dev.db'):
+        local('python -m mongrey.web.manager server')
         
 @task
 def shell_dev_mongo():
-    with shell_env(MONGREY_STORAGE="mongo"):
+    with shell_env(MONGREY_STORAGE="mongo", MONGREY_DB='mongodb://localhost/mongrey_test'):
         local('python -m mongrey.web.manager -c mongrey.web.settings.Dev shell')
 
 @task
 def shell_dev_sql():
-    with shell_env(MONGREY_STORAGE="sql"):
+    with shell_env(MONGREY_STORAGE="mongo", MONGREY_DB='sqlite:////../mongrey_dev.db'):
         local('python -m mongrey.web.manager -c mongrey.web.settings.Dev shell')
 
 """
@@ -165,3 +172,22 @@ def migration_rs_mongo():
         #local('python -m mongrey.migration.core --help')
         local('python -m mongrey.migration.core -n -P C:/temp/postfix.db radicalspam')
 """
+
+def _create_fixtures(models):
+    from mongrey.web.wsgi import create_app
+    from mongrey.tests.fixtures import fixtures
+    app = create_app()
+    result = fixtures(models)
+    pp(result)
+    
+@task
+def create_fixtures_sql():
+    from mongrey.storage.sql import models
+    with shell_env(MONGREY_STORAGE="mongo", MONGREY_DB='sqlite:////../mongrey_dev.db'):
+        _create_fixtures(models)
+
+@task
+def create_fixtures_mongo():
+    from mongrey.storage.mongo import models
+    with shell_env(MONGREY_STORAGE="mongo", MONGREY_DB='mongodb://localhost/mongrey_test'):
+        _create_fixtures(models)
