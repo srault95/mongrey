@@ -33,14 +33,13 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 DEFAULT_SETTINGS_PATH = [
-    '~/mongrey/server.yml',
     '/etc/mongrey/server.yml',
+    '~/mongrey/server.yml',
 ]
 
-#TODO: /var/lib/mongrey/fixtures.yml et/ou /opt/mongrey/fixtures.yml 
 DEFAULT_FIXTURES_PATH = [
+    '/var/lib/mongrey/server-fixtures.yml',
     '~/mongrey/server-fixtures.yml',
-    '/etc/mongrey/server-fixtures.yml',
 ]
 
 DEFAULT_CONFIG = {
@@ -90,7 +89,7 @@ DEFAULT_CONFIG = {
     'no_verify_protocol': env_config('MONGREY_NO_VERIFY_PROTOCOL', False, cast=bool),
 
     'db_settings': {
-        'host': env_config('MONGREY_DB', 'sqlite:///mongrey.db'),
+        'host': env_config('MONGREY_DB', 'sqlite:////var/lib/mongrey/mongrey.db'),
     },
     
     'cache_settings': {
