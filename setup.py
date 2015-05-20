@@ -42,6 +42,8 @@ web_postgresql_req = pip('web-postgresql.txt')
 web_sqlite_req = pip('web-sqlite.txt')
 web_req = web_mongo_req + web_mysql_req + web_postgresql_req + web_sqlite_req
 
+command_install_req = pip('install-command.txt')
+
 def get_readme():
     readme_path = os.path.abspath(os.path.join(CURRENT_DIR, 'README.rst'))
     if os.path.exists(readme_path):
@@ -73,7 +75,8 @@ setup(
         'web_sqlite': set(web_sqlite_req),
         'server': set(server_req),
         'web': set(web_req),
-        'full': set(server_req+web_req)
+        'full': set(server_req+web_req),
+        'install': set(command_install_req)
     },      
     tests_require=[
         'nose>=1.0'
@@ -86,6 +89,7 @@ setup(
             'mongrey-server = mongrey.server.core:main [server_mongo, server_mysql, server_postgresql, server_sqlite, server, full]',
             'mongrey-web = mongrey.web.manager:main [web_mongo, web_mysql, web_postgresql, web_sqlite, web, full]',
             'mongrey-migration = mongrey.migration.core:main',
+            'mongrey-install = mongrey.install.core:main [install]',
         ],
     },    
     keywords=['postfix','policy','filter', 'smtp', 'greylist'],
