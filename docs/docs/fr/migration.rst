@@ -15,16 +15,16 @@ assurés actuellement par Postfix à travers des fichiers plats.
 - Listes Noires (local-blacklist-*)
 - Mailbox (local-directory)
 
-Postgrey
-========
-
-.. todo::
-
-
 Exemple de Migration Radical-Spam avec Mongrey Serveur - Sqlite
 ===============================================================
 
 .. versionadded:: 0.4.2
+
+Cette opération va récupérer les Domaines, Mynetwork, l'annuaire et toutes les liste noires 
+de Radical-Spam et les enregistrer dans Mongrey.
+
+Installation
+------------
 
 .. code:: bash
 
@@ -33,4 +33,21 @@ Exemple de Migration Radical-Spam avec Mongrey Serveur - Sqlite
     $ chmod +x /usr/local/bin/mongrey-migration
     
     $ /usr/local/bin/mongrey-migration --version
+
+Migration
+---------
+
+.. code:: bash
+    
+    # simulation (-n)
+    $ /usr/local/bin/mongrey-migration -P /var/rs/addons/postfix/etc -n radicalspam
+
+    # Migration:
+    $ /usr/local/bin/mongrey-migration -P /var/rs/addons/postfix/etc radicalspam
+    
+Postgrey
+========
+
+.. todo::
+
     

@@ -1,6 +1,6 @@
-============
-Introduction
-============
+===========================
+Introduction au GreyListing
+===========================
 
 Documentations sur le GreyListing
 =================================

@@ -34,7 +34,8 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 from mongrey.version import __VERSION__
 
 exclude_patterns = ['_build', 
-                    '_draft', 
+                    '_draft',
+                    '_static',
                     '_ext']
 
 extensions = ['sphinx.ext.autodoc', 
@@ -82,19 +83,20 @@ exclude_trees = []
 
 #html_favicon
 #html_extra_path
-html_static_path = [STATIC_DIR] #'_static']
-#html_static_path = ['_static']
+#html_static_path = [STATIC_DIR] #'_static']
+html_static_path = ['_static']
 html_title = u"%s - %s" % (project, release)
 html_short_title = project
 html_last_updated = datetime.datetime.utcnow()
 html_copy_source = True
 html_show_sourcelink = True
 html_show_copyright = False
-html_logo = '_static/logo2-30.png'
+html_logo = 'logo2-30.png'
+#html_logo = '_static/logo2-30.png'
 
 #TODO: A surveiller
-#html_compact_lists = False
-#html_scaled_image_link = False
+html_compact_lists = True
+html_scaled_image_link = False
 
 """
 if on_rtd:    

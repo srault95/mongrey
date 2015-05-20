@@ -20,21 +20,22 @@ Résumé
 Fonctionnalités
 ===============
 
-- Serveur de liste grise haute performance
-- Backends: MongoDB, PostgreSQL, MySQL, Sqlite
-- Pas de dépendance (en dehors du backend)
-- Configuration par Pays, IP, Network, Email, Domain, Expression régulière:
-    - Pour chaque politique de filtrage
-    - Pour les listes noires et blanches
-- Filtrages facultatifs:     
-    - Contrôles anti-relais
-    - Anti-spoofing
-    - Contrôle d'annuaire DB, (SMTP, LDAP en cours..)
-    - RBL
-    - SPF
-- Application Web (facultative)
-- Api REST (en cours...)
-- Cache RAM ou Redis    
+* Serveur de liste grise haute performance
+* Backends: MongoDB, PostgreSQL, MySQL, Sqlite
+* Pas de dépendance (en dehors du backend)
+* Configuration par Pays, IP, Network, Email, Domain, Expression régulière:
+    * Pour chaque politique de filtrage
+    * Pour les listes noires et blanches
+* Filtrages facultatifs:     
+    * Contrôles anti-relais
+    * Anti-spoofing
+    * Contrôle d'annuaire DB, (SMTP, LDAP en cours..)
+    * RBL
+    * SPF
+* Application Web (facultative)
+* Api REST (en cours...)
+* Cache RAM ou Redis    
+    
 
 Exemple d'installation avec la version Serveur - Backend Sqlite
 ===============================================================
@@ -62,6 +63,7 @@ Table des matières
 .. toctree::
     :maxdepth: 1
 
+    intro
     download
     install
     integration

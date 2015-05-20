@@ -6,7 +6,6 @@ Greylist Server for Postfix
 
 .. image:: mongrey.png
    :align: center
-   :scale: 50 %
    :alt: logo
 
 Resume
@@ -21,21 +20,21 @@ Resume
 Features
 ========
 
-- Greylist Server high performance
-- Backends: MongoDB, PostgreSQL, MySQL, Sqlite
-- No software dependencies (except Backend);
-- Configuration by Country, IP address, Network address, Email, Domain, Regex
-    - For every policy filter
-    - For black and white lists
-- Optional filters:     
-    - Relay deny control
-    - Spoofing
-    - Directory control DB, (SMTP, LDAP en cours..)
-    - RBL
-    - SPF
-- WebUI (optional)
-- REST API (in progress...)
-- Cache with Memory or Redis
+* Greylist Server high performance
+* Backends: MongoDB, PostgreSQL, MySQL, Sqlite
+* No software dependencies (except Backend);
+* Configuration by Country, IP address, Network address, Email, Domain, Regex
+    * For every policy filter
+    * For black and white lists
+* Optional filters:     
+    * Relay deny control
+    * Spoofing
+    * Directory control DB, (SMTP, LDAP en cours..)
+    * RBL
+    * SPF
+* WebUI (optional)
+* REST API (in progress...)
+* Cache with Memory or Redis
 
 Sample installation for Mongrey Server - Sqlite Backend
 =======================================================
