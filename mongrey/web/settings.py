@@ -37,7 +37,7 @@ class Config(object):
     AUTH_MAX_ATTEMPT = config('MONGREY_WEB_AUTH_MAX_ATTEMPT', 3, cast=int)
     
     DB_SETTINGS = {
-        'host': config('MONGREY_DB', 'sqlite:////tmp/mongrey.db'),
+        'host': config('MONGREY_DB', 'sqlite:////var/lib/mongrey/mongrey.db'),
     }        
     
     WEB_HOST = config('MONGREY_WEB_HOST', '127.0.0.1')
