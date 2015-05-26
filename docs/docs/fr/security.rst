@@ -29,4 +29,4 @@ Fail2ban et iptables
 C'est l'outil idéal pour combattre les attaques par force brute.
 
 
-.. _`Fail2ban`: <http://www.fail2ban.org/wiki/index.php/Main_Page>
+.. _`Fail2ban`: http://www.fail2ban.org/wiki/index.php/Main_Page

@@ -160,8 +160,106 @@ MySQL
 Docker
 ======
 
+Docker - MongoDB
+----------------
+
+Installez la version binaire de mongrey pour :ref:`install_mongrey_server_mongodb`
+
+.. code:: bash
+
+    $ docker pull mongo
+    
+    # Lancement du server MongoDB
+    $ docker run --name mongodb1 -d mongo mongod --smallfiles --directoryperdb
+    
+    # Lancement de mongrey
+    $ docker run -it --rm --link mongodb1:mongodb \
+       -e MONGREY_DB=mongodb://mongodb/mongrey \
+       -e MONGREY_HOST=0.0.0.0 \
+       -e MONGREY_PORT=9999 \
+       -p 127.0.0.1:9999:9999 \
+       -v /usr/local/bin/mongrey-server:/usr/local/bin/mongrey-server \
+       ubuntu:14.04 /usr/local/bin/mongrey-server start
+
+Docker - PostgreSQL
+-------------------
+
+Installez la version binaire de mongrey pour :ref:`install_mongrey_server_postgresql`
+
+.. code:: bash
+
+    $ docker pull postgres
+
+    # Lancement du server PostgreSQL
+    $ docker run --name pgsql1 -e POSTGRES_PASSWORD=secret -d postgres
+    
+    # Création de la DB
+    $ docker exec -it pgsql1 sh -c 'exec psql -c "create database mongrey;" -U postgres'
+
+    # Lancement de mongrey
+    $ docker run -it --rm --link pgsql1:pgsql \
+       -e MONGREY_DB=postgresql://postgres:secret@pgsql/mongrey \
+       -e MONGREY_HOST=0.0.0.0 \
+       -e MONGREY_PORT=9999 \
+       -p 127.0.0.1:9999:9999 \
+       -v /usr/local/bin/mongrey-server:/usr/local/bin/mongrey-server \
+       ubuntu:14.04 /usr/local/bin/mongrey-server start
+    
+Docker - MySQL
+--------------
+
+Installez la version binaire de mongrey pour :ref:`install_mongrey_server_mysql`
+
+.. code:: bash
+
+    $ docker pull mysql
+
+    # Lancement du server
+    $ docker run --name mysql1 -e MYSQL_ROOT_PASSWORD=secret -d mysql
+    
+    # Création de la DB
+    $ docker exec -it mysql1 sh -c 'exec mysql -e "create database mongrey;" -uroot -p"secret"'    
+    
+    # Lancement de mongrey
+    $ docker run -it --rm --link mysql1:mysql \
+       -e MONGREY_DB=mysql://root:secret@mysql/mongrey \
+       -e MONGREY_HOST=0.0.0.0 \
+       -e MONGREY_PORT=9999 \
+       -p 127.0.0.1:9999:9999 \
+       -v /usr/local/bin/mongrey-server:/usr/local/bin/mongrey-server \
+       ubuntu:14.04 /usr/local/bin/mongrey-server start
+
+Docker - Cache Redis
+--------------------
+
+Pour utiliser un cache Redis dans mongrey, utiliser la variable d'environnement MONGREY_CACHE
+
+.. code:: bash
+
+    $ docker pull redis
+
+    # Lancement du server
+    $ docker run -d --name redis1 -m 512m redis redis-server --appendonly yes
+    
+Exemple d'utilisation avec Mongrey dans Docker/Mongodb:
+
+.. code:: bash
+
+    $ docker run -it --rm \
+       --link mongodb1:mongodb \
+       --link redis1:redis \
+       -e MONGREY_CACHE=redis://redis:6379/0 \
+       -e MONGREY_DB=mongodb://mongodb/mongrey \
+       -e MONGREY_HOST=0.0.0.0 \
+       -e MONGREY_PORT=9999 \
+       -p 127.0.0.1:9999:9999 \
+       -v /usr/local/bin/mongrey-server:/usr/local/bin/mongrey-server \
+       ubuntu:14.04 /usr/local/bin/mongrey-server start
+
 Docker - Build
 --------------
+
+Pour intégrer et personnaliser l'installation de Mongrey dans Docker, vous pouvez utiliser le modèle suivant.
 
 Exemple avec la version binaire de Mongrey Server PostgreSQL:
 
@@ -190,58 +288,25 @@ Exemple avec la version binaire de Mongrey Server PostgreSQL:
     
     $ docker build -t mongrey-server-postgresql .
 
-Docker - PostgreSQL
--------------------
-
-Installez la version binaire de mongrey pour :ref:`install_mongrey_server_postgresql`
-
-.. code:: bash
-
-    $ docker pull postgres
-
-    # Lancement du server
-    $ docker run --name pgsql1 -e POSTGRES_PASSWORD=secret -d postgres
-    
-    # Création de la DB
-    $ docker exec -it pgsql1 sh -c 'exec psql -c "create database mongrey_test2;" -U postgres'
-
-    # Lancement de mongrey
-    $ docker run -it --rm --link pgsql1:pgsql \
-       -e MONGREY_STORAGE=sql \
-       -e MONGREY_DB=postgresql://postgres:secret@pgsql/mongrey_test \
-       -e MONGREY_HOST=0.0.0.0 \
-       -e MONGREY_PORT=9999 \
-       -p 127.0.0.1:9997:9999 \
-       -v /usr/local/bin/mongrey-server:/usr/local/bin/mongrey-server \
-       ubuntu:14.04 /usr/local/bin/mongrey-server start
-    
-Docker - MySQL
---------------
-
-Installez la version binaire de mongrey pour :ref:`install_mongrey_server_mysql`
-
-.. code:: bash
-
-    $ docker pull mysql
-
-    # Lancement du server
-    $ docker run --name mysql1 -e MYSQL_ROOT_PASSWORD=secret -d mysql
-    
-    # Création de la DB
-    $ docker exec -it mysql1 sh -c 'exec mysql -e "create database mongrey_test;" -uroot -p"secret"'    
-    
-    # Lancement de mongrey
-    $ docker run -it --rm --link mysql1:mysql \
-       -e MONGREY_STORAGE=sql \
-       -e MONGREY_DB=mysql://root:secret@mysql/mongrey_test \
-       -e MONGREY_HOST=0.0.0.0 \
-       -e MONGREY_PORT=9999 \
-       -p 127.0.0.1:9997:9999 \
-       -v /usr/local/bin/mongrey-server:/usr/local/bin/mongrey-server \
-       ubuntu:14.04 /usr/local/bin/mongrey-server start
 
 Mongrey Web
 ===========
+
+Authentification
+----------------
+
+Le login et mot de passe de l'utilisateur par défaut sont: admin / mongrey
+
+Vous pouvez les modifier par les variables d'environnement avant de lancer l'application::
+
+    MONGREY_WEB_USERNAME=monlogin
+    
+    MONGREY_WEB_PASSWORD=monpassword
+
+Pour créer le compte admin, utilisez la commande::
+
+    $ /usr/local/bin/mongrey-web default-user    
+    
 
 MongoDB
 -------

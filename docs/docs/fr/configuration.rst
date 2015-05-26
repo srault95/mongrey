@@ -21,10 +21,8 @@ A chaque chargement, Mongrey Serveur, cherche un fichier de configuration facult
     * Ordre de recherche:
         * Valeur de l'option mongrey-server --settings myfile.yml
         * Valeur de la variable d'environnement MONGREY_SERVER_SETTINGS
-        * ~/mongrey/server.yml
-        * ~/mongrey-server.yml
-        * /etc/mongrey-server.yml
         * /etc/mongrey/server.yml
+        * ~/mongrey/server.yml
     
 .. note::
 

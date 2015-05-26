@@ -67,7 +67,6 @@ Toutes les contributions et suggestions sont les bienvenues.
 .. _MongoDB: http://mongodb.org/
 .. _Docker: https://www.docker.com/
 .. _Ubuntu: http://www.ubuntu.com/
-.. _Dockerfile: http://dockerfile.github.io/#/mongodb
 .. _Python: http://www.python.org/
 .. _Gevent: http://www.gevent.org/
 .. _Postfix: http://www.postfix.org
