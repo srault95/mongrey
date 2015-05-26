@@ -15,7 +15,7 @@ from mongrey import constants
 from mongrey.server.core import PolicyServer, logger as server_logger
 from mongrey.server.core import DEFAULT_CONFIG as SERVER_CONFIG
 from mongrey.server.core import options, main
-from mongrey.server.core import command_start
+from mongrey.server.core import command_check
 from mongrey import utils
 from mongrey.exceptions import ConfigurationError
 
@@ -70,7 +70,7 @@ _DEFAULT_CONFIG = {
         'greylist_remaining': 20,
         'greylist_expire': 35*86400,
         'rbl_enable': False,
-        'rbl_hosts': [],
+        'rbl_hosts': ['zen.spamhaus.org'],
         'rwl_enable': False,
         'rwl_hosts': [],
         'rwbl_timeout': 30,
@@ -86,7 +86,6 @@ class NoRunServerTestCase(BaseTestCase):
     #TODO: command_fixtures_import
     #TODO: command_fixtures_export
     #TODO: command_load_settings
-    
     
     @unittest.skipIf('TRAVIS' in os.environ, "Skip Travis")        
     def test_default_config(self):
@@ -133,7 +132,110 @@ class NoRunServerTestCase(BaseTestCase):
 
         self.assertTrue(server._security_check(("10.10.1.1",)))
         
+
+class CheckOneRequestMixin:
+
+    def _drop_model(self, model):
+        raise NotImplementedError()
     
+    def _model_count(self, model):
+        raise NotImplementedError()
+    
+    def _get_policy(self, **kwargs):
+        raise NotImplementedError()
+    
+    def _test_action_whitelisted(self, models):
+
+        request = "country=fr, helo_name=mx1.example.net, client_name=mx1.example.net, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org"
+        
+        policy = self._get_policy(greylist_enable=False)
+        
+        #models.WhiteList(field_name='client_address', value='1.1.1.1').save()
+        models.WhiteList.api_create(field_name='client_address', value='1.1.1.1')
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [1.1.1.1]")
+        
+        self._drop_model(models.WhiteList)
+
+        models.WhiteList(field_name='helo_name', value='mx1.example.net').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [mx1.example.net]")
+        
+        self._drop_model(models.WhiteList)
+
+        models.WhiteList(field_name='country', value='fr').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [fr]")        
+        self._drop_model(models.WhiteList)
+        
+        models.WhiteList(field_name='sender', value='.*@example.net').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [sender@example.net]")
+        
+        self._drop_model(models.WhiteList)
+        
+        models.WhiteList(field_name='sender', value='sender@example.net').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [sender@example.net]")
+
+        self._drop_model(models.WhiteList)
+        
+        models.WhiteList(field_name='recipient', value='.*@example.org').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [rcpt@example.org]")
+        
+        self._drop_model(models.WhiteList)
+        
+        models.WhiteList(field_name='recipient', value='rcpt@example.org').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [rcpt@example.org]")
+
+        self._drop_model(models.WhiteList)
+    
+        request = "client_name=unknow, client_address=1.1.1.1, recipient=rcpt@example.org"
+        
+        models.WhiteList(field_name='client_address', value='1.1.1.1').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [1.1.1.1]")
+        
+        self._drop_model(models.WhiteList)
+
+        models.WhiteList(field_name='recipient', value='rcpt@example.org').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO whitelisted [rcpt@example.org]")
+    
+        self._drop_model(models.WhiteList)
+
+        models.WhiteList(field_name='sender', value='sender@example.net').save()
+        actions = policy.check_actions_one_request(request)
+        self.assertEquals(actions[0], "DUNNO")
+        
+        self._drop_model(models.WhiteList)
+
+    def _test_command_check(self, models, **config):
+
+        request = "country=fr, helo_name=mx1.example.net, client_name=mx1.example.net, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org"
+
+        models.WhiteList(field_name='client_address', value='1.1.1.1').save()
+        self.assertEquals(self._model_count(models.WhiteList), 1)
+        
+        actions = command_check(request, **config)
+        self.assertEquals(actions[0], "%s, mongrey_action=DUNNO whitelisted [1.1.1.1]" % request)
+        self._drop_model(models.WhiteList)
+        
+        requests = StringIO()
+        for i in xrange(5):
+            requests.write("client_name=mx1.example.net, client_address=1.1.1.1, sender=sender-%s@example.net, recipient=rcpt@example.org\n" % i)
+
+        requests.seek(0)
+        actions = command_check(request_fp=requests, **config)
+        self.assertEquals(len(actions), 5)
+
+        for i in xrange(5):
+            request = "client_name=mx1.example.net, client_address=1.1.1.1, sender=sender-%s@example.net, recipient=rcpt@example.org" % i
+            self.assertEquals(actions[i], "%s, mongrey_action=DUNNO" % request)
+        
+        
 class NoRunServerMixin:
     
     def _drop_model(self, model):

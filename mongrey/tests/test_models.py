@@ -567,7 +567,6 @@ class TestModelsMixin:
                 'greylist_expire': 100,
                 'greylist_key': 'med',
                 'greylist_remaining': 20,
-                'spoofing_enable': True,
                 'comments': None
             }],
         }

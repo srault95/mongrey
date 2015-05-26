@@ -12,6 +12,26 @@ from ..utils import protocol_yaml_TO_dict, policy_template
 from mongrey.server import protocols
 
 class PolicyProtocolTestCase(BaseTestCase):
+    
+    def test_parse_protocol_line(self):
+        
+        request = "client_name=mx1.example.net, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org"
+        
+        p = protocols.parse_protocol_line(request)
+        
+        protocol = {
+            'client_address': '1.1.1.1',
+            'client_name': 'mx1.example.net',
+            'country': None,
+            'helo_name': None,
+            'recipient': 'rcpt@example.org',
+            'sender': 'sender@example.net'}
+        
+        self.assertIsNotNone(p)
+        
+        p.pop('instance', None)
+        self.assertDictEqual(p, protocol)
+        
 
     def test_parse_policy_protocol(self):
     

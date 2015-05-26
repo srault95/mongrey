@@ -22,7 +22,7 @@ def fixtures(models):
     
     remote_domains = [faker.domain_name() for i in range(100)]
     remote_senders = ["%s@%s" % (faker.user_name(), domain) for domain in remote_domains]
-    remote_mx = ["mx@%s" % domain for domain in local_domains]
+    remote_mx = ["mx@%s" % domain for domain in remote_domains]
     remote_ip = [faker.ipv4() for i in range(10)] + [faker.ipv6() for i in range(10)]
     
     #print "du : ", first, " Au : ", last

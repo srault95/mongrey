@@ -4,13 +4,45 @@ from mongrey.storage.mongo import models
 from mongrey.storage.mongo.policy import MongoPolicy as Policy
 from mongrey.cache import remove_cache
 from mongrey.server.core import command_start, get_store
+from mongrey.server.core import command_check
 
 from .base import MongreyBaseTestCase
 from ...server.test_server import (NoRunServerMixin, 
                                    NoRunServerWithCacheMixin, 
                                    BaseRunServerMixin, 
                                    ServerRequestMixin,
+                                   CheckOneRequestMixin,
                                    _DEFAULT_CONFIG)
+
+class CheckOneRequestTestCase(CheckOneRequestMixin, MongreyBaseTestCase):
+    
+    def setUp(self):
+        MongreyBaseTestCase.setUp(self)
+        remove_cache()
+
+    def _drop_model(self, model):
+        model.drop_collection()
+
+    def _model_count(self, model):
+        return model.objects.count()
+            
+    def _get_policy(self, **kwargs):
+        return Policy(**kwargs)
+
+    def test_action_whitelisted(self):
+        self._test_action_whitelisted(models)
+    
+    def test_command_check(self):
+        
+        config = _DEFAULT_CONFIG.copy()
+        config['db_settings']['host'] = 'mongodb://localhost/mongrey_test'
+        config.pop('country_ipv4')
+        config.pop('country_ipv6')
+        
+        #---policy default with disabled greylisting        
+        config['policy_settings']['greylist_enable'] = False
+        self._test_command_check(models, **config)
+    
 
 class NoRunServerTestCase(NoRunServerMixin, MongreyBaseTestCase):
     
