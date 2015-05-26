@@ -90,9 +90,8 @@ class BlackListViewMixin:
 
 
 class PolicyViewMixin:
-    pass
     
-    #column_list = ('name', 'value', 'mynetwork_vrfy', 'field_name', 'greylist_key', 'greylist_remaining', 'greylist_expire', 'comments')
+    column_list = ('name', 'value', 'field_name', 'comments', 'greylist_enable', 'spoofing_enable', 'rbl_enable', 'spf_enable')
 
     form_excluded_columns = ('slug',)
 
