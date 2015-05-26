@@ -9,6 +9,7 @@ from . import cache
 from . import utils
 from . import constants
 from .helpers.check_dnsl import check_dns_wb_lists
+from .server.protocols import parse_protocol_line
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ def search_mynetwork(client_address=None, objects=None):
     return False
 
 #TODO: test case
+#TODO: search priority
 def generic_search(protocol=None, objects=None, valid_fields=None, 
                    cache_key=None, cache_enable=True, 
                    return_instance=False):
@@ -398,20 +400,17 @@ class Policy(object):
     def check_actions_one_request(self, request):        
         '''
         Check policy from command line
+        
+        example request line (from postgrey logs):
+            
+            client_name=123, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org
 
-        :param request: Partial protocol request. ex: 'client_name=unknow client_address=1.1.1.1'
+        :param request: Partial protocol request. ex: 'client_name=unknow, client_address=1.1.1.1'
         :type request: str
         :return: Policy actions
-        :rtype: list
+        :rtype: list                
         '''        
-        fields = dict(constants.ALL_FIELDS).keys()
-        
-        protocol = dict([a.strip(',').split('=') for a in request.split()])
-        
-        for key in fields:
-            if not key in protocol:
-                protocol[key] = None 
-        
+        protocol = parse_protocol_line(request)        
         return self.check_actions(protocol, one_request=True)
 
     def update_settings(self, policy=None, session=None):
