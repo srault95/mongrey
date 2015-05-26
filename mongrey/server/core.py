@@ -95,6 +95,7 @@ DEFAULT_CONFIG = {
     'cache_settings': {
         'cache_url': env_config('MONGREY_CACHE', 'simple'),
         'cache_timeout': env_config('MONGREY_CACHE_TIMEOUT', 300, cast=int),    
+        'cache_prefix': env_config('MONGREY_CACHE_PREFIX', 'mongrey-cache'),
     },
                                        
     'country_ipv4': env_config('MONGREY_GEOIP_COUNTRY_V4', None),
@@ -108,9 +109,11 @@ DEFAULT_CONFIG = {
         'spoofing_enable': env_config('MONGREY_SPOOFING_ENABLE', False, cast=bool),
 
         'rbl_enable': env_config('MONGREY_RBL_ENABLE', False, cast=bool),
-        'rbl_hosts': env_config('MONGREY_RBL_HOSTS', [], cast=utils.to_list),
+        'rbl_hosts': env_config('MONGREY_RBL_HOSTS', ['zen.spamhaus.org'], cast=utils.to_list),
+        
         'rwl_enable': env_config('MONGREY_RWL_ENABLE', False, cast=bool),
         'rwl_hosts': env_config('MONGREY_RWL_HOSTS', [], cast=utils.to_list),
+        
         'rwbl_timeout': env_config('MONGREY_RWBL_TIMEOUT', 30, cast=int),    # 30 second
         'rwbl_cache_timeout': env_config('MONGREY_RWBL_CACHE_TIMEOUT', 3600, cast=int),    # 1 hour
 
@@ -389,6 +392,8 @@ def options(return_parser=True):
                                  'check',
                                  'config',
                                  'config-install',
+                                 'service-install',
+                                 'service-uninstall',
                                  'fixtures-import',
                                  'fixtures-export',
                                  ],
@@ -398,6 +403,10 @@ def options(return_parser=True):
     parser.add_argument('--request',
                         dest="request", 
                         help='Request policy for check command')
+
+    parser.add_argument('--request-file',
+                        dest="request_file", 
+                        help='Request policy for check command - From file')
     
     if return_parser:
         return parser
@@ -509,13 +518,31 @@ def get_store(**config):
     
     return None, None
 
-def command_check(request=None, request_file=None, **config):
+def command_check(request=None, request_file=None, request_fp=None, **config):
     """
+    Return request + action
+    
+    With add fields:
+        
+        country=fr, helo_name=mx1.example.net, client_name=mx1.example.net, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org
+
+    With partial fields:
+
+        client_name=mx1.example.net, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org
+
+        client_name=mx1.example.net, client_address=1.1.1.1, recipient=rcpt@example.org
+        
+    With external file (One request per line + \n)
+
+        # /tmp/request.txt
+        client_name=mx1.example.net, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org
+        client_name=mx1.example.net, client_address=1.1.1.1, recipient=rcpt@example.org
+
     > Le sender peut être absent
     cat /var/log/maillog-07052015.log | grep postgrey | grep ']: action' | awk -F ']: ' '{ print $2}'
     
-    May 16 01:40:07 ns339295 postgrey[2429]: action=greylist, reason=new, client_name=unknown, client_address=177.125.127.151, recipient=carole.lemoing@csem.fr
-    May 16 01:45:16 ns339295 postgrey[2429]: action=pass, reason=triplet found, delay=309, client_name=unknown, client_address=177.125.127.151, recipient=carole.lemoing@csem.fr
+    May 16 01:40:07 ns339295 postgrey[2429]: action=greylist, reason=new, client_name=unknown, client_address=1.1.1.1, recipient=rcpt@example.org
+    May 16 01:45:16 ns339295 postgrey[2429]: action=pass, reason=triplet found, delay=309, client_name=unknown, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.net
     """
     
     cache_settings = config.pop('cache_settings')
@@ -525,18 +552,13 @@ def command_check(request=None, request_file=None, **config):
     cache.configure_cache(**cache_settings)
 
     policy_klass, models = get_store(**config)
-
-    kwargs = policy_settings.copy()
-    kwargs['purge_interval'] = purge_interval
-    kwargs['metrics_interval'] = metrics_interval
-
-    policy = policy_klass(**kwargs)
+    policy = policy_klass(**policy_settings)
     
-    
-    result = {}
+    result = []
     try:
         if request:
-            policy.check_actions_one_request(request.strip())
+            r = policy.check_actions_one_request(request.strip())
+            result.append("%s, mongrey_action=%s" % (request, r[0]))
         
         elif request_file:
             
@@ -546,11 +568,25 @@ def command_check(request=None, request_file=None, **config):
                     if not request:
                         continue
                     
-                    request = request.strip()
+                    request = request.strip()                    
+                    r = policy.check_actions_one_request(request)
+                    result.append("%s, mongrey_action=%s" % (request, r[0]))
+
+        elif request_fp:
+
+            fp = request_fp          
+            for request in fp.readlines():
+                if not request:
+                    continue
+                
+                request = request.strip()                    
+                r = policy.check_actions_one_request(request)
+                result.append("%s, mongrey_action=%s" % (request, r[0]))
                     
-                    policy.check_actions_one_request(request)
     except Exception, err:
-        pass
+        logger.error(str(err))
+    
+    return result
     
 def command_start(start_server=True, start_threads=True, **config):
     
@@ -670,9 +706,11 @@ def main():
 
     elif command == 'check':
         request = opts.get('request')
+        request_file = opts.get('request_file')
         utils.configure_geoip(country_ipv4=config.pop('country_ipv4'), 
                               country_ipv6=config.pop('country_ipv6'))
-        command_check(request=request, **config)
+        result = command_check(request=request, request_file=request_file, **config)
+        sys.stdout.write("%s" % "\n".join(result))
         
     elif command == 'config-install':
         filepath = opts.get('settings_path', None) or config.get('settings_path', None) or DEFAULT_SETTINGS_PATH[0]
@@ -711,8 +749,15 @@ def main():
         except Exception, err:
             print("ERROR: %s" % str(err))
             sys.exit(1)
+
+    elif command == 'service-install':
+        print("not implemented command")
+        sys.exit(1)
+
+    elif command == 'service-uninstall':
+        print("not implemented command")
+        sys.exit(1)
             
-        
     sys.exit(0)
 
     

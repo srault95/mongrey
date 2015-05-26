@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import uuid
 import logging
 import re
 
@@ -9,6 +10,35 @@ from ..exceptions import InvalidProtocolError
 line_regex = re.compile(r'^\s*([^=\s]+)\s*=(.*)$')
 
 logger = logging.getLogger(__name__)
+
+def parse_protocol_line(request):
+    """
+    example: 
+    
+    client_name=123, client_address=1.1.1.1, sender=sender@example.net, recipient=rcpt@example.org
+    """
+    try:
+        
+        fields = dict(constants.ALL_FIELDS).keys()
+        
+        protocol = dict([a.strip(',').split('=') for a in request.split()])
+        
+        for key in fields:
+            if not key in protocol:
+                protocol[key] = None
+        
+        if not "instance" in protocol:
+            protocol["instance"] = str(uuid.uuid1())
+            
+        for key in protocol.copy().keys():
+            if not key in constants.POSTFIX_PROTOCOL['valid_fields'] + ['country']:
+                protocol.pop(key)
+                
+        return protocol 
+    except Exception, err:
+        logger.error(str(err)) 
+    
+    
 
 def parse_policy_protocol(fileobj, debug=False):
     """
@@ -114,7 +144,6 @@ def tcp_table_test():
     postconf -e "smtpd_client_restrictions = check_client_access tcp:127.0.0.0:15005"
     postconf -e "smtpd_sender_restrictions = check_sender_access tcp:127.0.0.0:15005"
     postconf -e "smtpd_recipient_restrictions = check_recipient_access tcp:127.0.0.0:15005, reject"
-    run("swaks --server policy.mail-analytics.io:25 --quit-after RCPT --timeout 5 --protocol ESMTP --to contact@mail-analytics.net --from contact@radicalspam.org")
     """
     
     from gevent.server import StreamServer
