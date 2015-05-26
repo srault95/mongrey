@@ -204,7 +204,7 @@ class Mynetwork(Document):
 
     slug = fields.StringField(unique=True, required=True)
     
-    comments = fields.StringField(max_length=100)
+    comments = fields.StringField(max_length=255)
 
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(Mynetwork)(self.value)        
@@ -239,10 +239,12 @@ class BaseSearchField(Document):
 
     @classmethod
     def search(cls, protocol, cache_enable=True, return_instance=False):
+        
         return generic_search(protocol=protocol, 
                               objects=cls.objects.order_by('field_name'), 
                               valid_fields=cls._valid_fields, 
-                              cache_key=cls._cache_key, cache_enable=cache_enable, 
+                              cache_key=cls._cache_key, 
+                              cache_enable=cache_enable, 
                               return_instance=return_instance)
 
     def _clean(self):
@@ -274,7 +276,7 @@ class Policy(BaseSearchField):
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
     _cache_key = 'cachepolicy'
     
-    name = fields.StringField(unique=True, required=True, max_length=20)
+    name = fields.StringField(unique=True, required=True, max_length=255)
 
     slug = fields.StringField(unique=True, required=True)
     
@@ -310,7 +312,7 @@ class Policy(BaseSearchField):
 
     greylist_expire = fields.IntField(default=35*86400, min_value=1)
     
-    comments = fields.StringField(max_length=100)
+    comments = fields.StringField(max_length=255)
 
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(Policy)(self.name)
@@ -354,7 +356,7 @@ class GreylistEntry(Document):
 
     protocol = fields.DictField()
 
-    policy = fields.StringField()
+    policy = fields.StringField(max_length=255)
 
     def __unicode__(self):
         return self.key
@@ -470,7 +472,7 @@ class WhiteList(BaseSearchField):
 
     field_name = fields.StringField(required=True, choices=constants.WL_FIELDS, default='client_address')
     
-    comments = fields.StringField(max_length=100)
+    comments = fields.StringField(max_length=255)
 
     slug = fields.StringField(unique=True, required=True)
     
@@ -495,7 +497,7 @@ class BlackList(BaseSearchField):
     
     slug = fields.StringField(unique=True, required=True)
     
-    comments = fields.StringField(max_length=100)
+    comments = fields.StringField(max_length=255)
     
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(BlackList)(self.value)        

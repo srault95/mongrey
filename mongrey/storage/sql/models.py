@@ -256,7 +256,7 @@ class Mynetwork(Model):
 
     slug = CharField(unique=True, index=True)
 
-    comments = CharField(max_length=100, null=True)
+    comments = CharField(max_length=255, null=True)
 
     def _clean(self):
         validators.clean_ip_address_or_network(self.value, field_name="value", error_class=ValidationError)
@@ -326,7 +326,7 @@ class Policy(BaseSearchField):
     _valid_fields = ['country', 'client_address', 'client_name', 'sender', 'recipient', 'helo_name']
     _cache_key = 'greypolicy'
     
-    name = CharField(unique=True, max_length=20, index=True)
+    name = CharField(unique=True, max_length=255, index=True)
 
     slug = CharField(unique=True, index=True)
     
@@ -361,7 +361,7 @@ class Policy(BaseSearchField):
 
     greylist_expire = IntegerField(default=35*86400)#s, min_value=1)
     
-    comments = CharField(max_length=100, null=True)
+    comments = CharField(max_length=255, null=True)
     
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(Policy)(self.name)            
@@ -407,7 +407,7 @@ class GreylistEntry(Model):
     
     protocol = KeyStore(TextField())
     
-    policy = CharField(max_length=20, default='policy')
+    policy = CharField(max_length=255, default='policy')
 
     def accept(self, now=None, expire=35*86400):
         now = now or utils.utcnow()
@@ -530,7 +530,7 @@ class WhiteList(BaseSearchField):
         self.slug = ModelSlug.unique_slug(WhiteList)(self.value)        
         return BaseSearchField.save(self, **kwargs)
     
-    comments = CharField(max_length=100, null=True)
+    comments = CharField(max_length=255, null=True)
 
     class Meta:
         order_by = ('value',)
@@ -544,7 +544,7 @@ class BlackList(BaseSearchField):
 
     slug = CharField(unique=True, index=True)
     
-    comments = CharField(max_length=100, null=True)
+    comments = CharField(max_length=255, null=True)
 
     def save(self, **kwargs):
         self.slug = ModelSlug.unique_slug(BlackList)(self.value)        
