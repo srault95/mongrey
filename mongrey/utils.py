@@ -52,7 +52,7 @@ logger = logging.getLogger(__name__)
 def get_uid(protocol):    
     u'''Return unique identity from client_address and instance field with hashlib.sha256 crypt'''
     client_address = protocol.get('client_address')
-    instance = protocol.get('instance')    
+    instance = protocol.get('instance')
     key = "-".join([client_address, instance])
     return hashlib.sha256(key).hexdigest()
 
@@ -237,7 +237,7 @@ def read_whitelist(whitelist_filename):
     
     TODO: record DB - choix field_name selon type
     - ip/cidr: field_name="client_address"
-    - regexp: field_name="client_name" ou sender ou recipient !!!!
+    - regexp: field_name="client_name"
     Ou générer un yaml intermédiaire à finaliser manuellement pour import
     
     TODO: validité des regexp !

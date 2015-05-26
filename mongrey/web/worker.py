@@ -9,8 +9,6 @@ import gunicorn.app.base
 
 from gunicorn.six import iteritems
 
-from .wsgi import create_app
-
 def number_of_workers():
     return (multiprocessing.cpu_count() * 2) + 1
 
@@ -32,6 +30,8 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 if __name__ == '__main__':
+    from .wsgi import create_app
+    
     options = {
         'bind': '%s:%s' % ('127.0.0.1', '8081'),
         'workers': number_of_workers(),

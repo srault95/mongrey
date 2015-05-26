@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-_ = lambda s:s
+try:
+    from .web.extensions import _
+except ImportError:
+    _ = lambda s:s
 
 ERRORS_URL_BASE = "http://mongrey.readthedocs.org/en/latest/errors.html"
 
