@@ -14,11 +14,8 @@ DEFAULT_CONFIG = {
     'settings_path': env_config('MONGREY_SERVER_SETTINGS', None),             
 
     'db_settings': {
-        'host': env_config('MONGREY_DB', 'sqlite:///mongrey.db'),
-        'options': {
-            'threadlocals': True
-        }    
-    },
+        'host': env_config('MONGREY_DB', 'sqlite:////var/lib/mongrey/mongrey.db'),
+    }
                                        
 }
 
@@ -60,12 +57,12 @@ def radicalspam_migration(basepath=None, models=None, dry_run=False):
 
 def get_models(**config):
     
-    settings, storage = utils.get_db_config(config.get('db_settings', {}))
+    settings, storage = utils.get_db_config(**config.get('db_settings', {}))
     
     if storage == "mongo":
         from mongrey.storage.mongo.utils import create_mongo_connection
         from mongrey.storage.mongo import models
-        create_mongo_connection(**settings)
+        create_mongo_connection(settings)
         _models = {
             'domain': models.Domain,
             'mynetwork': models.Mynetwork,
@@ -110,7 +107,7 @@ def options():
 
     parser.add_argument('--db',
                         dest="mongrey_db",
-                        default=env_config('MONGREY_DB', 'sqlite:///mongrey.db'), 
+                        default=env_config('MONGREY_DB', 'sqlite:////var/lib/mongrey/mongrey.db'), 
                         help='Mongrey DB. default: %(default)s')
     
     parser.add_argument('-D', '--debug', action="store_true")
@@ -157,7 +154,8 @@ def main():
                               dry_run=dry_run)
 
     elif command == 'postgrey':
-        pass
+        sys.stderr.write("not implemented\n")
+        sys.exit(1)
         
 if __name__ == "__main__":
     """
