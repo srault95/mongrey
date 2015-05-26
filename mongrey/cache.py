@@ -25,12 +25,15 @@ class Cache(object):
     
     def __init__(self, 
                  cache_url='simple', 
-                 cache_timeout=300, 
+                 cache_timeout=300,
+                 cache_prefix=None, 
                  ):
         
         self.cache_timeout = cache_timeout
 
-        self.cache = None 
+        self.cache = None
+        
+        self.cache_prefix = cache_prefix or self.DEFAULT_KEY_PREFIX 
         
         if cache_url == 'simple':
             self._configure_cache_simple()
@@ -59,7 +62,7 @@ class Cache(object):
         
         self.cache = RedisCache(host=client, 
                                 default_timeout=self.cache_timeout, 
-                                key_prefix=self.DEFAULT_KEY_PREFIX
+                                key_prefix=self.cache_prefix
                                 )
     
     
