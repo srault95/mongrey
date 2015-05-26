@@ -66,19 +66,6 @@ def _show_urls():
         #rule.rule = str passé au début de route()
         print "%-30s" % rule.rule, rule.endpoint, methods
 
-def _create_default_user(update_if_exist=False):
-    storage = current_app.config.get('STORAGE')
-    username = current_app.config.get('DEFAULT_AUTH_USERNAME')
-    password = current_app.config.get('DEFAULT_AUTH_PASSWORD')
-    
-    if storage == "mongo":
-        from mongrey.storage.mongo.models import User
-        User.create_user(username=username, password=password, 
-                         update_if_exist=update_if_exist)
-    elif storage == "sql":
-        from mongrey.storage.sql.models import User
-        User.create_user(username=username, password=password, 
-                         update_if_exist=update_if_exist)
 
 class ImportWhiteList(Command):
     u"""Import whitelist file"""
@@ -123,7 +110,8 @@ class CreateDefaultUserCommand(Command):
     )
     
     def run(self, update_if_exist=False, **kwargs):
-        _create_default_user(update_if_exist=False)  
+        from mongrey.web.wsgi import _create_default_user
+        _create_default_user(app=current_app, update_if_exist=False)  
 
 def main(create_app_func=None):
     

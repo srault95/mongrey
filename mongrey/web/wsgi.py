@@ -10,10 +10,24 @@ from .extensions import session_store, login_manager
 from .login import UserLogin
 from . import forms
 
+def _create_default_user(app=None, update_if_exist=False):
+    storage = app.config.get('STORAGE')
+    username = app.config.get('DEFAULT_AUTH_USERNAME')
+    password = app.config.get('DEFAULT_AUTH_PASSWORD')
+    
+    if storage == "mongo":
+        from mongrey.storage.mongo.models import User
+        User.create_user(username=username, password=password, 
+                         update_if_exist=update_if_exist)
+    elif storage == "sql":
+        from mongrey.storage.sql.models import User
+        User.create_user(username=username, password=password, 
+                         update_if_exist=update_if_exist)
+
 def _configure_sentry(app):
     try:
-        from raven.contrib.flask import Sentry
         if app.config.get('SENTRY_DSN', None):
+            from raven.contrib.flask import Sentry
             sentry = Sentry(app, logging=True, level=app.logger.level)
     except ImportError:
         app.logger.warning("Raven client for sentry is not installed")
@@ -191,6 +205,10 @@ def create_app(config='mongrey.web.settings.Prod'):
                     is_hidden=forms._is_hidden, 
                     is_required=forms._is_required,
                     )
+
+    @app.before_first_request
+    def create_default_user():
+        _create_default_user(app=app)
     
     app.wsgi_app = ProxyFix(app.wsgi_app)
     
