@@ -79,7 +79,7 @@ All contributions and suggestions are welcome.
     :target: https://pypi.python.org/pypi/mongrey
     :alt: License
 
-.. |pypi wheel| image:: https://pypip.in/wheel/mongrey/badge.png
+.. |pypi wheel| image:: https://img.shields.io/pypi/wheel/mongrey.svg
     :target: https://pypi.python.org/pypi/mongrey/
     :alt: Python Wheel
         
